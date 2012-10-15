@@ -1,0 +1,76 @@
+{{=|{ }|=}}
+
+<div class="row-fluid selector-panel">
+	<div class="span1"></div>
+	<div ng-controller="ProjectListCtrl" class="span5 selector-column">
+	
+		<div>
+			<h3>Projects</h3>
+		</div>
+		
+		<div class="selector-column-scroll">
+			<table>
+				<tbody>
+					<tr ng-repeat="project in projects|orderBy:name">
+						<td>{{project.name}}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		
+		<form name="newProjectForm">
+			<div class="selector-column-add">
+  				<input name="newProjectNameInput" class="span6" type="text" ng-model="newProject.name" ng-maxlength="20"/>
+  				<button class="btn btn-primary" ng-click="addProject(newProject)" ng-disabled="!newProject.name">Add</button>
+			</div>
+			<div class="ng-invalid-maxlength-msg" ng-show="newProjectForm.newProjectNameInput.$error.maxlength">Project name is too long!</div> 
+		</form>
+
+	</div>
+	<div class="span5 selector-column">
+		
+		<div>
+			<h3>Modules</h3>
+		</div>
+		
+		<div class="selector-column-scroll">
+			<table>
+				<tbody>
+					<tr>
+						<td>Mark</td>
+					</tr>
+					<tr>
+						<td>Jacob</td>
+					</tr>
+					<tr>
+						<td>Larry</td>
+					</tr>
+					<tr>
+						<td>Mark</td>
+					</tr>
+					<tr>
+						<td>Jacob</td>
+					</tr>
+					<tr>
+						<td>Larry</td>
+					</tr>
+					<tr>
+						<td>Mark</td>
+					</tr>
+					<tr>
+						<td>Jacob</td>
+					</tr>
+					<tr>
+						<td>Larry</td>
+					</tr>
+					
+				</tbody>
+			</table>
+		</div>
+		
+		<div class="selector-column-add">
+  			<input class="span6" type="text" /><button type="button">Add</button>
+		</div>
+	</div>
+	<div class="span1"></div>
+</div>

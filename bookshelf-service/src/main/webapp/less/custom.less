@@ -1,0 +1,133 @@
+
+// --------- General Vars ---------
+
+@bodyBackground: #E9EAEE;
+@wellBackground: @white;
+
+@titleFontColor: #013D93;
+
+@basePanelBorderRadius: 20px;
+
+// --------- General Tags ---------
+
+body {
+	padding-top: 20px;
+}
+
+// --------- General Components ---------
+
+.base-panel {
+	.well;
+	.override-border-radius(@basePanelBorderRadius);
+}
+
+// +++ Selector +++
+
+@selectorHeight: 350px;
+
+.selector-panel {
+	.base-panel;
+	background-color: whiteSmoke;
+	height: @selectorHeight;
+}
+
+.selector-column {
+	background-color: white;
+	.override-border-radius(10px);
+	color: @titleFontColor;
+	height: @selectorHeight - 5;
+}
+
+.selector-column div{
+	text-align: center;
+}
+
+.selector-column-scroll {
+	.scrollable(@selectorHeight - 125);
+	text-align: right;
+}
+
+.selector-column-scroll table {
+	.table;
+	.table-striped;
+	.table-hover;
+}
+
+.selector-column-add {
+	.input-append;
+	text-align: center !important;
+	margin-top: 5px;
+	margin-right: 20px;
+}
+
+.selector-column-add button{
+	.btn;
+}
+
+
+// +++ Data +++
+
+@dataHeight: 500px;
+
+.data-panel {
+	.base-panel;
+	background-color: whiteSmoke;
+	height: @selectorHeight;
+}
+
+.data-main-column {
+	background-color: white;
+	.override-border-radius(10px);
+	color: @titleFontColor;
+	height: @selectorHeight - 5;
+}
+
+.data-main-column hr{
+	margin: 0px 20px 20px 20px;
+}
+
+.data-main-column div{
+	text-align: left;
+	width: 100%;
+}
+
+.data-main-column div h3{
+	padding-left: 20px;
+}
+
+
+.page-title-container {
+	height: 47px;
+	padding-left: 20px;
+	text-align: left;
+	display: table-cell;
+	vertical-align: middle;
+	color: @titleFontColor;
+}
+
+.scrollable(@height: 100%) {
+	height: @height;
+	overflow: auto;
+}
+
+
+// --------- AngularJS Style ---------
+
+input.ng-invalid-maxlength {
+	border: 3px solid rgba(255, 0, 0, 0.55) !important;
+}
+
+.ng-invalid-maxlength-msg {
+	text-align: center;
+	font-weight: bold;
+	color: red;
+	font-size: 13px;
+}
+
+// --------- General Functions ---------
+
+.override-border-radius(@radius) {
+  -webkit-border-radius: @radius !important;
+     -moz-border-radius: @radius !important;
+          border-radius: @radius !important;
+}
