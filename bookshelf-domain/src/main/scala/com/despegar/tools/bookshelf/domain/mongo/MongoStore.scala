@@ -3,7 +3,6 @@ package com.despegar.tools.bookshelf.domain.mongo
 import com.mongodb.Mongo
 import org.bson.types.ObjectId
 import com.google.code.morphia.{ Datastore, Morphia }
-import scalaj.collection.Imports._
 import com.google.code.morphia.dao.BasicDAO
 import com.google.code.morphia.annotations.{Id, Transient, Reference, Embedded, Serialized}
 import com.google.code.morphia.mapping.Mapper

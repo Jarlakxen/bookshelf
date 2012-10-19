@@ -9,7 +9,7 @@ object Bookshelf extends Build {
 	lazy val standardSettings = Project.defaultSettings ++ Seq(
 				organization := "com.despegar.tools",
 				version := "0.1.0",
-				scalaVersion := "2.9.1",
+				scalaVersion := "2.9.2",
 				scalacOptions ++= Seq("-encoding", "UTF-8", "-deprecation", "-unchecked"),
 				javacOptions ++= Seq("-Xlint:unchecked")
 			) ++ Seq( classpathTypes ~= (_ + "orbit") ) ++ Seq(resolvers ++= Seq("OSS Sonatype" at "https://oss.sonatype.org/content/groups/scala-tools/", "Morphia Maven Repository" at "http://morphia.googlecode.com/svn/mavenrepo/") )
@@ -58,8 +58,9 @@ object LiftSettings {
 		lazy val liftVersion = "2.5-M1"
 		lazy val lift_json = "net.liftweb" %% "lift-json" % liftVersion withSources() withJavadoc()
 		lazy val lift_json_ext = "net.liftweb" %% "lift-json-ext" % liftVersion withSources() withJavadoc()
-		
-		Seq(libraryDependencies ++= Seq(lift_json, lift_json_ext))
+		lazy val jacks = "com.lambdaworks" %% "jacks" % "2.1.0" withSources() withJavadoc()
+
+		Seq(libraryDependencies ++= Seq(lift_json, lift_json_ext, jacks))
 	}
 }
 
@@ -78,10 +79,9 @@ object MongoSettings {
 object UtilsSettings {
 	
 	def apply() = {
-		lazy val scalaj = "org.scalaj" %% "scalaj-collection" % "1.2"
 		lazy val reflection = "org.reflections" % "reflections" % "0.9.8" withJavadoc()
-		
-		Seq(libraryDependencies ++= Seq(scalaj, reflection))
+		lazy val jacks = "com.lambdaworks" %% "jacks" % "2.1.0" withSources() withJavadoc()
+		Seq(libraryDependencies ++= Seq(reflection, jacks))
 	}
 }
 

@@ -4,13 +4,13 @@ import org.bson.types.ObjectId
 import com.google.code.morphia.annotations.{ Entity, Serialized, Reference }
 import annotation.target.field
 import com.despegar.tools.bookshelf.domain.mongo.{ MongoModel, MongoObject, NamedModelObject }
-import scalaj.collection.Imports._
 import scala.collection.immutable.Map
+import scala.collection.JavaConversions._
 
 @Entity
 case class Property( name : String, @( Reference @field ) parent : Property, values : java.util.Map[String, String] )  extends MongoModel[Property]{
 
-	def this( name : String, values : Map[Enviroment, String] ) = this( name, null, (for ((key, value) <- values) yield (key.name, value)) asJava )
+	def this( name : String, values : Map[Enviroment, String] ) = this( name, null, (for ((key, value) <- values) yield (key.name, value)) )
 	
 	def this( name : String ) = this( name, Map() )
 	

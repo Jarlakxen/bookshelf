@@ -12,11 +12,20 @@ app.controller('ProjectListCtrl', function ($scope, Project) {
 	$scope.projects = projects;
 
 	$scope.addProject = function (newProject){
-		var project = new Project({name: newProject.name});
-		projects.push(project);
+		var project = new Project({name: newProject.name, description: ''});
 		project.$save();
+		
+		projects.push(project);
 
 		newProject.name = '';
+	};
+
+	$scope.removeProject = function (selectedProject){
+		projects.pop(selectedProject);
+
+		var project = new Project({id: 's', name: 'aaa'});
+
+		project.$delete();
 	};
 
 });

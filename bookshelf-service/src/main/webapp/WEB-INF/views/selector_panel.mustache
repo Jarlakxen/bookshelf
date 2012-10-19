@@ -12,7 +12,12 @@
 			<table>
 				<tbody>
 					<tr ng-repeat="project in projects|orderBy:name">
-						<td>{{project.name}}</td>
+						<td>
+							<form name="{{project.name}}ProjectForm">
+							{{project.name}}
+							<i class="icon-remove-sign" style="float: right" ng-click="removeProject(project)" ></i>
+							</form>
+						</td>
 					</tr>
 				</tbody>
 			</table>

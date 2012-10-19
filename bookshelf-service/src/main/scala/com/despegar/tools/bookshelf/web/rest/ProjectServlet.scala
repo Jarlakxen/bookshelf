@@ -5,27 +5,31 @@ import org.scalatra.scalate.ScalateSupport
 import com.despegar.tools.bookshelf.domain.dto.Project
 
 class ProjectServlet extends RestService{
-	
-	var projects = Seq(new Project("Cars", ""), new Project("Hotels", ""));
-	
+
 	before() {
 		contentType="application/json"
 	}
 	
 	get("/project"){
-		asJson( projects );
+		asJson( Project findAll );
 	}
 	
-	get("/project/:name"){
-		asJson( projects find (_.name == params("name") ) );
+	get("/project/:id"){
+		val id = params.getOrElse("id", halt(405))
+		asJson( Project findByName( id ) get );
 	}
 	
-	post("/project/:name"){
-		var project = new Project(params.getOrElse("name", halt(405)), "") save
+	post("/project"){
+		val newProject = fromJson[Project]( request.body )
 		
-		projects = projects :+ project
+		newProject save
 		
-		project
+		asJson(newProject)
+	}
+	
+	delete("/project/:id"){
+		val id = params.getOrElse("id", halt(405))
+		Project.deleteById(id)
 	}
 	
 }

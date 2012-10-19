@@ -6,9 +6,9 @@ import com.despegar.tools.bookshelf.domain.mongo.MongoStore
 
 class Scalatra extends LifeCycle {
 
+	val morphia = MongoStore.init("mongodb://localhost", "bookshelf")
+	
 	override def init(context: ServletContext) {
-
-		MongoStore.init("mongodb://localhost", "test")
 		
 		// Main Page
 		context.mount(new HomeServlet, "/bookshelf/*")

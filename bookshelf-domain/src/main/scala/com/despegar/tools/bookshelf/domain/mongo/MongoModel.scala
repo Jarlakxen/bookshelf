@@ -3,7 +3,6 @@ package com.despegar.tools.bookshelf.domain.mongo
 import com.mongodb.Mongo
 import org.bson.types.ObjectId
 import com.google.code.morphia.{ Datastore, Morphia }
-import scalaj.collection.Imports._
 import com.google.code.morphia.dao.BasicDAO
 import com.google.code.morphia.annotations.{Id, Transient, Reference, Embedded, Serialized}
 import com.google.code.morphia.mapping.Mapper
@@ -16,6 +15,10 @@ import com.mongodb.MongoURI
 import com.google.code.morphia.logging.slf4j.SLF4JLogrImplFactory
 import scala.annotation.target.field
 import com.despegar.tools.bookshelf.domain.dto.Enviroment
+import scala.collection.JavaConversions._
+import com.fasterxml.jackson.annotation.JsonIgnore
+import com.fasterxml.jackson.annotation.JsonValue
+import com.fasterxml.jackson.annotation.JsonInclude
 
 
 class DAO[T, K]( val _class : Class[T], val _datastore : Datastore ) extends BasicDAO[T, K]( _class, _datastore) {
@@ -41,14 +44,13 @@ abstract class MongoModel[T]( implicit m : Manifest[T] ) {
 	type TransientField = Transient @field
 	type SerializedField = Serialized @field
 	
-	@Transient private val _clazz : Class[T] = m.erasure.asInstanceOf[Class[T]]
-	@Id var id : ObjectId = _
-
-	//@Transient protected val _dao : DAO[T, ObjectId] = new DAO[T, ObjectId]( _clazz, MongoStore.datastore )
-	@Transient protected val _dao = DAO[T]( _clazz, MongoStore.datastore )
-
+	@Transient @JsonIgnore private val _clazz : Class[T] = m.erasure.asInstanceOf[Class[T]]
+	@Transient @JsonIgnore protected val _dao = DAO[T]( _clazz, MongoStore.datastore )
+	
+	@Id @JsonInclude var id : ObjectId = _
+	
 	private def cast : T = this.asInstanceOf[T]
-
+	
 	def isPersistent = id != null
 	def save : T = { _dao.save( cast ); cast }
 
@@ -68,7 +70,7 @@ abstract class MongoObject[T]( implicit m : Manifest[T] ) {
 	protected val _dao : DAO[T, ObjectId] = new DAO[T, ObjectId]( _clz, MongoStore.datastore )
 	protected def createQuery = _dao.createQuery
 
-	protected def asList( q : QueryResults[T] ) = q.asList.asScala
+	protected def asList( q : QueryResults[T] ): Seq[T] = q.asList
 
 	def findById( id : ObjectId ) : Option[T] = Option( _dao.get( id ) )
 	def findById( id : String ) : Option[T] = findById( new ObjectId( id ) )
