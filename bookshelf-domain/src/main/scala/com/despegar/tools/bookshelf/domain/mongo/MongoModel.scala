@@ -50,17 +50,19 @@ abstract class MongoModel[T]( implicit m : Manifest[T] ) {
 	@Id @JsonInclude var id : ObjectId = _
 	
 	private def cast : T = this.asInstanceOf[T]
-	
-	def isPersistent = id != null
-	def save : T = { _dao.save( cast ); cast }
 
+	def getId = id
+	def setId(id : ObjectId) = this.id = id
+	
 	protected def createQueryToFindMe : Query[T] = {
 		if ( !isPersistent ) throw new IllegalStateException( "Can't perform query on myself until I have been saved!" )
 		_dao.createQuery.field( Mapper.ID_KEY ).equal( id )
 	}
-	protected def update( ops : UpdateOperations[T] ) { _dao.updateFirst( createQueryToFindMe, ops ) }
-	protected def update( query : Query[T], ops : UpdateOperations[T] ) { _dao.update( query, ops ) }
-
+	
+	def isPersistent = id != null
+	def save : T = { _dao.save( cast ); cast }
+	def update( ops : UpdateOperations[T] ) { _dao.updateFirst( createQueryToFindMe, ops ) }
+	def update( query : Query[T], ops : UpdateOperations[T] ) { _dao.update( query, ops ) }
 	def delete = { if ( isPersistent ) _dao.delete( cast ) }
 }
 

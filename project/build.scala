@@ -81,6 +81,7 @@ object UtilsSettings {
 	def apply() = {
 		lazy val reflection = "org.reflections" % "reflections" % "0.9.8" withJavadoc()
 		lazy val jacks = "com.lambdaworks" %% "jacks" % "2.1.0" withSources() withJavadoc()
+
 		Seq(libraryDependencies ++= Seq(reflection, jacks))
 	}
 }

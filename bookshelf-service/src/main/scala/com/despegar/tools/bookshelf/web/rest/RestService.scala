@@ -10,6 +10,8 @@ import org.reflections.Reflections
 import com.google.code.morphia.annotations.Entity
 import javax.servlet.ServletConfig
 import com.lambdaworks.jacks.JacksMapper
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.module.scala.DefaultScalaModule
 
 trait RestService extends ScalatraServlet with ScalateSupport {
 
