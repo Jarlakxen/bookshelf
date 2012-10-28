@@ -81,8 +81,10 @@ object UtilsSettings {
 	def apply() = {
 		lazy val reflection = "org.reflections" % "reflections" % "0.9.8" withJavadoc()
 		lazy val jacks = "com.lambdaworks" %% "jacks" % "2.1.0" withSources() withJavadoc()
+		lazy val json4sNative = "org.json4s" %% "json4s-native" % "3.0.0" withSources()
+		lazy val json4sJackson = "org.json4s" %% "json4s-jackson" % "3.0.0" withSources()
 
-		Seq(libraryDependencies ++= Seq(reflection, jacks))
+		Seq(libraryDependencies ++= Seq(reflection, jacks, json4sNative))
 	}
 }
 

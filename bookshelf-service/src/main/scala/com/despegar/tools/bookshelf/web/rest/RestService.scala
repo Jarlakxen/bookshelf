@@ -2,23 +2,18 @@ package com.despegar.tools.bookshelf.web.rest
 
 import org.scalatra.ScalatraServlet
 import org.scalatra.scalate.ScalateSupport
-import net.liftweb.json.ext.JodaTimeSerializers
-import net.liftweb.json.DefaultFormats
-import net.liftweb.json._
-import net.liftweb.json.Serialization.{ read, write }
 import org.reflections.Reflections
 import com.google.code.morphia.annotations.Entity
 import javax.servlet.ServletConfig
-import com.lambdaworks.jacks.JacksMapper
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.module.scala.DefaultScalaModule
+import org.json4s.native.Serialization.{read, write => swrite}
+import com.despegar.tools.bookshelf.domain.mongo.MongoModel
 
 trait RestService extends ScalatraServlet with ScalateSupport {
 
-	implicit val formats = DefaultFormats
+	implicit val formats = MongoModel.JsonFormats
 
-	def asJson[A:Manifest]( value : A ) = JacksMapper.writeValueAsString(value) //write( value )
+	def asJson( value : AnyRef ) = swrite(value)
 
-	def fromJson[A:Manifest]( json : String ) : A = JacksMapper.readValue(json) //read[A](json)
+	def fromJson[A:Manifest]( json : String ) : A = read[A](json)
 
 }

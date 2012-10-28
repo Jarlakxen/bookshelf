@@ -12,13 +12,9 @@ import scala.Predef._
 import com.google.code.morphia.logging.slf4j.SLF4JLogrImplFactory
 import annotation.target.field
 import com.mongodb.MongoURI
-import com.google.code.morphia.logging.slf4j.SLF4JLogrImplFactory
-import scala.annotation.target.field
-import com.despegar.tools.bookshelf.domain.dto.Enviroment
 import scala.collection.JavaConversions._
-import com.fasterxml.jackson.annotation.JsonIgnore
-import com.fasterxml.jackson.annotation.JsonValue
-import com.fasterxml.jackson.annotation.JsonInclude
+import org.json4s.FieldSerializer
+import org.json4s.FieldSerializer._
 
 
 class DAO[T, K]( val _class : Class[T], val _datastore : Datastore ) extends BasicDAO[T, K]( _class, _datastore) {
@@ -44,10 +40,10 @@ abstract class MongoModel[T]( implicit m : Manifest[T] ) {
 	type TransientField = Transient @field
 	type SerializedField = Serialized @field
 	
-	@Transient @JsonIgnore private val _clazz : Class[T] = m.erasure.asInstanceOf[Class[T]]
-	@Transient @JsonIgnore protected val _dao = DAO[T]( _clazz, MongoStore.datastore )
+	@Transient private val _clazz : Class[T] = m.erasure.asInstanceOf[Class[T]]
+	@Transient protected val _dao = DAO[T]( _clazz, MongoStore.datastore )
 	
-	@Id @JsonInclude var id : ObjectId = _
+	@Id var id : ObjectId = _
 	
 	private def cast : T = this.asInstanceOf[T]
 
@@ -64,6 +60,10 @@ abstract class MongoModel[T]( implicit m : Manifest[T] ) {
 	def update( ops : UpdateOperations[T] ) { _dao.updateFirst( createQueryToFindMe, ops ) }
 	def update( query : Query[T], ops : UpdateOperations[T] ) { _dao.update( query, ops ) }
 	def delete = { if ( isPersistent ) _dao.delete( cast ) }
+}
+
+object MongoModel {	
+	def JsonFormats =  org.json4s.DefaultFormats + ObjectIdSerializer() + FieldSerializer[AnyRef]( ignore("_dao") orElse ignore("_clazz") )
 }
 
 abstract class MongoObject[T]( implicit m : Manifest[T] ) {
