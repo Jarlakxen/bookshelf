@@ -9,7 +9,7 @@ import com.despegar.tools.bookshelf.domain.mongo.{MongoModel, MongoObject, Named
 
 
 @Entity
-case class Project(name: String, description: String, @(Reference @field) properties: java.util.List[Property], @(Reference @field) modules: java.util.List[Module]) extends MongoModel[Project]{
+case class Project(name: String, description: String, @(Reference @field)var properties: java.util.List[Property], @(Reference @field)var modules: java.util.List[Module]) extends MongoModel[Project]{
 
 	private def this() = this("", "", Nil, Nil)  // needed by morphia
 	

@@ -2,7 +2,7 @@ package com.despegar.tools.bookshelf.web.rest
 
 import org.scalatra.ScalatraServlet
 import org.scalatra.scalate.ScalateSupport
-import com.despegar.tools.bookshelf.domain.dto.Project
+import com.despegar.tools.bookshelf.domain.dto._
 
 class ProjectServlet extends RestService{
 
@@ -11,12 +11,13 @@ class ProjectServlet extends RestService{
 	}
 	
 	get("/project"){
-		asJson( Project findAll );
+		asJson( Project.findAll.asApi );
 	}
 	
 	get("/project/:id"){
 		val id = params.getOrElse("id", halt(405))
-		asJson( Project findByName( id ) get );
+		
+		asJson( Project.findByName( id ).get.asApi );
 	}
 	
 	post("/project"){

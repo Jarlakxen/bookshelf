@@ -62,10 +62,6 @@ abstract class MongoModel[T]( implicit m : Manifest[T] ) {
 	def delete = { if ( isPersistent ) _dao.delete( cast ) }
 }
 
-object MongoModel {	
-	def JsonFormats =  org.json4s.DefaultFormats + ObjectIdSerializer() + FieldSerializer[AnyRef]( ignore("_dao") orElse ignore("_clazz") )
-}
-
 abstract class MongoObject[T]( implicit m : Manifest[T] ) {
 	private val _clz : Class[T] = m.erasure.asInstanceOf[Class[T]]
 
