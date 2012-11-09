@@ -3,34 +3,34 @@ package com.despegar.tools.bookshelf.web.rest
 import org.scalatra.ScalatraServlet
 import org.scalatra.scalate.ScalateSupport
 import com.despegar.tools.bookshelf.domain.dto._
+import scala.collection.JavaConversions._
+import scala.collection.JavaConverters._
 
 class ProjectServlet extends RestService{
-
-	before() {
-		contentType="application/json"
-	}
 	
-	get("/project"){
+	get("/"){
 		asJson( Project.findAll.asApi );
 	}
 	
-	get("/project/:id"){
-		val id = params.getOrElse("id", halt(405))
-		
-		asJson( Project.findByName( id ).get.asApi );
+	get("/:id"){
+		asJson( Project.findById( params("id") ).get.asApi );
 	}
 	
-	post("/project"){
-		val newProject = fromJson[Project]( request.body )
+	post("/"){
+		var newProject = fromJson[com.despegar.tools.bookshelf.api.dto.Project]( request.body ).asDomain
 		
 		newProject save
 		
-		asJson(newProject)
+		asJson(newProject.asApi)
 	}
 	
-	delete("/project/:id"){
-		val id = params.getOrElse("id", halt(405))
-		Project.deleteById(id)
+	delete("/:id"){
+		val project = Project.findById( params("id") ).get
+		
+		for( property <- project.properties ) property.delete
+		
+		for( module <- project.modules ) module.delete
+		
+		project.delete
 	}
-	
 }

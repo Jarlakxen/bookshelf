@@ -14,7 +14,8 @@ class Scalatra extends LifeCycle {
 		context.mount(new HomeServlet, "/bookshelf/*")
 		
 		// REST Services
-		context.mount(new ProjectServlet, "/bookshelf/rest/*")
-		context.mount(new EnviromentServlet, "/bookshelf/rest/*")
+		context.mount(new ProjectServlet, "/bookshelf/rest/project/*")
+		context.mount(new ModuleServlet, "/bookshelf/rest/module/*")
+		context.mount(new EnviromentServlet, "/bookshelf/rest/enviroment/*")
 	}
 }

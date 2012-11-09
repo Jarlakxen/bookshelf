@@ -67,6 +67,9 @@ abstract class MongoObject[T]( implicit m : Manifest[T] ) {
 
 	protected val _dao : DAO[T, ObjectId] = new DAO[T, ObjectId]( _clz, MongoStore.datastore )
 	protected def createQuery = _dao.createQuery
+	protected def createUpdateOperations = _dao.createUpdateOperations
+	protected def update( query : Query[T], updateOperations : UpdateOperations[T] ) = _dao.update( query, updateOperations )
+	
 
 	protected def asList( q : QueryResults[T] ): Seq[T] = q.asList
 

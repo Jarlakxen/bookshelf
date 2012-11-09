@@ -12,6 +12,10 @@ trait RestService extends ScalatraServlet with ScalateSupport {
 
 	implicit val formats = DefaultFormats
 
+	before() {
+		contentType="application/json"
+	}
+	
 	def asJson( value : AnyRef ) = swrite(value)
 
 	def fromJson[A:Manifest]( json : String ) : A = read[A](json)

@@ -12,8 +12,8 @@
 			<table>
 				<tbody>
 					<tr ng-repeat="project in projects|orderBy:name">
-						<td>
-							<form name="{{project.name}}ProjectForm">
+						<td ng-click="notifyAll('OnProjectSelect', project)">
+							<form name="{{project.name}}ProjectForm" style="margin: 0px">
 							{{project.name}}
 							<i class="icon-remove-sign" style="float: right" ng-click="removeProject(project)" ></i>
 							</form>
@@ -32,7 +32,7 @@
 		</form>
 
 	</div>
-	<div class="span5 selector-column">
+	<div ng-controller="ModuleListCtrl" class="span5 selector-column">
 		
 		<div>
 			<h3>Modules</h3>
@@ -41,41 +41,21 @@
 		<div class="selector-column-scroll">
 			<table>
 				<tbody>
-					<tr>
-						<td>Mark</td>
+					<tr ng-repeat="module in modules|orderBy:name">
+						<td> {{module.name}} </td>
 					</tr>
-					<tr>
-						<td>Jacob</td>
-					</tr>
-					<tr>
-						<td>Larry</td>
-					</tr>
-					<tr>
-						<td>Mark</td>
-					</tr>
-					<tr>
-						<td>Jacob</td>
-					</tr>
-					<tr>
-						<td>Larry</td>
-					</tr>
-					<tr>
-						<td>Mark</td>
-					</tr>
-					<tr>
-						<td>Jacob</td>
-					</tr>
-					<tr>
-						<td>Larry</td>
-					</tr>
-					
 				</tbody>
 			</table>
 		</div>
 		
-		<div class="selector-column-add">
-  			<input class="span6" type="text" /><button type="button">Add</button>
-		</div>
+		<form name="newModuleForm">
+			<div class="selector-column-add">
+  				<input name="newModuleNameInput" class="span6" type="text" ng-model="newModule.name" ng-maxlength="20"/>
+  				<button class="btn btn-primary" ng-click="addModule(newModule)" ng-disabled="!newModule.name">Add</button>
+			</div>
+			<div class="ng-invalid-maxlength-msg" ng-show="newModuleForm.newModuleNameInput.$error.maxlength">Module name is too long!</div> 
+		</form>
+
 	</div>
 	<div class="span1"></div>
 </div>

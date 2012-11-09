@@ -6,7 +6,7 @@ import com.despegar.tools.bookshelf.domain.mongo.NamedModelObject
 import com.despegar.tools.bookshelf.domain.mongo.MongoObject
 import com.despegar.tools.bookshelf.domain.mongo.MongoModel
 
-case class Enviroment( name : String, description : String ) extends MongoModel[Enviroment] {
+case class Enviroment(name : String, description : String ) extends MongoModel[Enviroment] {
 
 	private def this() = this( "", "" ) // needed by morphia
 

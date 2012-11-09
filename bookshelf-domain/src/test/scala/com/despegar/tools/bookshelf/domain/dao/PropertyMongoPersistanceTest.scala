@@ -44,6 +44,27 @@ class PropertyMongoPersistanceTest extends Specification {
 
 			Property.count must be_==( 0 )
 		}
+		
+		"remove enviroment" in context {
+			
+			val localEnviroment = Enviroment("Local", "");
+			val prodEnviroment = Enviroment("Prod", "");
+			
+			var property1 = new Property("test.key1", Map( localEnviroment -> "10", prodEnviroment -> "20" )).save
+			var property2 = new Property("test.key2", Map( localEnviroment -> "15", prodEnviroment -> "25" )).save
+			
+			Property deleteEnvironmentFromAll("Prod")
+			
+			val properties = Property findAll
+			
+			property1.delete
+			property2.delete
+			
+			properties must not beNull
+			
+			properties.forall( v => v.values.asScala must not haveKey("Prod"))
+			
+		}
 	}
 
 }
