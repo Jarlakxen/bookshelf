@@ -30,10 +30,11 @@ trait MorphiaMongo {
 }
 
 object MongoStore extends MorphiaMongo {
-	def init( uri:String, database : String ) : MorphiaMongo = {
+	def init( uri:String, database : String, reset : Boolean = false ) = {
 		MorphiaLoggerFactory.reset()
 		MorphiaLoggerFactory.registerLogger(classOf[SLF4JLogrImplFactory]);
 		_ds = morphia.createDatastore(new Mongo(new MongoURI(uri)), database );
+		if( reset ) _ds.getDB().dropDatabase()
 		this
 	}
 }

@@ -13,13 +13,17 @@ import scala.collection.immutable.Map
 @RunWith( classOf[JUnitRunner] )
 class ModuleMongoPersistanceTest extends Specification {
 	
-    val context = new Before { def before = MongoStore.init("mongodb://localhost", "test") }
+    val context = new Before { 
+    	def before = {
+    		MongoStore.init("mongodb://localhost", "test", true)
+    	}
+    }
 	
 	"Module" should {
 
 		"persist" in context {
 			
-			var module = new Module("API", "", null, Nil);
+			var module = new Module("API", "");
 			
 			module save
 			
@@ -37,6 +41,29 @@ class ModuleMongoPersistanceTest extends Specification {
 			module delete
 
 			Module.count must be_==( 0 )
+		}
+		
+		"persist and add to existing project" in context {
+			
+			var project = new Project("Project1", "");
+			
+			project save
+			
+			var module = new Module("Module1", "");
+			
+			module save
+			
+			project.modules += module
+			
+			project save
+			
+			module delete
+			
+			project delete
+
+			Module.count must be_==( 0 )
+			
+			Project.count must be_==( 0 )
 		}
 	}
 

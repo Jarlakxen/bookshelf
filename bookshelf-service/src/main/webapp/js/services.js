@@ -10,12 +10,13 @@ var BASE_URL = '/bookshelf/rest'
 
 angular.module('projectService', ['ngResource']).factory('Project', function($resource){
 
-	return $resource(BASE_URL + '/project/:id:action', {id:'@id', action:'@action'},{
-		addModule:{
-			method: "POST",
+	return $resource(BASE_URL + '/project/:id/:cmd', {id:'@id'},{
+		modules:{
+			method: 'GET',
 			params: {
-				listController: "/newmodule"
-			}	
+				cmd: 'modules'
+			},
+			isArray:true
 		}
 	});
   
@@ -27,6 +28,10 @@ angular.module('projectService', ['ngResource']).factory('Project', function($re
 
 angular.module('moduleService', ['ngResource']).factory('Module', function($resource){
 
-	return $resource(BASE_URL + '/module/:id', {id:'@id'});
+	return $resource(BASE_URL + '/module/:id:projectId', {id:'@id'}, {
+		addTo:{
+			method: "PUT"
+		}
+	});
   
 });

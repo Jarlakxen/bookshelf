@@ -12,11 +12,9 @@
 			<table>
 				<tbody>
 					<tr ng-repeat="project in projects|orderBy:name">
-						<td ng-click="notifyAll('OnProjectSelect', project)">
-							<form name="{{project.name}}ProjectForm" style="margin: 0px">
+						<td ng-click="notifyAll('OnProjectSelect', project); selectedProject = project;" ng-class="{selected: project==selectedProject}">
 							{{project.name}}
 							<i class="icon-remove-sign" style="float: right" ng-click="removeProject(project)" ></i>
-							</form>
 						</td>
 					</tr>
 				</tbody>

@@ -21,6 +21,8 @@ var ProjectListCtrl = app.controller('ProjectListCtrl', function ($scope, Projec
 	var projects = Project.query();
 	
 	$scope.projects = projects;
+	$scope.selectedProject = null;
+
 
 	$scope.addProject = function (newProject){
 		var project = new Project({id: '', name: newProject.name, description: ''});
@@ -51,16 +53,18 @@ var ModuleListCtrl = app.controller('ModuleListCtrl', function ($scope, Module, 
 	$scope.project = null;
 
 	$scope.$on('OnProjectSelect', function(event, project) {
-        $scope.project = project;
+        $scope.project =  new Project({id: project.id, name: project.name, description: project.description});
+        $scope.modules = $scope.project.$modules();
     });   
 
     $scope.addModule = function (newModule){
-		var module = new Module({id: '', name: newModule.name, description: '', projectId:$scope.project.id});
-		module.$save();
+		var module = new Module({id: '', name: newModule.name, description: ''});
 
-		$scope.modules.push(module);
+		module.$addTo({projectId: $scope.project.id});
 
-		module.name = '';
+		$scope.modules = $scope.project.$modules();
+
+		newModule.name = '';
 	}; 
 
 });

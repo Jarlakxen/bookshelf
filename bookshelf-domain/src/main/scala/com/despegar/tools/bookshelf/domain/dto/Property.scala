@@ -4,7 +4,7 @@ import org.bson.types.ObjectId
 import com.google.code.morphia.annotations.{ Entity, Serialized, Reference }
 import annotation.target.field
 import com.despegar.tools.bookshelf.domain.mongo.{ MongoModel, MongoObject, NamedModelObject }
-import scala.collection.immutable.Map
+import scala.collection.mutable.Map
 import scala.collection.JavaConversions._
 
 @Entity

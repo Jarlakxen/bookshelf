@@ -8,6 +8,10 @@ import scala.collection.JavaConverters._
 
 class ProjectServlet extends RestService{
 	
+	// ++++++++++++++++++++++++++++++++++
+	// 		Project RestFul Services
+	// ++++++++++++++++++++++++++++++++++
+	
 	get("/"){
 		asJson( Project.findAll.asApi );
 	}
@@ -32,5 +36,25 @@ class ProjectServlet extends RestService{
 		for( module <- project.modules ) module.delete
 		
 		project.delete
+	}
+	
+	// ++++++++++++++++++++++++++++++++++
+	// 		Modules RestFul Services
+	// ++++++++++++++++++++++++++++++++++
+	
+	get("/:projectId/modules"){
+		asJson( (Project.findById( params("projectId") ).get.modules).asScala.asApi );
+	}
+	
+	post("/:projectId/newmodule"){
+		val project = Project.findById( params("projectId") ).get
+		var newModule = fromJson[com.despegar.tools.bookshelf.api.dto.Module]( request.body ).asDomain.asInstanceOf[Module]
+		newModule.save
+				
+		// Add module to project
+		project.modules.add(newModule)
+		project.save
+				
+		asJson(newModule.asApi)
 	}
 }

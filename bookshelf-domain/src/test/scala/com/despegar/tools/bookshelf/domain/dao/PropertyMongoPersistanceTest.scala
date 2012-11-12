@@ -8,7 +8,7 @@ import org.specs2.mutable.Before
 import org.specs2.runner.JUnitRunner
 import com.despegar.tools.bookshelf.domain.dto._
 import com.despegar.tools.bookshelf.domain.mongo.MongoStore
-import scala.collection.immutable.Map
+import scala.collection.mutable.Map
 
 @RunWith( classOf[JUnitRunner] )
 class PropertyMongoPersistanceTest extends Specification {
