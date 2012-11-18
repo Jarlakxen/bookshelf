@@ -2,22 +2,21 @@ package com.despegar.tools.bookshelf.web.rest
 
 import org.scalatra.ScalatraServlet
 import org.scalatra.scalate.ScalateSupport
-import org.reflections.Reflections
-import com.google.code.morphia.annotations.Entity
 import javax.servlet.ServletConfig
-import org.json4s.native.Serialization.{read, write => swrite}
-import org.json4s.DefaultFormats
 
-trait RestService extends ScalatraServlet with ScalateSupport {
+import org.json4s.{ DefaultFormats, Formats }
 
-	implicit val formats = DefaultFormats
+// JSON handling support from Scalatra
+import org.scalatra.json._
+
+trait RestService extends ScalatraServlet with ScalateSupport with JacksonJsonSupport with JValueResult {
+
+	protected implicit val jsonFormats : Formats = DefaultFormats
 
 	before() {
-		contentType="application/json"
+		contentType = formats( "json" )
 	}
-	
-	def asJson( value : AnyRef ) = swrite(value)
 
-	def fromJson[A:Manifest]( json : String ) : A = read[A](json)
+	def extract[A : Manifest] : A = parsedBody.extract[A]
 
 }

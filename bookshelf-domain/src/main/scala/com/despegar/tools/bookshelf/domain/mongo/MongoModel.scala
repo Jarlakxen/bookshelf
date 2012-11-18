@@ -13,8 +13,6 @@ import com.google.code.morphia.logging.slf4j.SLF4JLogrImplFactory
 import annotation.target.field
 import com.mongodb.MongoURI
 import scala.collection.JavaConversions._
-import org.json4s.FieldSerializer
-import org.json4s.FieldSerializer._
 
 
 class DAO[T, K]( val _class : Class[T], val _datastore : Datastore ) extends BasicDAO[T, K]( _class, _datastore) {

@@ -10,24 +10,24 @@ class ModuleServlet extends RestService{
 	
 	
 	get("/:id"){
-		asJson( Module.findById( params("id") ).get.asApi );
+		Module.findById( params("id") ).get.asApi;
 	}
 	
 	post("/"){
-		var module = fromJson[com.despegar.tools.bookshelf.api.dto.Module]( request.body ).asDomain
+		var module = extract[com.despegar.tools.bookshelf.api.dto.Module].asDomain
 		module save	
 	}
 	
 	put("/:projectId"){
 		val project = Project.findById( params("projectId") ).get
-		var newModule = fromJson[com.despegar.tools.bookshelf.api.dto.Module]( request.body ).asDomain.asInstanceOf[Module]
+		var newModule = extract[com.despegar.tools.bookshelf.api.dto.Module].asDomain.asInstanceOf[Module]
 		newModule.save
 				
 		// Add module to project
 		project.modules += newModule
 		project.save
 				
-		asJson(newModule.asApi)
+		newModule.asApi
 	}
 	
 	delete("/:id"){
@@ -36,5 +36,17 @@ class ModuleServlet extends RestService{
 		for( property <- module.properties ) property.delete
 			
 		module.delete
+	}
+	
+	// ++++++++++++++++++++++++++++++++++
+	// 		Properties RestFul Services
+	// ++++++++++++++++++++++++++++++++++
+	
+	get("/:moduleId/properties"){
+		(Module.findById( params("moduleId") ).get.properties).asScala.asApi;
+	}
+	
+	post("/:moduleId/newproperty"){
+	
 	}
 }

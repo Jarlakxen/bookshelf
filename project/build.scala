@@ -6,13 +6,18 @@ import com.typesafe.sbteclipse.plugin.EclipsePlugin._
 
 object Bookshelf extends Build {
 
+	EclipseKeys.withSource := true
+	EclipseKeys.executionEnvironment := Some(EclipseExecutionEnvironment.JavaSE16)
+
 	lazy val standardSettings = Project.defaultSettings ++ Seq(
 				organization := "com.despegar.tools",
 				version := "0.1.0",
 				scalaVersion := "2.9.2",
 				scalacOptions ++= Seq("-encoding", "UTF-8", "-deprecation", "-unchecked"),
 				javacOptions ++= Seq("-Xlint:unchecked")
-			) ++ Seq( classpathTypes ~= (_ + "orbit") ) ++ Seq(resolvers ++= Seq("OSS Sonatype" at "https://oss.sonatype.org/content/groups/scala-tools/", "Morphia Maven Repository" at "http://morphia.googlecode.com/svn/mavenrepo/") )
+			) ++ Seq( classpathTypes ~= (_ + "orbit") ) ++ Seq(resolvers ++= Seq("OSS Sonatype" at "https://oss.sonatype.org/content/groups/scala-tools/",
+																				 "Sonatype Nexus Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots",
+																				 "Morphia Maven Repository" at "http://morphia.googlecode.com/svn/mavenrepo/") )
 
 	def BaseProject(id: String, base: String, settings: Seq[Project.Setting[_]] = Nil) = Project(id = "bookshelf" + id, base = file(base), settings = standardSettings ++ settings)
 	def RootProject() = BaseProject(id = "", base = ".")
@@ -43,28 +48,22 @@ object JettySettings {
 object ScalatraSettings {
 	
 	def apply() = {
-		lazy val scalatraVersion = "2.1.1"
+		lazy val scalatraVersion = "2.2.0-SNAPSHOT"//"2.1.1"
 		lazy val scalatra = "org.scalatra" % "scalatra" % scalatraVersion withSources() withJavadoc()
 		lazy val scalate = "org.scalatra" % "scalatra-scalate" % scalatraVersion withSources() withJavadoc()
+		lazy val scalatra_json = "org.scalatra" % "scalatra-json" % scalatraVersion withSources()
+
+		//lazy val json4sNative = "org.json4s" %% "json4s-native" % "3.0.0" withSources()
+		lazy val json4sJackson = "org.json4s" %% "json4s-jackson" % "3.0.0" withSources()
+
 
 		// Pick your favorite slf4j binding
 		lazy val slf4jBinding = "ch.qos.logback" % "logback-classic" % "0.9.29" % "runtime"
 		
-		Seq(libraryDependencies ++= Seq(scalatra, scalate, slf4jBinding))
+		Seq(libraryDependencies ++= Seq(scalatra, scalate, scalatra_json, json4sJackson, slf4jBinding))
 	}
 }
 
-object LiftSettings {
-	
-	def apply() = {
-		lazy val liftVersion = "2.5-M1"
-		lazy val lift_json = "net.liftweb" %% "lift-json" % liftVersion withSources() withJavadoc()
-		lazy val lift_json_ext = "net.liftweb" %% "lift-json-ext" % liftVersion withSources() withJavadoc()
-		lazy val jacks = "com.lambdaworks" %% "jacks" % "2.1.0" withSources() withJavadoc()
-
-		Seq(libraryDependencies ++= Seq(lift_json, lift_json_ext, jacks))
-	}
-}
 
 object MongoSettings {
 	
@@ -82,10 +81,8 @@ object UtilsSettings {
 	
 	def apply() = {
 		lazy val reflection = "org.reflections" % "reflections" % "0.9.8" withJavadoc()
-		lazy val json4sNative = "org.json4s" %% "json4s-native" % "3.0.0" withSources()
-		lazy val json4sJackson = "org.json4s" %% "json4s-jackson" % "3.0.0" withSources()
 
-		Seq(libraryDependencies ++= Seq(reflection, json4sNative))
+		Seq(libraryDependencies ++= Seq(reflection))
 	}
 }
 

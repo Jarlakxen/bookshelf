@@ -13,19 +13,19 @@ class ProjectServlet extends RestService{
 	// ++++++++++++++++++++++++++++++++++
 	
 	get("/"){
-		asJson( Project.findAll.asApi );
+		Project.findAll.asApi
 	}
 	
 	get("/:id"){
-		asJson( Project.findById( params("id") ).get.asApi );
+		Project.findById( params("id") ).get.asApi
 	}
 	
 	post("/"){
-		var newProject = fromJson[com.despegar.tools.bookshelf.api.dto.Project]( request.body ).asDomain
+		var newProject = extract[com.despegar.tools.bookshelf.api.dto.Project].asDomain
 		
 		newProject save
 		
-		asJson(newProject.asApi)
+		newProject.asApi
 	}
 	
 	delete("/:id"){
@@ -43,18 +43,18 @@ class ProjectServlet extends RestService{
 	// ++++++++++++++++++++++++++++++++++
 	
 	get("/:projectId/modules"){
-		asJson( (Project.findById( params("projectId") ).get.modules).asScala.asApi );
+		Project.findById( params("projectId") ).get.modules.asScala.asApi
 	}
 	
 	post("/:projectId/newmodule"){
 		val project = Project.findById( params("projectId") ).get
-		var newModule = fromJson[com.despegar.tools.bookshelf.api.dto.Module]( request.body ).asDomain.asInstanceOf[Module]
+		var newModule = extract[com.despegar.tools.bookshelf.api.dto.Module].asDomain.asInstanceOf[Module]
 		newModule.save
 				
 		// Add module to project
 		project.modules.add(newModule)
 		project.save
 				
-		asJson(newModule.asApi)
+		newModule.asApi
 	}
 }
