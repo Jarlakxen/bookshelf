@@ -51,8 +51,8 @@ class ProjectServlet extends RestService{
 		var newModule = extract[com.despegar.tools.bookshelf.api.dto.Module].asDomain.asInstanceOf[Module]
 		newModule.save
 				
-		// Add module to project
-		project.modules.add(newModule)
+			// Add module to project
+		project.modules += newModule
 		project.save
 				
 		newModule.asApi

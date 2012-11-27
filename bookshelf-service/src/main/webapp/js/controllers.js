@@ -65,14 +65,13 @@ var ModuleListCtrl = app.controller('ModuleListCtrl', function ($scope, Module, 
 	$scope.$on('OnProjectModulesGet', function(event, project) {
         $scope.project =  project
         if( project != null ){
-        	$scope.modules = Project.modules({id:project.id});
+        	$scope.modules = project.modules();
     	} else {
     		$scope.modules = [];
     	}
     });
 
     $scope.$on('OnModuleSelect', function(event, module) {
-
 		if( $scope.selectedModule != null && $scope.selectedModule.id == module.id ){
 			$scope.selectedModule =  null
 		} else {
@@ -81,9 +80,7 @@ var ModuleListCtrl = app.controller('ModuleListCtrl', function ($scope, Module, 
     });   
 
     $scope.addModule = function (newModule){
-		var module = new Module({id: '', name: newModule.name, description: ''});
-
-		module.$addTo({projectId: $scope.project.id});
+		var module = $scope.project.newmodule({id: '', name: newModule.name, description: ''});
 
 		$scope.modules.push(module);
 

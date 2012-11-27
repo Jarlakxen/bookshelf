@@ -18,18 +18,6 @@ class ModuleServlet extends RestService{
 		module save	
 	}
 	
-	put("/:projectId"){
-		val project = Project.findById( params("projectId") ).get
-		var newModule = extract[com.despegar.tools.bookshelf.api.dto.Module].asDomain.asInstanceOf[Module]
-		newModule.save
-				
-		// Add module to project
-		project.modules += newModule
-		project.save
-				
-		newModule.asApi
-	}
-	
 	delete("/:id"){
 		val module = Module.findById( params("id") ).get
 		
