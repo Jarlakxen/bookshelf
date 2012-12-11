@@ -1,6 +1,6 @@
 'use strict';
 
-var app = angular.module('BookshelfApp', [ 'ngResource', 'projectService', 'moduleService' ]);
+var app = angular.module('BookshelfApp', [ 'ngResource', 'enviromentService', 'projectService', 'moduleService' ]);
 
 // ----------------------------------
 //			Shared Service
@@ -26,14 +26,16 @@ var ProjectListCtrl = app.controller('ProjectListCtrl', function ($scope, Projec
 	$scope.$on('OnProjectSelect', function(event, project) {
 		
 		if( $scope.selectedProject != null && $scope.selectedProject.id == project.id ){
-			$scope.selectedProject =  null
+			$scope.selectedProject =  null;
+			$scope.notifyAll('OnProjectUnload');
 		} else {
-        	$scope.selectedProject =  project
+        	$scope.selectedProject =  project;
+        	$scope.notifyAll('OnProjectLoad', project);
     	}
-    	$scope.notifyAll('OnProjectModulesGet', $scope.selectedProject)
     });   
 
 	$scope.addProject = function (newProject){
+
 		var project = new Project({id: '', name: newProject.name, description: ''});
 		project.$save();
 		
@@ -48,6 +50,8 @@ var ProjectListCtrl = app.controller('ProjectListCtrl', function ($scope, Projec
 		var project = new Project({id: selectedProject.id, name: selectedProject.name, description: ''});
 
 		project.$delete();
+
+		$scope.notifyAll('OnProjectRemove', selectedProject)
 	};
 
 });
@@ -62,12 +66,20 @@ var ModuleListCtrl = app.controller('ModuleListCtrl', function ($scope, Module, 
 	$scope.project = null;
 	$scope.selectedModule = null;
 
-	$scope.$on('OnProjectModulesGet', function(event, project) {
-        $scope.project =  project
-        if( project != null ){
-        	$scope.modules = project.modules();
-    	} else {
-    		$scope.modules = [];
+	$scope.$on('OnProjectLoad', function(event, project) {
+        $scope.project =  project;
+        $scope.modules = project.modules();
+    });
+
+    $scope.$on('OnProjectUnload', function(event) {
+        $scope.project =  null;
+        $scope.selectedModule = null;
+    	$scope.modules = [];
+    });
+
+    $scope.$on('OnProjectRemove', function(event, project) {
+        if( project == $scope.project ){
+    		$scope.$broadcast('OnProjectUnload');
     	}
     });
 
@@ -86,5 +98,18 @@ var ModuleListCtrl = app.controller('ModuleListCtrl', function ($scope, Module, 
 
 		newModule.name = '';
 	}; 
+
+	$scope.removeModule = function (selectedModule){
+		$scope.modules.pop(selectedModule);
+
+		selectedModule.$delete();
+	};
+
+});
+
+var PropertyListCtrl = app.controller('PropertyListCtrl', function ($scope, Module, Enviroment) {
+	var enviroments = Enviroment.query();
+
+	$scope.enviroments = enviroments;
 
 });

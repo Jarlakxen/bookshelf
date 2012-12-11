@@ -1,11 +1,60 @@
+{{=|{ }|=}}
 
 <div class="row-fluid data-panel">
-	<div class="span2"></div>
-	<div class="span8 data-main-column">
-		<div>
+	<div class="span1"></div>
+	<div class="span10 data-main-column">
+		<div ng-controller="PropertyListCtrl">
 			<h3>Module Properties:</h3>
+
+			<hr />
+
+			<div class="row-fluid">
+  				<div class="span1"></div>
+ 				<div class="span10">
+
+					<table class="table table-hover">
+		              <thead>
+		                <tr style="color: black">
+		                  <th># Property Name</th>
+		                  <th style="padding: 10px 0px 0px 0px;">
+							<ul class="nav nav-tabs" style="border-bottom: 0px; margin-bottom: 0px;">
+  								<li ng-repeat="enviroment in enviroments | orderBy:name" ng-class="{active: enviroment.name == 'Local'}">
+    								<a href="#">{{enviroment.name}}</a>
+  								</li>
+  							</ul>
+		                  </th>
+		                </tr>
+		              </thead>
+		              <tbody>
+		                <tr>
+		                  <td>cars.chas.activity.my_sql.max_connextions</td>
+		                  <td></td>
+		                </tr>
+		                <tr>
+		                  <td>cars.sm.cassandra.table.availability.default_timeout</td>
+		                  <td></td>
+		                </tr>
+		                <tr>
+		                  <td>logger.path</td>
+		                  <td></td>
+		                </tr>
+		             	<tr>
+		                  	<td>
+		                		<input name="newPropertyNameInput" class="span4" type="text" ng-model="newProperty.name" ng-maxlength="30"/>
+		                	</td>
+		                	<td>
+		                		<input name="newPropertyValueInput" class="span8" type="text" ng-model="newProject.value" ng-maxlength="50"/> 
+		                		<button class="btn btn-primary" ng-click="addProject(newProject)" ng-disabled="!newProperty.name || !newProperty.value">Add</button>
+		                	</td>
+		                </tr>
+		              </tbody>
+		            </table>
+ 				</div>
+ 				<div class="span1"></div>
+			</div>
+
 		</div>
-		<hr />
+		
 	</div>
-	<div class="span2"></div>
+	<div class="span1"></div>
 </div>

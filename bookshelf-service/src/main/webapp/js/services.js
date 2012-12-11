@@ -5,16 +5,22 @@ var BASE_URL = '/bookshelf/rest'
 
 
 // ----------------------------------
+// 			Enviroments Services
+// ----------------------------------
+
+angular.module('enviromentService', ['ngResource']).factory('Enviroment', function($resource){
+
+	return $resource(BASE_URL + '/enviroment/:id', {id:'@id'}, {});
+  
+});
+
+// ----------------------------------
 // 			Module Services
 // ----------------------------------
 
 angular.module('moduleService', ['ngResource']).factory('Module', function($resource){
 
-	return $resource(BASE_URL + '/module/:id', {id:'@id'}, {
-		addTo:{
-			method: "PUT"
-		}
-	});
+	return $resource(BASE_URL + '/module/:id', {id:'@id'}, {});
   
 });
 
