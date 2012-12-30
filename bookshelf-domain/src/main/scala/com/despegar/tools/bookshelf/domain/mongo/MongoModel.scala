@@ -84,10 +84,22 @@ abstract class MongoObject[T]( implicit m : Manifest[T] ) {
 	def drop = _dao.getCollection.drop
 }
 
-trait NamedModelObject[T] {
+trait NamedDAO[T] {
 	
 	this : MongoObject[T] =>
 	
-	def findByName(name: String) : Option[T] = Option(this.createQuery.field("name").equal(name).get)
+	def findByName(name: String) : Option[T] = Option(NamedDAO.this.createQuery.field("name").equal(name).get)
+	
+}
+
+trait ChildDAO[T] {
+	
+	this : MongoObject[T] =>
+	
+	def findByParent(parent: MongoModel[_]) : Option[T] = findByParent(parent.id.toString())
+	def findAllByParent(parent: MongoModel[_]) : Option[Seq[T]] = findAllByParent(parent.id.toString())
+	
+	def findByParent(parentId: String) : Option[T] = Option(ChildDAO.this.createQuery.field("parent.$id").equal(parentId).get)
+	def findAllByParent(parentId: String) : Option[Seq[T]] = Option(ChildDAO.this.createQuery.field("parent.$id").equal(parentId).asList())
 	
 }

@@ -31,9 +31,7 @@ class ProjectServlet extends RestService{
 	delete("/:id"){
 		val project = Project.findById( params("id") ).get
 		
-		for( property <- project.properties ) property.delete
-		
-		for( module <- project.modules ) module.delete
+		for( module <- Module.findAllByParent( params("projectId") ).get ) module.delete
 		
 		project.delete
 	}
@@ -43,18 +41,6 @@ class ProjectServlet extends RestService{
 	// ++++++++++++++++++++++++++++++++++
 	
 	get("/:projectId/modules"){
-		Project.findById( params("projectId") ).get.modules.asScala.asApi
-	}
-	
-	post("/:projectId/newmodule"){
-		val project = Project.findById( params("projectId") ).get
-		var newModule = extract[com.despegar.tools.bookshelf.api.dto.Module].asDomain.asInstanceOf[Module]
-		newModule.save
-				
-			// Add module to project
-		project.modules += newModule
-		project.save
-				
-		newModule.asApi
+		Module.findAllByParent( params("projectId") ).get.asApi
 	}
 }

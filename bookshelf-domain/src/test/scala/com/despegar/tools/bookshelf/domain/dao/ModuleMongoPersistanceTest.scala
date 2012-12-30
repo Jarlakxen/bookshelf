@@ -23,7 +23,7 @@ class ModuleMongoPersistanceTest extends Specification {
 
 		"persist" in context {
 			
-			var module = new Module("API", "");
+			var module = new Module("API", "", null);
 			
 			module save
 			
@@ -49,13 +49,9 @@ class ModuleMongoPersistanceTest extends Specification {
 			
 			project save
 			
-			var module = new Module("Module1", "");
+			var module = new Module("Module1", "", project);
 			
 			module save
-			
-			project.modules += module
-			
-			project save
 			
 			module delete
 			

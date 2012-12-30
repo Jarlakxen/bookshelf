@@ -22,7 +22,7 @@ class PropertyMongoPersistanceTest extends Specification {
 			val localEnviroment = Enviroment("Local", "");
 			val prodEnviroment = Enviroment("Prod", "");
 			
-			var property = new Property("test.key1", Map( localEnviroment -> "10", prodEnviroment -> "20" ));
+			var property = new Property("test.key1", null, Map( localEnviroment -> "10", prodEnviroment -> "20" ));
 			
 			property save
 			
@@ -50,8 +50,8 @@ class PropertyMongoPersistanceTest extends Specification {
 			val localEnviroment = Enviroment("Local", "");
 			val prodEnviroment = Enviroment("Prod", "");
 			
-			var property1 = new Property("test.key1", Map( localEnviroment -> "10", prodEnviroment -> "20" )).save
-			var property2 = new Property("test.key2", Map( localEnviroment -> "15", prodEnviroment -> "25" )).save
+			var property1 = new Property("test.key1", null, Map( localEnviroment -> "10", prodEnviroment -> "20" )).save
+			var property2 = new Property("test.key2", null, Map( localEnviroment -> "15", prodEnviroment -> "25" )).save
 			
 			Property deleteEnvironmentFromAll("Prod")
 			

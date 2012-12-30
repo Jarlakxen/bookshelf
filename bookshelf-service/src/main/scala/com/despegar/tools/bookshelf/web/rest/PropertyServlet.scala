@@ -4,7 +4,7 @@ import com.despegar.tools.bookshelf.domain.dto._
 
 class PropertyServlet extends RestService{
 
-	get("/:id/el"){
+	get("/:id"){
 		multiParams("splat")
 	}
 	
