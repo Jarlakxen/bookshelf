@@ -21,6 +21,22 @@ body {
 	.override-border-radius(@basePanelBorderRadius);
 }
 
+.table-borderless tr td {
+	border-top: 0px;
+}
+
+.add-panel {
+	.input-append;
+	text-align: center !important;
+	margin-top: 5px;
+	margin-right: 20px;
+}
+
+.add-panel button{
+	.btn;
+	.btn-primary;
+}
+
 // +++ Selector +++
 
 @selectorHeight: 350px;
@@ -54,14 +70,12 @@ body {
 }
 
 .selector-column-add {
-	.input-append;
-	text-align: center !important;
-	margin-top: 5px;
-	margin-right: 20px;
+	.add-panel;
 }
 
 .selector-column-add button{
 	.btn;
+	.btn-primary;
 }
 
 

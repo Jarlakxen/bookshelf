@@ -99,7 +99,7 @@ trait ChildDAO[T] {
 	def findByParent(parent: MongoModel[_]) : Option[T] = findByParent(parent.id.toString())
 	def findAllByParent(parent: MongoModel[_]) : Option[Seq[T]] = findAllByParent(parent.id.toString())
 	
-	def findByParent(parentId: String) : Option[T] = Option(ChildDAO.this.createQuery.field("parent.$id").equal(parentId).get)
-	def findAllByParent(parentId: String) : Option[Seq[T]] = Option(ChildDAO.this.createQuery.field("parent.$id").equal(parentId).asList())
+	def findByParent(parentId: String) : Option[T] = Option(ChildDAO.this.createQuery.disableValidation().field("parent.$id").equal(new ObjectId(parentId)).get)
+	def findAllByParent(parentId: String) : Option[Seq[T]] = Option(ChildDAO.this.createQuery.disableValidation().field("parent.$id").equal(new ObjectId(parentId)).asList())
 	
 }

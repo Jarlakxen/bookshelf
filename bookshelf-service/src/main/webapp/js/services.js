@@ -43,15 +43,5 @@ angular.module('projectService', ['ngResource']).factory('Project', function(Mod
     	return modules;
 	}
 
- 	Project.prototype.newmodule = function(newmodule) {
- 		var module =  new Module();
-    	$http.post(BASE_URL + '/project/' + this.id + '/newmodule', newmodule).then(function(response) {
-    		module.id = response.data.id;
-    		module.name = response.data.name;
-    		module.description = response.data.description;
-    	});
-    	return module;
-	}
-
 	return Project;
 });

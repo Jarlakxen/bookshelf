@@ -92,7 +92,9 @@ var ModuleListCtrl = app.controller('ModuleListCtrl', function ($scope, Module, 
     });   
 
     $scope.addModule = function (newModule){
-		var module = $scope.project.newmodule({id: '', name: newModule.name, description: ''});
+		var module = new Module({id: '', name: newModule.name, description: '', parentId:  $scope.project.id});
+		module.$save();
+
 
 		$scope.modules.push(module);
 

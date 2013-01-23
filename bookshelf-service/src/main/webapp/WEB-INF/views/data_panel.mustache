@@ -11,8 +11,8 @@
 			<div class="row-fluid">
   				<div class="span1"></div>
  				<div class="span10">
-
-					<table class="table table-hover">
+					
+					<table class="table table-hover" style="margin-bottom: 20px;">
 		              <thead>
 		                <tr style="color: black">
 		                  <th># Property Name</th>
@@ -38,17 +38,24 @@
 		                  <td>logger.path</td>
 		                  <td></td>
 		                </tr>
-		             	<tr>
-		                  	<td>
-		                		<input name="newPropertyNameInput" class="span4" type="text" ng-model="newProperty.name" ng-maxlength="30"/>
-		                	</td>
-		                	<td>
-		                		<input name="newPropertyValueInput" class="span8" type="text" ng-model="newProject.value" ng-maxlength="50"/> 
-		                		<button class="btn btn-primary" ng-click="addProject(newProject)" ng-disabled="!newProperty.name || !newProperty.value">Add</button>
-		                	</td>
-		                </tr>
 		              </tbody>
 		            </table>
+			        <form name="newPropertyForm">
+						<table class="table table-striped table-borderless" style="background-color: whiteSmoke;">
+		              	<tbody>
+		                	<tr>
+		                		<td><input name="newPropertyNameInput" class="input-xlarge" type="text" ng-model="newProperty.name" ng-maxlength="50"/></td>
+		                  		<td>
+		                  			<div class="add-panel" style="margin-top: 0px;">
+						  				<input name="newPropertyValueInput" class="input-xlarge" type="text" ng-model="newProperty.value" ng-maxlength="50"/>
+						  				<button ng-click="addProperty(newModule)" ng-disabled="!newProperty.name || !newProperty.value">Add</button>
+									</div>
+		                  		</td>
+		                	</tr>
+		              	</tbody>
+		            	</table>
+						<div class="ng-invalid-maxlength-msg" ng-show="newPropertyForm.newPropertyValueInput.$error.maxlength">Property name is too long!</div> 
+			    	</form>
  				</div>
  				<div class="span1"></div>
 			</div>

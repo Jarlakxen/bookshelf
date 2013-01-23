@@ -23,8 +23,8 @@
 		
 		<form name="newProjectForm">
 			<div class="selector-column-add">
-  				<input name="newProjectNameInput" class="span6" type="text" ng-model="newProject.name" ng-maxlength="20"/>
-  				<button class="btn btn-primary" ng-click="addProject(newProject)" ng-disabled="!newProject.name">Add</button>
+  				<input name="newProjectNameInput" class="input-xlarge" type="text" ng-model="newProject.name" ng-maxlength="20"/>
+  				<button ng-click="addProject(newProject)" ng-disabled="!newProject.name">Add</button>
 			</div>
 			<div class="ng-invalid-maxlength-msg" ng-show="newProjectForm.newProjectNameInput.$error.maxlength">Project name is too long!</div> 
 		</form>
@@ -51,8 +51,8 @@
 		
 		<form name="newModuleForm">
 			<div class="selector-column-add">
-  				<input name="newModuleNameInput" class="span6" type="text" ng-model="newModule.name" ng-maxlength="20"/>
-  				<button class="btn btn-primary" ng-click="addModule(newModule)" ng-disabled="!newModule.name || !project">Add</button>
+  				<input name="newModuleNameInput" class="input-xlarge" type="text" ng-model="newModule.name" ng-maxlength="20"/>
+  				<button ng-click="addModule(newModule)" ng-disabled="!newModule.name || !project">Add</button>
 			</div>
 			<div class="ng-invalid-maxlength-msg" ng-show="newModuleForm.newModuleNameInput.$error.maxlength">Module name is too long!</div> 
 		</form>

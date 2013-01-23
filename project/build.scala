@@ -48,7 +48,7 @@ object JettySettings {
 object ScalatraSettings {
 	
 	def apply() = {
-		lazy val scalatraVersion = "2.2.0-SNAPSHOT"//"2.1.1"
+		lazy val scalatraVersion = "2.2.0-RC3"//"2.1.1"
 		lazy val scalatra = "org.scalatra" % "scalatra" % scalatraVersion withSources() withJavadoc()
 		lazy val scalate = "org.scalatra" % "scalatra-scalate" % scalatraVersion withSources() withJavadoc()
 		lazy val scalatra_json = "org.scalatra" % "scalatra-json" % scalatraVersion withSources()
@@ -56,11 +56,9 @@ object ScalatraSettings {
 		//lazy val json4sNative = "org.json4s" %% "json4s-native" % "3.0.0" withSources()
 		lazy val json4sJackson = "org.json4s" %% "json4s-jackson" % "3.0.0" withSources()
 
-
-		// Pick your favorite slf4j binding
-		lazy val slf4jBinding = "ch.qos.logback" % "logback-classic" % "0.9.29" % "runtime"
+		lazy val logback = "ch.qos.logback" % "logback-classic" % "1.0.9" % "runtime"
 		
-		Seq(libraryDependencies ++= Seq(scalatra, scalate, scalatra_json, json4sJackson, slf4jBinding))
+		Seq(libraryDependencies ++= Seq(scalatra, scalate, scalatra_json, json4sJackson, logback))
 	}
 }
 
