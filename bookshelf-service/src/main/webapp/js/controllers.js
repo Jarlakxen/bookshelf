@@ -1,6 +1,6 @@
 'use strict';
 
-var app = angular.module('BookshelfApp', [ 'ngResource', 'enviromentService', 'projectService', 'moduleService', 'ui.bootstrap' ]);
+var app = angular.module('BookshelfApp', [ 'ngResource', 'enviromentService', 'projectService', 'moduleService', 'propertyService', 'ui.bootstrap' ]);
 
 // ----------------------------------
 //			Shared Service
@@ -85,9 +85,11 @@ var ModuleListCtrl = app.controller('ModuleListCtrl', function ($scope, Module, 
 
     $scope.$on('OnModuleSelect', function(event, module) {
 		if( $scope.selectedModule != null && $scope.selectedModule.id == module.id ){
-			$scope.selectedModule =  null
+			$scope.selectedModule =  null;
+			$scope.notifyAll('OnModuleUnload');
 		} else {
-        	$scope.selectedModule =  module
+        	$scope.selectedModule =  module;
+        	$scope.notifyAll('OnModuleLoad', module);
     	}
     });   
 
@@ -109,9 +111,38 @@ var ModuleListCtrl = app.controller('ModuleListCtrl', function ($scope, Module, 
 
 });
 
-var PropertyListCtrl = app.controller('PropertyListCtrl', function ($scope, Module, Enviroment) {
+var PropertyListCtrl = app.controller('PropertyListCtrl', function ($scope, Property, Enviroment) {
 	var enviroments = Enviroment.query();
 
 	$scope.enviroments = enviroments;
+
+	$scope.$on('OnModuleLoad', function(event, module) {
+        $scope.module =  module;
+        $scope.properties = module.properties();
+    });
+
+    $scope.$on('OnModuleUnload', function(event) {
+        $scope.module =  null;
+    	$scope.properties = [];
+    });
+
+    $scope.addProperty = function (newProperty, enviroment){
+		var newPropertyValues = {};
+		newPropertyValues[enviroment.name] = newProperty.value;
+
+		var property = new Property({id: '', name: newProperty.name, parentId: $scope.module.id, values: newPropertyValues});
+		property.$save();
+
+		$scope.properties.push(property);
+
+		newProperty.name = '';
+		newProperty.value = '';
+	}; 
+
+	$scope.removeProperty = function (selectedProperty){
+		$scope.properties.pop(selectedProperty);
+
+		selectedProperty.$delete();
+	};
 
 });

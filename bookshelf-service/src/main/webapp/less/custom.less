@@ -25,6 +25,10 @@ body {
 	border-top: 0px;
 }
 
+.row-borderless td {
+	border-top: 0px;
+}
+
 .add-panel {
 	.input-append;
 	text-align: center !important;
@@ -86,14 +90,14 @@ body {
 .data-panel {
 	.base-panel;
 	background-color: whiteSmoke;
-	height: @selectorHeight;
+	//min-height: @selectorHeight;
 }
 
 .data-main-column {
 	background-color: white;
 	.override-border-radius(10px);
 	color: @titleFontColor;
-	height: @selectorHeight - 5;
+	min-height: @selectorHeight - 5;
 }
 
 .data-main-column hr{
@@ -128,6 +132,12 @@ body {
 
 .selected {
 	font-weight: bold;
+}
+
+.nav-tabs {
+	border-bottom: 1px solid #DDD;
+	font-weight: bold;
+	margin-bottom: 0px;
 }
 
 

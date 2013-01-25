@@ -8,7 +8,7 @@ import scala.collection.mutable.Map
 import scala.collection.JavaConversions._
 
 @Entity
-case class Property( name : String, @(Reference @field) var parent: Module, values : java.util.Map[String, String] )  extends MongoModel[Property]{
+case class Property(var name : String, @(Reference @field) var parent: Module, var values : java.util.Map[String, String] )  extends MongoModel[Property]{
 
 	def this( name : String, parent: Module, values : Map[Enviroment, String] ) = this( name, parent, (for ((key, value) <- values) yield (key.name, value)) )
 	

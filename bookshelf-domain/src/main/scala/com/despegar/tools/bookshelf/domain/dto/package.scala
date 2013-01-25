@@ -33,7 +33,7 @@ package object dto {
 	implicit def DomainToApiEnviroment( enviromentModel : Enviroment ) : ApiModel = com.despegar.tools.bookshelf.api.dto.Enviroment( enviromentModel.id, enviromentModel.name, enviromentModel.description )
 	implicit def DomainToApiProject( projectModel : Project ) : ApiModel = com.despegar.tools.bookshelf.api.dto.Project( projectModel.id, projectModel.name, projectModel.description )
 	implicit def DomainToApiModule( moduleModel : Module ) : ApiModel = com.despegar.tools.bookshelf.api.dto.Module( moduleModel.id, moduleModel.name, moduleModel.parent.id, moduleModel.description )
-	implicit def DomainToApiProperty( propertyModel : Property ) : ApiModel = com.despegar.tools.bookshelf.api.dto.Property( propertyModel.id, propertyModel.name, propertyModel.parent.id, propertyModel.values )
+	implicit def DomainToApiProperty( propertyModel : Property ) : ApiModel = com.despegar.tools.bookshelf.api.dto.Property( propertyModel.id, propertyModel.name, propertyModel.parent.id, propertyModel.values.toMap )
 
 	
 	// Api To Domain Implicits
@@ -68,8 +68,8 @@ package object dto {
 	implicit def ApiToDomainProject( projectModel : com.despegar.tools.bookshelf.api.dto.Project ) : MongoModel[_] = projectModel match {
 		case com.despegar.tools.bookshelf.api.dto.Project( id : String, name, description ) if id.nonEmpty => {
 			val project = Project.findById(id).get 
-			project.name = name;
-			project.description = description;
+			project.name = name
+			project.description = description
 			project
 		}
 		case com.despegar.tools.bookshelf.api.dto.Project( _, name, description ) => new Project( name, description )
@@ -78,7 +78,7 @@ package object dto {
 	implicit def ApiToDomainModule( moduleModel : com.despegar.tools.bookshelf.api.dto.Module ) : MongoModel[_] = moduleModel match {
 		case com.despegar.tools.bookshelf.api.dto.Module( id : String, name, description, _)  if id.nonEmpty => {
 			val module = Module.findById(id).get 
-			module.name = name;
+			module.name = name
 			module.description = description;			
 			module
 		}
@@ -87,11 +87,12 @@ package object dto {
 
 	implicit def ApiToDomainProperty( propertyModel : com.despegar.tools.bookshelf.api.dto.Property ) : MongoModel[_] = propertyModel match {
 		case com.despegar.tools.bookshelf.api.dto.Property( id : String, name, _, values ) if id.nonEmpty => {
-			val property = new Property( propertyModel.name, null, values)
-			property.id = id
+			val property = Property.findById(id).get
+			property.name = name
+			property.values = values
 			property
 		}
-		case com.despegar.tools.bookshelf.api.dto.Property( _, name, parentId, _ ) => new Property( name, Module.findById(parentId).get )
+		case com.despegar.tools.bookshelf.api.dto.Property( _, name, parentId, values ) => new Property( name, Module.findById(parentId).get, values )
 	}
 
 }

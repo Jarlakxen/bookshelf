@@ -3,21 +3,22 @@ package com.despegar.tools.bookshelf.web.rest
 import com.despegar.tools.bookshelf.domain.dto._
 
 class PropertyServlet extends RestService{
-
+	
 	get("/:id"){
-		multiParams("splat")
+		Property.findById( params("id") ).get.asApi;
 	}
 	
 	post("/"){
-		//multiParams("splat")	
-		request.body
-		//parsedBody
+		var property = extract[com.despegar.tools.bookshelf.api.dto.Property].asDomain
+		
+		property save
+		
+		property asApi
 	}
 	
-	post("/:id/algo"){
-		//multiParams("splat")	
-		request.body
-		//parsedBody
+	delete("/:id"){
+		val property = Property.findById( params("id") ).get
+			
+		property.delete
 	}
-	
 }

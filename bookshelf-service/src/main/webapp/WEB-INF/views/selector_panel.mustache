@@ -51,7 +51,7 @@
 		
 		<form name="newModuleForm">
 			<div class="selector-column-add">
-  				<input name="newModuleNameInput" class="input-xlarge" type="text" ng-model="newModule.name" ng-maxlength="20"/>
+  				<input name="newModuleNameInput" class="input-xlarge" type="text" ng-disabled="!project" ng-model="newModule.name" ng-maxlength="20"/>
   				<button ng-click="addModule(newModule)" ng-disabled="!newModule.name || !project">Add</button>
 			</div>
 			<div class="ng-invalid-maxlength-msg" ng-show="newModuleForm.newModuleNameInput.$error.maxlength">Module name is too long!</div> 

@@ -6068,6 +6068,10 @@ body {
   border-top: 0;
 }
 
+.row-borderless td {
+  border-top: 0;
+}
+
 .add-panel {
   margin-top: 5px;
   margin-right: 20px;
@@ -6609,7 +6613,6 @@ body {
 }
 
 .data-panel {
-  height: 350px;
   min-height: 20px;
   padding: 19px;
   margin-bottom: 20px;
@@ -6633,7 +6636,7 @@ body {
 }
 
 .data-main-column {
-  height: 345px;
+  min-height: 345px;
   color: #013d93;
   background-color: white;
   -webkit-border-radius: 10px !important;
@@ -6665,6 +6668,12 @@ body {
 
 .selected {
   font-weight: bold;
+}
+
+.nav-tabs {
+  margin-bottom: 0;
+  font-weight: bold;
+  border-bottom: 1px solid #DDD;
 }
 
 input.ng-invalid-maxlength {

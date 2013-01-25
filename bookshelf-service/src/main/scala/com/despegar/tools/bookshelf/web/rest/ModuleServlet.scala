@@ -15,7 +15,10 @@ class ModuleServlet extends RestService{
 	
 	post("/"){
 		var module = extract[com.despegar.tools.bookshelf.api.dto.Module].asDomain
+		
 		module save	
+		
+		module asApi	
 	}
 	
 	delete("/:id"){

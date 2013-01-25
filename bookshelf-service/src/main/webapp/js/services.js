@@ -14,13 +14,36 @@ angular.module('enviromentService', ['ngResource']).factory('Enviroment', functi
   
 });
 
+
+// ----------------------------------
+//          Property Services
+// ----------------------------------
+
+angular.module('propertyService', ['ngResource']).factory('Property', function($resource){
+
+    return $resource(BASE_URL + '/property/:id', {id:'@id'}, {});
+  
+});
+
 // ----------------------------------
 // 			Module Services
 // ----------------------------------
 
-angular.module('moduleService', ['ngResource']).factory('Module', function($resource){
+angular.module('moduleService', ['ngResource']).factory('Module', function(Property, $resource, $http){
 
-	return $resource(BASE_URL + '/module/:id', {id:'@id'}, {});
+    var Module = $resource(BASE_URL + '/module/:id', {id:'@id'}, {});
+
+    Module.prototype.properties = function() {
+        var properties = [];
+        $http.get(BASE_URL + '/module/' + this.id + '/properties').then(function(response) {
+            angular.forEach(response.data, function(value){
+                properties.push( new Property({id: value.id, name: value.name, values: value.values}) );
+            });
+        });
+        return properties;
+    }
+
+    return Module;
   
 });
 
