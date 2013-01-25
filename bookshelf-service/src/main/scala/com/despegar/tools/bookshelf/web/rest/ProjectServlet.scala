@@ -21,6 +21,7 @@ class ProjectServlet extends RestService{
 	}
 	
 	post("/"){
+		
 		var newProject = extract[com.despegar.tools.bookshelf.api.dto.Project].asDomain
 		
 		newProject save

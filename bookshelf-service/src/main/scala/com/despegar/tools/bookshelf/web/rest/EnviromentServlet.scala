@@ -15,7 +15,7 @@ class EnviromentServlet extends RestService{
 	}
 	
 	post("/"){
-		val newEnviroment = extract[com.despegar.tools.bookshelf.api.dto.Enviroment].asDomain
+		var newEnviroment = extract[com.despegar.tools.bookshelf.api.dto.Enviroment].asDomain
 		
 		newEnviroment save
 		

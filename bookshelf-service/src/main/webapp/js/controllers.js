@@ -1,6 +1,6 @@
 'use strict';
 
-var app = angular.module('BookshelfApp', [ 'ngResource', 'enviromentService', 'projectService', 'moduleService' ]);
+var app = angular.module('BookshelfApp', [ 'ngResource', 'enviromentService', 'projectService', 'moduleService', 'ui.bootstrap' ]);
 
 // ----------------------------------
 //			Shared Service

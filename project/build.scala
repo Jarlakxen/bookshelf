@@ -29,7 +29,7 @@ object Bookshelf extends Build {
 
 	lazy val domain = SubProject("domain", "bookshelf-domain", MongoSettings() ++ UtilsSettings() ++ TestSettings()) dependsOn ( api )
 
-	lazy val service = SubProject("service", "bookshelf-service", WebPlugin.webSettings ++ ScalatraSettings() ++ JettySettings()) dependsOn ( domain )
+	lazy val service = SubProject("service", "bookshelf-service", WebPlugin.webSettings ++ ScalatraSettings() ++ JettySettings() ++ TestSettings()) dependsOn ( domain )
 	
 	override def projects = Seq(root, api, domain, service)
 
@@ -53,8 +53,8 @@ object ScalatraSettings {
 		lazy val scalate = "org.scalatra" % "scalatra-scalate" % scalatraVersion withSources() withJavadoc()
 		lazy val scalatra_json = "org.scalatra" % "scalatra-json" % scalatraVersion withSources()
 
-		//lazy val json4sNative = "org.json4s" %% "json4s-native" % "3.0.0" withSources()
-		lazy val json4sJackson = "org.json4s" %% "json4s-jackson" % "3.0.0" withSources()
+		//lazy val json4sNative = "org.json4s" %% "json4s-native" % "3.1.0" withSources()
+		lazy val json4sJackson = "org.json4s" %% "json4s-jackson" % "3.1.0" withSources()
 
 		lazy val logback = "ch.qos.logback" % "logback-classic" % "1.0.9" % "runtime"
 		

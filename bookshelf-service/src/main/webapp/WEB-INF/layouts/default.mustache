@@ -12,8 +12,21 @@
 	
 	<script src="../js/angular/angular.min.js"></script>
 	<script src="../js/angular/angular-resource.min.js"></script>
+	<script src="../js/angular-ui/ui-bootstrap-tpls-0.1.0-SNAPSHOT.min.js"></script>
+	
 	<script src="../js/controllers.js"></script>
 	<script src="../js/services.js"></script>
+
+	<!--[if lte IE 8]>
+    <script>
+    	// The ieshiv takes care of our ui.directives, bootstrap module directives and 
+    	// AngularJS's ng-view, ng-include, ng-pluralize and ng-switch directives.
+    	// However, IF you have custom directives (yours or someone else's) then
+   		// enumerate the list of tags in window.myCustomTags
+ 
+    	window.myCustomTags = [ 'yourDirective', 'somebodyElsesDirective' ]; // optional
+    </script>
+	<![endif]-->
 	
 </head>
 <body>
@@ -87,7 +100,6 @@
 		</div>
 	</div>
 	
-	<!-- JavaScript -->
 </body>
 {{/html}}
 </html>

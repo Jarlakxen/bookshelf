@@ -12,6 +12,10 @@
   				<div class="span1"></div>
  				<div class="span10">
 					
+					<tabs>
+						<pane heading="Static title">Static content</pane>
+						<pane ng-repeat="enviroment in enviroments" heading="{{enviroment.name}}">{{enviroment.description}}
+
 					<table class="table table-hover" style="margin-bottom: 20px;">
 		              <thead>
 		                <tr style="color: black">
@@ -56,6 +60,8 @@
 		            	</table>
 						<div class="ng-invalid-maxlength-msg" ng-show="newPropertyForm.newPropertyValueInput.$error.maxlength">Property name is too long!</div> 
 			    	</form>
+			    	</pane>
+					</tabs>
  				</div>
  				<div class="span1"></div>
 			</div>
