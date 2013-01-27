@@ -4,6 +4,10 @@ import com.despegar.tools.bookshelf.domain.dto._
 
 class PropertyServlet extends RestService{
 	
+	// ++++++++++++++++++++++++++++++++++
+	// 		Property RestFul Services
+	// ++++++++++++++++++++++++++++++++++
+	
 	get("/:id"){
 		Property.findById( params("id") ).get.asApi;
 	}

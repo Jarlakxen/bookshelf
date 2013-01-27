@@ -3,14 +3,23 @@
 
 var BASE_URL = '/bookshelf/rest'
 
+function $service($resource, $http, $name){
+    var service = $resource(BASE_URL + '/' + $name + '/:id', {id:'@id'}, {});
+
+     service.prototype.$update = function() {
+        $http.post(BASE_URL + '/' + $name + '/', this);
+    }
+
+    return service;
+}
 
 // ----------------------------------
 // 			Enviroments Services
 // ----------------------------------
 
-angular.module('enviromentService', ['ngResource']).factory('Enviroment', function($resource){
+angular.module('enviromentService', ['ngResource']).factory('Enviroment', function($resource, $http){
 
-	return $resource(BASE_URL + '/enviroment/:id', {id:'@id'}, {});
+	return $service($resource, $http, 'enviroment');
   
 });
 
@@ -19,9 +28,9 @@ angular.module('enviromentService', ['ngResource']).factory('Enviroment', functi
 //          Property Services
 // ----------------------------------
 
-angular.module('propertyService', ['ngResource']).factory('Property', function($resource){
+angular.module('propertyService', ['ngResource']).factory('Property', function($resource, $http){
 
-    return $resource(BASE_URL + '/property/:id', {id:'@id'}, {});
+    return $service($resource, $http, 'property');
   
 });
 
@@ -31,13 +40,13 @@ angular.module('propertyService', ['ngResource']).factory('Property', function($
 
 angular.module('moduleService', ['ngResource']).factory('Module', function(Property, $resource, $http){
 
-    var Module = $resource(BASE_URL + '/module/:id', {id:'@id'}, {});
+    var Module = $service($resource, $http, 'module')
 
     Module.prototype.properties = function() {
         var properties = [];
         $http.get(BASE_URL + '/module/' + this.id + '/properties').then(function(response) {
             angular.forEach(response.data, function(value){
-                properties.push( new Property({id: value.id, name: value.name, values: value.values}) );
+                properties.push( new Property({id: value.id, name: value.name, parentId: value.parentId, values: value.values}) );
             });
         });
         return properties;
@@ -54,7 +63,7 @@ angular.module('moduleService', ['ngResource']).factory('Module', function(Prope
 
 angular.module('projectService', ['ngResource']).factory('Project', function(Module, $resource, $http){
 
-	var Project = $resource(BASE_URL + '/project/:id', {id:'@id'},{});
+	var Project = $service($resource, $http, 'project')
 
  	Project.prototype.modules = function() {
  		var modules = [];

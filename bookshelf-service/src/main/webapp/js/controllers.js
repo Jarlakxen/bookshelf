@@ -1,6 +1,6 @@
 'use strict';
 
-var app = angular.module('BookshelfApp', [ 'ngResource', 'enviromentService', 'projectService', 'moduleService', 'propertyService', 'ui.bootstrap' ]);
+var app = angular.module('BookshelfApp', [ 'ngResource', 'enviromentService', 'projectService', 'moduleService', 'propertyService', 'ui', 'ui.bootstrap' ]);
 
 // ----------------------------------
 //			Shared Service
@@ -11,6 +11,54 @@ app.run(['$rootScope', function($rootScope) {
 		$rootScope.$broadcast(eventName, item);
 	};
 }]);
+
+
+// ----------------------------------
+//			Custom Directives
+// ----------------------------------
+
+// X-Editable Configuration
+$.fn.editable.defaults.mode = 'inline';
+
+app.directive('editable', function($timeout) {
+    return {
+        restrict: 'A',
+        require: "ngModel",
+        link: function(scope, element, attrs, ngModel) {
+        	$( element ).editable();
+
+        	$( element ).on('save', function(e, params) {
+            	ngModel.$setViewValue(params.newValue);
+            	scope.$apply();
+
+            	if(attrs.ngSaveAction){
+					scope.$eval(attrs.ngSaveAction);
+				}
+            });
+/*
+            var loadXeditable = function() {
+            	$( element ).editable({
+                    display: function(value, srcData) {
+                        ngModel.$setViewValue(value);
+                        scope.$apply();
+                    }
+                }).on('save', function(e, params) {
+                	ngModel.$setViewValue(params.newValue);
+                	scope.$apply();
+
+                	//$( element ).editable('setValue', params.newValue);
+
+                	if(attrs.ngSaveAction){
+						scope.$eval(attrs.ngSaveAction);
+					}
+                });
+            }
+            $timeout(function() {
+                loadXeditable();
+            }, 10);*/
+        }
+    };
+});
 
 
 // ----------------------------------
@@ -137,7 +185,12 @@ var PropertyListCtrl = app.controller('PropertyListCtrl', function ($scope, Prop
 
 		newProperty.name = '';
 		newProperty.value = '';
-	}; 
+	};
+
+	$scope.saveProperty = function (selectedProperty){
+		selectedProperty.$save();
+	};
+
 
 	$scope.removeProperty = function (selectedProperty){
 		$scope.properties.pop(selectedProperty);
