@@ -25,37 +25,24 @@ app.directive('editable', function($timeout) {
         restrict: 'A',
         require: "ngModel",
         link: function(scope, element, attrs, ngModel) {
-        	$( element ).editable();
 
-        	$( element ).on('save', function(e, params) {
-            	ngModel.$setViewValue(params.newValue);
-            	scope.$apply();
+ 			var loadXeditable = function() {
+	        	$( element ).editable({
+	        			unsavedclass: null
+	                });
 
-            	if(attrs.ngSaveAction){
-					scope.$eval(attrs.ngSaveAction);
-				}
-            });
-/*
-            var loadXeditable = function() {
-            	$( element ).editable({
-                    display: function(value, srcData) {
-                        ngModel.$setViewValue(value);
-                        scope.$apply();
-                    }
-                }).on('save', function(e, params) {
-                	ngModel.$setViewValue(params.newValue);
-                	scope.$apply();
+	        	$( element ).on('save', function(e, params) {
+	            	ngModel.$setViewValue(params.newValue);
+	            	scope.$apply();
 
-                	//$( element ).editable('setValue', params.newValue);
-
-                	if(attrs.ngSaveAction){
+	            	if(attrs.ngSaveAction){
 						scope.$eval(attrs.ngSaveAction);
 					}
-                });
+	            });
             }
             $timeout(function() {
                 loadXeditable();
-            }, 10);*/
+            }, 10);
         }
     };
 });
