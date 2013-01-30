@@ -86,7 +86,7 @@ var ProjectListCtrl = app.controller('ProjectListCtrl', function ($scope, Projec
 
 		project.$delete();
 
-		$scope.notifyAll('OnProjectRemove', selectedProject)
+		$scope.notifyAll('OnProjectRemove', selectedProject);
 	};
 
 });
@@ -110,6 +110,7 @@ var ModuleListCtrl = app.controller('ModuleListCtrl', function ($scope, Module, 
         $scope.project =  null;
         $scope.selectedModule = null;
     	$scope.modules = [];
+    	$scope.notifyAll('OnModuleUnload');
     });
 
     $scope.$on('OnProjectRemove', function(event, project) {
@@ -142,6 +143,8 @@ var ModuleListCtrl = app.controller('ModuleListCtrl', function ($scope, Module, 
 		$scope.modules.pop(selectedModule);
 
 		selectedModule.$delete();
+
+		$scope.notifyAll('OnModuleRemove', selectedProject);
 	};
 
 });
@@ -152,13 +155,19 @@ var PropertyListCtrl = app.controller('PropertyListCtrl', function ($scope, Prop
 	$scope.enviroments = enviroments;
 
 	$scope.$on('OnModuleLoad', function(event, module) {
-        $scope.module =  module;
+        $scope.module = module;
         $scope.properties = module.properties();
     });
 
     $scope.$on('OnModuleUnload', function(event) {
         $scope.module =  null;
     	$scope.properties = [];
+    });
+
+    $scope.$on('OnProjectRemove', function(event, module) {
+        if( module == $scope.module ){
+    		$scope.$broadcast('OnModuleUnload');
+    	}
     });
 
     $scope.addProperty = function (newProperty, enviroment){
