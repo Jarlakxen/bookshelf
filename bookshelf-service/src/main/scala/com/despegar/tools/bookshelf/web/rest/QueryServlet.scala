@@ -13,7 +13,7 @@ class QueryServlet extends RestService {
 		
 		Project.findByName(params("projectName")) match {
 			case Some(project) => project.modules.find( _.name equals params("moduleName") ) match {
-				case Some(module) => module.properties.map( _.value(enviroment) ) 
+				case Some(module) => module.properties.map { p => ( p.name, p.value(enviroment)) } toMap 
 				case None => 
 			}
 			case None => 
