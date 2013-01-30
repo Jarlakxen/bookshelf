@@ -14,6 +14,8 @@ case class Project(var name: String, var description: String) extends MongoModel
 
 	private def this() = this("", "")  // needed by morphia
 	
+	def modules = Module.findAllByParent(this).get
+	
 }
 
 object Project extends MongoObject[Project] with NamedDAO[Project] {

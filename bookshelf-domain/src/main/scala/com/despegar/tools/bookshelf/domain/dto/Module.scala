@@ -13,6 +13,8 @@ import java.util.ArrayList
 case class Module(var name: String, var description: String, @(Reference @field) var parent: Project) extends MongoModel[Module]{
 
 	private def this() = this("", "", null)  // needed by morphia
+	
+	def properties = Property.findAllByParent(this).get
 
 }
 
