@@ -7,18 +7,33 @@
 @titleFontColor: #013D93;
 
 @basePanelBorderRadius: 20px;
+@basePanelMarginTop: 15px;
 
 // --------- General Tags ---------
 
 body {
-	padding-top: 20px;
+	padding-top: 40px;
 }
 
 // --------- General Components ---------
 
-.base-panel {
+.base-panel(@color: whiteSmoke) {
 	.well;
+
+	background-color: @color;
+
+	margin-top: @basePanelMarginTop;
+
 	.override-border-radius(@basePanelBorderRadius);
+}
+
+.whiteSmoke-base-panel {
+	.base-panel();
+}
+
+
+.white-base-panel {
+	.base-panel(white);
 }
 
 .table-borderless tr td {
@@ -83,40 +98,11 @@ body {
 }
 
 
-// +++ Data +++
-
-@dataHeight: 500px;
-
-.data-panel {
-	.base-panel;
-	background-color: whiteSmoke;
-	//min-height: @selectorHeight;
-}
-
-.data-main-column {
-	background-color: white;
-	.override-border-radius(10px);
-	color: @titleFontColor;
-	min-height: @selectorHeight - 5;
-}
-
-.data-main-column hr{
-	margin: 0px 20px 20px 20px;
-}
-
-.data-main-column div{
-	text-align: left;
-	width: 100%;
-}
-
-.data-main-column div h3{
-	padding-left: 20px;
-}
-
+// --------- General Styles ---------
 
 .page-title-container {
 	height: 47px;
-	padding-left: 20px;
+	padding-left: 10px;
 	text-align: left;
 	display: table-cell;
 	vertical-align: middle;
@@ -128,7 +114,6 @@ body {
 	overflow: auto;
 }
 
-// --------- General Styles ---------
 
 .selected {
 	font-weight: bold;

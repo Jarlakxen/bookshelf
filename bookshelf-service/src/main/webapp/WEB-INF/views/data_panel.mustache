@@ -1,17 +1,17 @@
 {{=|{ }|=}}
 
-<div class="row-fluid data-panel">
-	<div class="span12 data-main-column">
+<div class="row-fluid">
+	<div class="span12 white-base-panel">
 		<div ng-controller="PropertyListCtrl">
 			<h3>Properties:</h3>
 
 			<hr />
 
 			<div class="row-fluid">
- 				<div class="span12" style="padding-left: 20px;">
+ 				<div class="span12" style="padding-left: 10px;">
  					<form name="newPropertyForm">
  						<tabs>
-							<pane ng-repeat="enviroment in enviroments" heading="{{enviroment.name}}">
+							<pane ng-repeat="enviroment in enviroments" heading="{{enviroment.name}}" style="padding-top: 10px;">
 								<span style="color: black; margin-left: 8px; font-weight: bold;">{{enviroment.description}}</span>
 								<table class="table table-hover" style="margin-top: 10px;">
 					              <tbody>
