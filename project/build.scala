@@ -10,7 +10,7 @@ object Bookshelf extends Build {
 	EclipseKeys.executionEnvironment := Some(EclipseExecutionEnvironment.JavaSE16)
 
 	lazy val standardSettings = Project.defaultSettings ++ Seq(
-				organization := "com.despegar.tools",
+				organization := "com.bookshelf.server",
 				version := "0.1.0",
 				scalaVersion := "2.9.2",
 				scalacOptions ++= Seq("-encoding", "UTF-8", "-deprecation", "-unchecked"),
