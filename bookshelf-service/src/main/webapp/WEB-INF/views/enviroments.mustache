@@ -5,9 +5,57 @@
 	
 	<div class="whiteSmoke-base-panel">
 
-			{{> selector_panel}}
-			{{> data_panel}}
+		{{=|{ }|=}}
 
+		<div ng-controller="EnviromentListCtrl" class="row-fluid" style="background-color: whiteSmoke;">
+			<div class="span8 selector-column">
+			
+				<div>
+					<h3>Enviroments</h3>
+				</div>
+				
+				<div class="selector-column-scroll">
+					<table>
+						<tbody>
+							<tr ng-repeat="enviroment in enviroments | orderBy:'name'" ng-click="showHide=!showHide">
+								<td>
+									<a ng-click="showHide=!showHide">{{enviroment.name}}</a>
+									<i class="icon-remove-sign" style="float: right" ng-click="removeEnviroment(enviroment)" ></i>
+									<div class="enviroment-description" hide="showHide">{{enviroment.description}}</div>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+
+			</div>
+			<div class="span4 selector-column" style="padding-left: 10px; padding-right: 10px;">
+				
+				<form name="newEnviromentForm" class="form-horizontal">
+					<fieldset>
+						<legend style="padding-top: 10px;">New Enviroment:</legend>
+						<div class="control-group">
+							<label class="control-label" style="width: 90px;">Name</label>
+							<div class="controls" style="margin-left: 0px;">
+								<input name="newEnviromentNameInput" type="text" class="input-large" placeholder="Name" ng-model="newEnviroment.name" ng-maxlength="20" />
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label" style="width: 90px;">Description</label>
+							<div class="controls" style="margin-left: 0px;">
+								<textarea name="newEnviromentDescriptionInput" row="3" ng-model="newEnviroment.description" ng-maxlength="100"> </textarea>
+							</div>
+						</div>
+						<div class="control-group">
+							<div class="controls" style="margin-left: 0px;">
+								 <button class="btn btn-primary" ng-click="addEnviroment(newEnviroment)" ng-disabled="!newEnviroment.name || !newEnviroment.description">Add</button>
+							</div>
+						</div>	
+					</fieldset>				
+				</form>
+
+			</div>
+		</div>
 	</div>
 
 </body>

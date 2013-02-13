@@ -5,94 +5,151 @@ import scala.collection.JavaConversions._
 import com.despegar.tools.bookshelf.api.dto.ApiModel
 import org.bson.types.ObjectId
 
+import com.despegar.tools.bookshelf.domain.dto.{ Enviroment => DomainEnviroment }
+import com.despegar.tools.bookshelf.api.dto.{ Enviroment => ApiEnviroment }
+
+import com.despegar.tools.bookshelf.domain.dto.{ Project => DomainProject }
+import com.despegar.tools.bookshelf.api.dto.{ Project => ApiProject }
+
+import com.despegar.tools.bookshelf.domain.dto.{ Module => DomainModule }
+import com.despegar.tools.bookshelf.api.dto.{ Module => ApiModule }
+
+import com.despegar.tools.bookshelf.domain.dto.{ Property => DomainProperty }
+import com.despegar.tools.bookshelf.api.dto.{ Property => ApiProperty }
+
+import com.despegar.tools.bookshelf.domain.dto.{ PropertiesGroup => DomainPropertiesGroup }
+import com.despegar.tools.bookshelf.api.dto.{ PropertiesGroup => ApiPropertiesGroup }
+
 package object dto {
-	
-	implicit def ObjectIdToString(id : ObjectId) : String = id.toString()
-	implicit def StringToObjectId(id : String) : ObjectId = new ObjectId(id)
-	
-	// Domain To Api Implicits
-	class RichDomain(model : MongoModel[_]) {
-		def asApi = DomainToApi(model)
-	}
-	
-	class RichDomainSeq(model : Seq[MongoModel[_]]) {
-		def asApi = model map( v => DomainToApi(v) )
-	}
-	
-	implicit def DomainSeqToApiSeq(model : Seq[MongoModel[_]]) = new RichDomainSeq(model)
-	implicit def DomainToRichDomain(model : MongoModel[_]) = new RichDomain(model)
 
-	implicit def DomainToApi( model : MongoModel[_] ) : ApiModel = model match {
-		case enviroment : Enviroment => DomainToApiEnviroment( enviroment )
-		case projectModel : Project => DomainToApiProject( projectModel )
-		case moduleModel : Module => DomainToApiModule( moduleModel )
-		case propertyModel : Property => DomainToApiProperty( propertyModel )
-		case _ => null
-	}
+	implicit def ObjectIdToString( id : ObjectId ) : String = id.toString()
+	implicit def StringToObjectId( id : String ) : ObjectId = new ObjectId( id )
 
-	implicit def DomainToApiEnviroment( enviromentModel : Enviroment ) : ApiModel = com.despegar.tools.bookshelf.api.dto.Enviroment( enviromentModel.id, enviromentModel.name, enviromentModel.description )
-	implicit def DomainToApiProject( projectModel : Project ) : ApiModel = com.despegar.tools.bookshelf.api.dto.Project( projectModel.id, projectModel.name, projectModel.description )
-	implicit def DomainToApiModule( moduleModel : Module ) : ApiModel = com.despegar.tools.bookshelf.api.dto.Module( moduleModel.id, moduleModel.name, moduleModel.parent.id, moduleModel.description )
-	implicit def DomainToApiProperty( propertyModel : Property ) : ApiModel = com.despegar.tools.bookshelf.api.dto.Property( propertyModel.id, propertyModel.name, propertyModel.parent.id, propertyModel.values.toMap )
-
+	// +++++++++++++++++++++++++++
+	// 	  Enviroment Implicits
+	// +++++++++++++++++++++++++++
 	
-	// Api To Domain Implicits
-	class RichApi(model : ApiModel) {
-		def asDomain = ApiToDomain(model)
+	implicit def functionDomainEnviromentTransformer( model : DomainEnviroment ) = new DomainEnviromentTransformer(model)
+	implicit def functionApiEnviromentTransformer( model : ApiEnviroment ) = new ApiEnviromentTransformer(model)
+		
+	class DomainEnviromentTransformer( model : DomainEnviroment ) {
+		def asApi = ApiEnviroment(model.id, model.name, model.description)
 	}
 	
-	class RichApiSeq(model : Seq[ApiModel]) {
-		def asDomain = model map( v => ApiToDomain(v) )
+	class ApiEnviromentTransformer( model : ApiEnviroment ) {
+		def asDomain = ApiToDomainEnviroment(model)
 	}
 	
-	implicit def ApiSeqToDomainSeq(model : Seq[ApiModel]) = new RichApiSeq(model)
-	implicit def ApiToRichApi(model : ApiModel) = new RichApi(model)
-	
-	implicit def ApiToDomain( model : ApiModel ) : MongoModel[_] = model match {
-		case enviroment : com.despegar.tools.bookshelf.api.dto.Enviroment => ApiToDomainEnviroment( enviroment )
-		case projectModel : com.despegar.tools.bookshelf.api.dto.Project => ApiToDomainProject( projectModel )
-		case moduleModel : com.despegar.tools.bookshelf.api.dto.Module => ApiToDomainModule( moduleModel )
-		case propertyModel : com.despegar.tools.bookshelf.api.dto.Property => ApiToDomainProperty( propertyModel )
-		case _ => null
-	}
-
-	implicit def ApiToDomainEnviroment( enviromentModel : com.despegar.tools.bookshelf.api.dto.Enviroment ) : MongoModel[_] = enviromentModel match {
-		case com.despegar.tools.bookshelf.api.dto.Enviroment( id : String, name, description ) if id.nonEmpty => {
-			val enviroment = new Enviroment( name, description )
-			enviroment.id = id
-			enviroment
+	implicit def ApiToDomainEnviroment( model : ApiEnviroment ) : DomainEnviroment = {
+		val domainModel = new DomainEnviroment( model.name, model.description )
+		
+		if( model.id != null && model.id.nonEmpty){
+			domainModel.id = model.id
 		}
-		case com.despegar.tools.bookshelf.api.dto.Enviroment( _, name, description ) => new Enviroment( name, description )
+	
+		domainModel
+	} 
+	
+	
+	// +++++++++++++++++++++++++++
+	// 	  Project Implicits
+	// +++++++++++++++++++++++++++
+	
+	implicit def functionDomainProjectTransformer( model : DomainProject ) = new DomainProjectTransformer(model)
+	implicit def functionApiProjectTransformer( model : ApiProject ) = new ApiProjectTransformer(model)
+		
+	class DomainProjectTransformer( domainModel : DomainProject ) {
+		def asApi = ApiProject(domainModel.id, domainModel.name, domainModel.description)
 	}
-
-	implicit def ApiToDomainProject( projectModel : com.despegar.tools.bookshelf.api.dto.Project ) : MongoModel[_] = projectModel match {
-		case com.despegar.tools.bookshelf.api.dto.Project( id : String, name, description ) if id.nonEmpty => {
-			val project = Project.findById(id).get 
-			project.name = name
-			project.description = description
-			project
+	
+	class ApiProjectTransformer( apiModel : ApiProject ) {
+		def asDomain = ApiToDomainProject(apiModel)
+	}
+	
+	implicit def ApiToDomainProject( model : ApiProject ) : DomainProject  = {
+		val domainModel = new DomainProject( model.name, model.description )
+		
+		if( model.id != null && model.id.nonEmpty){
+			domainModel.id = model.id
 		}
-		case com.despegar.tools.bookshelf.api.dto.Project( _, name, description ) => new Project( name, description )
+	
+		domainModel
 	}
-
-	implicit def ApiToDomainModule( moduleModel : com.despegar.tools.bookshelf.api.dto.Module ) : MongoModel[_] = moduleModel match {
-		case com.despegar.tools.bookshelf.api.dto.Module( id : String, name, description, _)  if id.nonEmpty => {
-			val module = Module.findById(id).get 
-			module.name = name
-			module.description = description;			
-			module
+	
+	
+	// +++++++++++++++++++++++++++
+	// 	  Module Implicits
+	// +++++++++++++++++++++++++++
+	
+	implicit def functionDomainModuleTransformer( model : DomainModule ) = new DomainModuleTransformer(model)
+	implicit def functionApiModuleTransformer( model : ApiModule ) = new ApiModuleTransformer(model)
+		
+	class DomainModuleTransformer( domainModel : DomainModule ) {
+		def asApi = ApiModule(domainModel.id, domainModel.name, domainModel.description, domainModel.parent.id)
+	}
+	
+	class ApiModuleTransformer( apiModel : ApiModule ) {
+		def asDomain = ApiToDomainModule(apiModel)
+	}
+	
+	implicit def ApiToDomainModule( model : ApiModule ) : DomainModule = {
+		val domainModel = new DomainModule( model.name, model.description, DomainProject.findById(model.parentId).get )
+		
+		if( model.id != null && model.id.nonEmpty){
+			domainModel.id = model.id
 		}
-		case com.despegar.tools.bookshelf.api.dto.Module( _, name, description, parentId ) => new Module( name, description, Project.findById(parentId).get )
+	
+		domainModel
+	} 
+	
+	
+	// +++++++++++++++++++++++++++
+	// 	  Property Implicits
+	// +++++++++++++++++++++++++++
+	
+	implicit def functionDomainPropertyTransformer( model : DomainProperty ) = new DomainPropertyTransformer(model)
+	implicit def functionApiPropertyTransformer( model : ApiProperty ) = new ApiPropertyTransformer(model)
+		
+	class DomainPropertyTransformer( domainModel : DomainProperty ) {
+		def asApi = ApiProperty(domainModel.id, domainModel.name, domainModel.parent.id, domainModel.values.toMap)
 	}
-
-	implicit def ApiToDomainProperty( propertyModel : com.despegar.tools.bookshelf.api.dto.Property ) : MongoModel[_] = propertyModel match {
-		case com.despegar.tools.bookshelf.api.dto.Property( id : String, name, _, values ) if id.nonEmpty => {
-			val property = Property.findById(id).get
-			property.name = name
-			property.values = values
-			property
+	
+	class ApiPropertyTransformer( apiModel : ApiProperty ) {
+		def asDomain = ApiToDomainProperty(apiModel)
+	}
+	
+	implicit def ApiToDomainProperty( model : ApiProperty ) : DomainProperty = {
+		val domainModel = new DomainProperty( model.name, DomainProject.findById(model.parentId).get, model.values )
+		
+		if( model.id != null && model.id.nonEmpty){
+			domainModel.id = model.id
 		}
-		case com.despegar.tools.bookshelf.api.dto.Property( _, name, parentId, values ) => new Property( name, Module.findById(parentId).get, values )
-	}
+	
+		domainModel
+	} 
 
+	// +++++++++++++++++++++++++++
+	// 	  PropertiesGroup Implicits
+	// +++++++++++++++++++++++++++
+	
+	implicit def functionDomainPropertiesGroupTransformer( model : DomainPropertiesGroup ) = new DomainPropertiesGroupTransformer(model)
+	implicit def functionApiPropertiesGroupTransformer( model : ApiPropertiesGroup ) = new ApiPropertiesGroupTransformer(model)
+		
+	class DomainPropertiesGroupTransformer( domainModel : DomainPropertiesGroup ) {
+		def asApi = ApiPropertiesGroup(domainModel.id, domainModel.name, domainModel.description, domainModel.properties.map( v => ApiProperty(v.id, v.name, v.parent.id, v.values.toMap)))
+	}
+	
+	class ApiPropertiesGroupTransformer( apiModel : ApiPropertiesGroup ) {
+		def asDomain = ApiToDomainPropertiesGroup(apiModel)
+	}
+	
+	implicit def ApiToDomainPropertiesGroup( model : ApiPropertiesGroup ) : DomainPropertiesGroup = {
+		val domainModel = new DomainPropertiesGroup( model.name, model.description, for ( property <- model.properties ) yield ApiToDomainProperty( property ))
+		
+		if( model.id != null && model.id.nonEmpty){
+			domainModel.id = model.id
+		}
+	
+		domainModel
+	}
 }

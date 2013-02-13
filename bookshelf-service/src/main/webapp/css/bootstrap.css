@@ -6321,6 +6321,15 @@ body {
   border-bottom-color: #ffffff;
 }
 
+.enviroment-description {
+  padding: 5px;
+  margin: 5px;
+  color: black;
+  text-align: left !important;
+  background-color: white;
+  border: 1px solid #ddd;
+}
+
 .selector-panel {
   height: 350px;
   min-height: 20px;

@@ -2,9 +2,13 @@ package com.despegar.tools.bookshelf.web.rest
 
 import org.scalatra.ScalatraServlet
 import org.scalatra.scalate.ScalateSupport
-import com.despegar.tools.bookshelf.domain.dto._
 import scala.collection.JavaConversions._
 import scala.collection.JavaConverters._
+
+import com.despegar.tools.bookshelf.domain.dto.Module
+import com.despegar.tools.bookshelf.api.dto.{ Module => ApiModule }
+
+import com.despegar.tools.bookshelf.domain.dto.Property
 
 class ModuleServlet extends RestService{
 	
@@ -17,7 +21,7 @@ class ModuleServlet extends RestService{
 	}
 	
 	post("/"){
-		var module = extract[com.despegar.tools.bookshelf.api.dto.Module].asDomain
+		var module : Module = extract[ApiModule]
 		
 		module save	
 		
@@ -37,6 +41,6 @@ class ModuleServlet extends RestService{
 	// ++++++++++++++++++++++++++++++++++
 	
 	get("/:moduleId/properties"){
-		(Property.findAllByParent(params("moduleId")).get).asApi;
+		Property.findAllByParent(params("moduleId")).get.map(value => value.asApi )
 	}
 }

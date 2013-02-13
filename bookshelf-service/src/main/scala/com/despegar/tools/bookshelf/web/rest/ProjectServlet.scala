@@ -2,9 +2,13 @@ package com.despegar.tools.bookshelf.web.rest
 
 import org.scalatra.ScalatraServlet
 import org.scalatra.scalate.ScalateSupport
-import com.despegar.tools.bookshelf.domain.dto._
 import scala.collection.JavaConversions._
 import scala.collection.JavaConverters._
+
+import com.despegar.tools.bookshelf.domain.dto.Project
+import com.despegar.tools.bookshelf.api.dto.{ Project => ApiProject }
+
+import com.despegar.tools.bookshelf.domain.dto.Module
 
 class ProjectServlet extends RestService{
 	
@@ -13,7 +17,7 @@ class ProjectServlet extends RestService{
 	// ++++++++++++++++++++++++++++++++++
 	
 	get("/"){
-		Project.findAll.asApi
+		Project.findAll.map( _.asApi ) 
 	}
 	
 	get("/:id"){
@@ -22,11 +26,11 @@ class ProjectServlet extends RestService{
 	
 	post("/"){
 		
-		var newProject = extract[com.despegar.tools.bookshelf.api.dto.Project].asDomain
+		var newProject : Project = extract[ApiProject]
 		
 		newProject save
 		
-		newProject.asApi
+		newProject asApi
 	}
 	
 	delete("/:id"){
@@ -42,6 +46,6 @@ class ProjectServlet extends RestService{
 	// ++++++++++++++++++++++++++++++++++
 	
 	get("/:projectId/modules"){
-		Module.findAllByParent( params("projectId") ).get.asApi
+		Module.findAllByParent( params("projectId") ).get.map(value => value.asApi )
 	}
 }

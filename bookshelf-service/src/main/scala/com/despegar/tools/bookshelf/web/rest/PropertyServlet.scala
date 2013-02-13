@@ -1,6 +1,7 @@
 package com.despegar.tools.bookshelf.web.rest
 
-import com.despegar.tools.bookshelf.domain.dto._
+import com.despegar.tools.bookshelf.domain.dto.Property
+import com.despegar.tools.bookshelf.api.dto.{ Property => ApiProperty }
 
 class PropertyServlet extends RestService {
 	
@@ -9,11 +10,11 @@ class PropertyServlet extends RestService {
 	// ++++++++++++++++++++++++++++++++++
 	
 	get("/:id"){
-		Property.findById( params("id") ).get.asApi;
+		Property.findById( params("id") ).get.asApi
 	}
 	
 	post("/"){
-		var property = extract[com.despegar.tools.bookshelf.api.dto.Property].asDomain
+		var property : Property = extract[ApiProperty]
 		
 		property save
 		

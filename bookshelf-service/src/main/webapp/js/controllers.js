@@ -47,6 +47,18 @@ app.directive('editable', function($timeout) {
     };
 });
 
+app.directive('hide', [function () {
+	return function (scope, elm, attrs) {
+		scope.$watch(attrs.hide, function (newVal, oldVal) {
+			if (newVal) {
+				$( elm ).fadeIn();
+			} else {
+				$( elm ).fadeOut();
+			}
+		});
+	};
+}]);
+
 
 // ----------------------------------
 //			Project Controllers 
@@ -82,9 +94,7 @@ var ProjectListCtrl = app.controller('ProjectListCtrl', function ($scope, Projec
 	$scope.removeProject = function (selectedProject){
 		projects.pop(selectedProject);
 
-		var project = new Project({id: selectedProject.id, name: selectedProject.name, description: ''});
-
-		project.$delete();
+		selectedProject.$delete();
 
 		$scope.notifyAll('OnProjectRemove', selectedProject);
 	};
@@ -149,6 +159,10 @@ var ModuleListCtrl = app.controller('ModuleListCtrl', function ($scope, Module, 
 
 });
 
+// ----------------------------------
+//			Property Controllers 
+// ----------------------------------
+
 var PropertyListCtrl = app.controller('PropertyListCtrl', function ($scope, Property, Enviroment) {
 	var enviroments = Enviroment.query();
 
@@ -192,6 +206,37 @@ var PropertyListCtrl = app.controller('PropertyListCtrl', function ($scope, Prop
 		$scope.properties.pop(selectedProperty);
 
 		selectedProperty.$delete();
+	};
+
+});
+
+// ----------------------------------
+//			Enviroment Controllers 
+// ----------------------------------
+
+var EnviromentListCtrl = app.controller('EnviromentListCtrl', function ($scope, Enviroment) {
+	var enviroments = Enviroment.query();
+	
+	$scope.enviroments = enviroments;
+
+
+	$scope.addEnviroment = function (newEnviroment){
+
+		var enviroment = new Enviroment({id: '', name: newEnviroment.name, description: newEnviroment.description});
+		enviroment.$save();
+		
+		enviroments.push(enviroment);
+
+		newEnviroment.name = '';
+		newEnviroment.description = '';
+	};
+
+	$scope.removeEnviroment = function (selectedEnviroment){
+		enviroments.pop(selectedEnviroment);
+
+		selectedEnviroment.$delete();
+
+		$scope.notifyAll('OnEnviromentRemove', selectedEnviroment);
 	};
 
 });
