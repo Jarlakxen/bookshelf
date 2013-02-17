@@ -16,7 +16,11 @@ class ViewsServlet extends ScalatraServlet with ScalateSupport {
 	get("/home"){
 		mustache("main", "home_section" -> "active")
 	}
-		
+
+	get("/common_properties"){
+		mustache("common_properties", "common_properties" -> "active")
+	}
+	
 	get("/enviroments"){
 		mustache("enviroments", "configuration_section" -> "active")
 	}

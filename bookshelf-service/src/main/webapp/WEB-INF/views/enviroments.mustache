@@ -16,12 +16,16 @@
 				
 				<div class="selector-column-scroll">
 					<table>
-						<tbody>
-							<tr ng-repeat="enviroment in enviroments | orderBy:'name'" ng-click="showHide=!showHide">
+						<tbody ng-repeat="enviroment in enviroments | orderBy:'name'" ng-click="showHide=!showHide">
+							<tr>
 								<td>
 									<a ng-click="showHide=!showHide">{{enviroment.name}}</a>
 									<i class="icon-remove-sign" style="float: right" ng-click="removeEnviroment(enviroment)" ></i>
-									<div class="enviroment-description" hide="showHide">{{enviroment.description}}</div>
+								</td>
+							</tr>
+							<tr>
+								<td hide="showHide">
+									<span style="color: black">{{enviroment.description}}</span>
 								</td>
 							</tr>
 						</tbody>

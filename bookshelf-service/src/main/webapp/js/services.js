@@ -63,7 +63,7 @@ angular.module('moduleService', ['ngResource']).factory('Module', function(Prope
 
 angular.module('projectService', ['ngResource']).factory('Project', function(Module, $resource, $http){
 
-	var Project = $service($resource, $http, 'project')
+	var Project = $service($resource, $http, 'project');
 
  	Project.prototype.modules = function() {
  		var modules = [];
@@ -76,4 +76,25 @@ angular.module('projectService', ['ngResource']).factory('Project', function(Mod
 	}
 
 	return Project;
+});
+
+// ----------------------------------
+//     Properties Group Services
+// ----------------------------------
+
+angular.module('propertiesGroupService', ['ngResource']).factory('PropertiesGroup', function(Property, $resource, $http){
+
+    var PropertiesGroup = $service($resource, $http, 'propertiesGroup');
+
+    PropertiesGroup.prototype.properties = function() {
+        var properties = [];
+        $http.get(BASE_URL + '/propertiesGroup/' + this.id + '/properties').then(function(response) {
+            angular.forEach(response.data, function(value){
+                properties.push( new Property({id: value.id, name: value.name, parentId: value.parentId, values: value.values}) );
+            });
+        });
+        return properties;
+    }
+
+    return PropertiesGroup;
 });

@@ -1,0 +1,63 @@
+{{=|{ }|=}}
+
+<div class="row-fluid" style="background-color: whiteSmoke;" ng-controller="PropertiesGroupListCtrl">
+	<div class="span8 selector-column">
+	
+		<div>
+			<h3>Property Groups</h3>
+		</div>
+		
+		<div class="selector-column-scroll">
+			<table>
+				<tbody ng-repeat="propertiesGroup in propertiesGroups | orderBy:'name'">
+					<tr>
+						<td ng-click="notifyAll('OnPropertiesGroupSelect', propertiesGroup)">
+							<span ng-class="{selected: propertiesGroup.id==selectedPropertiesGroup.id}">{{propertiesGroup.name}}</span>
+							<i class="icon-remove-sign" style="float: right" ng-click="removePropertiesGroup(propertiesGroup)" ></i>
+						</td>
+					</tr>
+					<tr hide="propertiesGroup.id==selectedPropertiesGroup.id">
+						<td>
+							<span style="color: black">{{propertiesGroup.description}}</span>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<!--
+		<form name="newProjectForm">
+			<div class="selector-column-add">
+  				<input name="newProjectNameInput" class="input-xlarge" type="text" ng-model="newProject.name" ng-maxlength="20"/>
+  				<button ng-click="addProject(newProject)" ng-disabled="!newProject.name">Add</button>
+			</div>
+			<div class="ng-invalid-maxlength-msg" ng-show="newProjectForm.newProjectNameInput.$error.maxlength">Project name is too long!</div> 
+		</form>
+		-->
+	</div>
+	<div class="span4 selector-column" style="padding-left: 10px; padding-right: 10px;">
+	
+		<form name="newPropertiesGroupForm" class="form-horizontal">
+			<fieldset>
+				<legend style="padding-top: 10px;">New Properties Group:</legend>
+				<div class="control-group">
+					<label class="control-label" style="width: 90px;">Name</label>
+					<div class="controls" style="margin-left: 0px;">
+						<input name="newPropertiesGroupNameInput" type="text" class="input-large" placeholder="Name" ng-model="newPropertiesGroup.name" ng-maxlength="20" />
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" style="width: 90px;">Description</label>
+					<div class="controls" style="margin-left: 0px;">
+						<textarea name="newPropertiesGroupDescriptionInput" row="3" ng-model="newPropertiesGroup.description" ng-maxlength="100"> </textarea>
+					</div>
+				</div>
+				<div class="control-group">
+					<div class="controls" style="margin-left: 0px;">
+						 <button class="btn btn-primary" ng-click="addPropertiesGroup(newPropertiesGroup)" ng-disabled="!newPropertiesGroup.name || !newPropertiesGroup.description">Add</button>
+					</div>
+				</div>	
+			</fieldset>				
+		</form>
+
+	</div>
+</div>

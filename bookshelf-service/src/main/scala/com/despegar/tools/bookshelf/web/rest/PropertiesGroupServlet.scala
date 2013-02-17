@@ -1,12 +1,11 @@
 package com.despegar.tools.bookshelf.web.rest
 
 import org.scalatra.ScalatraServlet
-import org.scalatra.scalate.ScalateSupport
 import scala.collection.JavaConversions._
 import scala.collection.JavaConverters._
-
 import com.despegar.tools.bookshelf.domain.dto.PropertiesGroup
 import com.despegar.tools.bookshelf.api.dto.{ PropertiesGroup => ApiPropertiesGroup }
+import com.despegar.tools.bookshelf.domain.dto.Property
 
 class PropertiesGroupServlet extends RestService{
 	
@@ -35,5 +34,13 @@ class PropertiesGroupServlet extends RestService{
 		val propertiesGroup = PropertiesGroup.findById( params("id") ).get
 		
 		propertiesGroup.delete
+	}
+	
+	// ++++++++++++++++++++++++++++++++++
+	// 		Properties RestFul Services
+	// ++++++++++++++++++++++++++++++++++
+	
+	get("/:propertiesGroupId/properties"){
+		Property.findAllByParent(params("propertiesGroupId")).get.map(value => value.asApi )
 	}
 }

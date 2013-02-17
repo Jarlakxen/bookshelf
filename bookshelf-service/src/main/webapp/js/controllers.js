@@ -1,6 +1,6 @@
 'use strict';
 
-var app = angular.module('BookshelfApp', [ 'ngResource', 'enviromentService', 'projectService', 'moduleService', 'propertyService', 'ui', 'ui.bootstrap' ]);
+var app = angular.module('BookshelfApp', [ 'ngResource', 'enviromentService', 'projectService', 'moduleService', 'propertyService', 'propertiesGroupService', 'ui', 'ui.bootstrap' ]);
 
 // ----------------------------------
 //			Shared Service
@@ -50,6 +50,17 @@ app.directive('editable', function($timeout) {
 app.directive('hide', [function () {
 	return function (scope, elm, attrs) {
 		scope.$watch(attrs.hide, function (newVal, oldVal) {
+
+			// Initial case, animation without delay
+			if (newVal == oldVal) {
+				if (newVal) {
+					$( elm ).show();
+				} else {
+					$( elm ).hide();
+				}
+			}
+
+
 			if (newVal) {
 				$( elm ).fadeIn();
 			} else {
@@ -121,6 +132,7 @@ var ModuleListCtrl = app.controller('ModuleListCtrl', function ($scope, Module, 
         $scope.selectedModule = null;
     	$scope.modules = [];
     	$scope.notifyAll('OnModuleUnload');
+    	$scope.notifyAll('OnParentPropertyUnload');
     });
 
     $scope.$on('OnProjectRemove', function(event, project) {
@@ -133,9 +145,11 @@ var ModuleListCtrl = app.controller('ModuleListCtrl', function ($scope, Module, 
 		if( $scope.selectedModule != null && $scope.selectedModule.id == module.id ){
 			$scope.selectedModule =  null;
 			$scope.notifyAll('OnModuleUnload');
+			$scope.notifyAll('OnParentPropertyUnload');
 		} else {
         	$scope.selectedModule =  module;
         	$scope.notifyAll('OnModuleLoad', module);
+        	$scope.notifyAll('OnParentPropertyLoad', module);
     	}
     });   
 
@@ -154,7 +168,8 @@ var ModuleListCtrl = app.controller('ModuleListCtrl', function ($scope, Module, 
 
 		selectedModule.$delete();
 
-		$scope.notifyAll('OnModuleRemove', selectedProject);
+		$scope.notifyAll('OnModuleRemove', selectedModule);
+		$scope.notifyAll('OnParentPropertyRemove', selectedModule);
 	};
 
 });
@@ -168,19 +183,19 @@ var PropertyListCtrl = app.controller('PropertyListCtrl', function ($scope, Prop
 
 	$scope.enviroments = enviroments;
 
-	$scope.$on('OnModuleLoad', function(event, module) {
-        $scope.module = module;
-        $scope.properties = module.properties();
+	$scope.$on('OnParentPropertyLoad', function(event, parent) {
+        $scope.parent = parent;
+        $scope.properties = parent.properties();
     });
 
-    $scope.$on('OnModuleUnload', function(event) {
-        $scope.module =  null;
+    $scope.$on('OnParentPropertyUnload', function(event) {
+        $scope.parent =  null;
     	$scope.properties = [];
     });
 
-    $scope.$on('OnProjectRemove', function(event, module) {
-        if( module == $scope.module ){
-    		$scope.$broadcast('OnModuleUnload');
+    $scope.$on('OnParentPropertyRemove', function(event, parent) {
+        if( parent == $scope.parent ){
+    		$scope.$broadcast('OnParentPropertyUnload');
     	}
     });
 
@@ -188,7 +203,7 @@ var PropertyListCtrl = app.controller('PropertyListCtrl', function ($scope, Prop
 		var newPropertyValues = {};
 		newPropertyValues[enviroment.name] = newProperty.value;
 
-		var property = new Property({id: '', name: newProperty.name, parentId: $scope.module.id, values: newPropertyValues});
+		var property = new Property({id: '', name: newProperty.name, parentId: $scope.parent.id, scope: {name:"PUBLIC"} ,values: newPropertyValues});
 		property.$save();
 
 		$scope.properties.push(property);
@@ -239,4 +254,45 @@ var EnviromentListCtrl = app.controller('EnviromentListCtrl', function ($scope, 
 		$scope.notifyAll('OnEnviromentRemove', selectedEnviroment);
 	};
 
+});
+
+// ----------------------------------
+//     Properties Group Controllers 
+// ----------------------------------
+
+var PropertiesGroupListCtrl = app.controller('PropertiesGroupListCtrl', function ($scope, PropertiesGroup) {
+	var propertiesGroups = PropertiesGroup.query();
+	
+	$scope.propertiesGroups = propertiesGroups;
+
+
+    $scope.$on('OnPropertiesGroupSelect', function(event, propertiesGroup) {
+		if( $scope.selectedPropertiesGroup != null && $scope.selectedPropertiesGroup.id == propertiesGroup.id ){
+			$scope.selectedPropertiesGroup =  null;
+			$scope.notifyAll('OnParentPropertyUnload');
+		} else {
+        	$scope.selectedPropertiesGroup =  propertiesGroup;
+        	$scope.notifyAll('OnParentPropertyLoad', propertiesGroup);
+    	}
+    });  
+
+
+	$scope.addPropertiesGroup = function (newPropertiesGroup){
+
+		var propertiesGroup = new PropertiesGroup({id: '', name: newPropertiesGroup.name, description: newPropertiesGroup.description});
+		propertiesGroup.$save();
+		
+		propertiesGroups.push(propertiesGroup);
+
+		newPropertiesGroup.name = '';
+		newPropertiesGroup.description = '';
+	};
+
+	$scope.removePropertiesGroup = function (selectedPropertiesGroup){
+		propertiesGroups.pop(selectedPropertiesGroup);
+
+		selectedPropertiesGroup.$delete();
+
+		$scope.notifyAll('OnPropertiesGroupRemove', selectedPropertiesGroup);
+	};
 });

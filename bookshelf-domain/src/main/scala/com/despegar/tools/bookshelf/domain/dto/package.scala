@@ -4,19 +4,14 @@ import com.despegar.tools.bookshelf.domain.mongo.MongoModel
 import scala.collection.JavaConversions._
 import com.despegar.tools.bookshelf.api.dto.ApiModel
 import org.bson.types.ObjectId
-
 import com.despegar.tools.bookshelf.domain.dto.{ Enviroment => DomainEnviroment }
 import com.despegar.tools.bookshelf.api.dto.{ Enviroment => ApiEnviroment }
-
 import com.despegar.tools.bookshelf.domain.dto.{ Project => DomainProject }
 import com.despegar.tools.bookshelf.api.dto.{ Project => ApiProject }
-
 import com.despegar.tools.bookshelf.domain.dto.{ Module => DomainModule }
 import com.despegar.tools.bookshelf.api.dto.{ Module => ApiModule }
-
 import com.despegar.tools.bookshelf.domain.dto.{ Property => DomainProperty }
 import com.despegar.tools.bookshelf.api.dto.{ Property => ApiProperty }
-
 import com.despegar.tools.bookshelf.domain.dto.{ PropertiesGroup => DomainPropertiesGroup }
 import com.despegar.tools.bookshelf.api.dto.{ PropertiesGroup => ApiPropertiesGroup }
 
@@ -119,7 +114,22 @@ package object dto {
 	}
 	
 	implicit def ApiToDomainProperty( model : ApiProperty ) : DomainProperty = {
-		val domainModel = new DomainProperty( model.name, DomainProject.findById(model.parentId).get, model.values )
+		
+		var parent :  MongoModel[_] = null;
+		
+		parent = DomainModule.findById(model.parentId) match {
+			case Some(module : Module) => module
+			case _ => null
+		}
+		
+		if( parent == null ){
+			parent = DomainPropertiesGroup.findById(model.parentId) match {
+				case Some(propertiesGroup : PropertiesGroup) => propertiesGroup
+				case _ => null
+			}
+		}
+		
+		val domainModel = new DomainProperty( model.name, parent, model.values )
 		
 		if( model.id != null && model.id.nonEmpty){
 			domainModel.id = model.id
@@ -136,7 +146,7 @@ package object dto {
 	implicit def functionApiPropertiesGroupTransformer( model : ApiPropertiesGroup ) = new ApiPropertiesGroupTransformer(model)
 		
 	class DomainPropertiesGroupTransformer( domainModel : DomainPropertiesGroup ) {
-		def asApi = ApiPropertiesGroup(domainModel.id, domainModel.name, domainModel.description, domainModel.properties.map( v => ApiProperty(v.id, v.name, v.parent.id, v.values.toMap)))
+		def asApi = ApiPropertiesGroup(domainModel.id, domainModel.name, domainModel.description)
 	}
 	
 	class ApiPropertiesGroupTransformer( apiModel : ApiPropertiesGroup ) {
@@ -144,7 +154,7 @@ package object dto {
 	}
 	
 	implicit def ApiToDomainPropertiesGroup( model : ApiPropertiesGroup ) : DomainPropertiesGroup = {
-		val domainModel = new DomainPropertiesGroup( model.name, model.description, for ( property <- model.properties ) yield ApiToDomainProperty( property ))
+		val domainModel = new DomainPropertiesGroup( model.name, model.description)
 		
 		if( model.id != null && model.id.nonEmpty){
 			domainModel.id = model.id

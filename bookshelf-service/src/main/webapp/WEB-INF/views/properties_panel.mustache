@@ -25,11 +25,11 @@
 					                </tr>
 					                <tr style="background-color: whiteSmoke;">
 					                	<td>
-					                		<input name="newPropertyNameInput" class="input-xlarge" type="text" ng-disabled="!module" ng-model="newProperty.name" ng-maxlength="50"/>
+					                		<input name="newPropertyNameInput" class="input-xlarge" type="text" ng-disabled="!parent" ng-model="newProperty.name" ng-maxlength="50"/>
 					                	</td>
 					                	<td>
 					                		<div class="add-panel" style="margin-top: 0px;">
-									  			<input name="newPropertyValueInput" class="input-xlarge" type="text" ng-disabled="!module" ng-model="newProperty.value" ng-maxlength="50"/>
+									  			<input name="newPropertyValueInput" class="input-xxlarge" type="text" ng-disabled="!parent" ng-model="newProperty.value" ng-maxlength="50"/>
 									  			<button ng-click="addProperty(newProperty, enviroment)" ng-disabled="!newProperty.name || !newProperty.value">Add</button>
 											</div>
 					                	</td>
