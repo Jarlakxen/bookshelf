@@ -9,6 +9,8 @@
 @basePanelBorderRadius: 20px;
 @basePanelMarginTop: 15px;
 
+@baseGrey: #eeeeee;
+
 // --------- General Tags ---------
 
 body {
@@ -20,6 +22,8 @@ body {
 .base-panel(@color: whiteSmoke) {
 	.well;
 
+	border: 1px solid #ccc;
+
 	background-color: @color;
 
 	margin-top: @basePanelMarginTop;
@@ -27,8 +31,8 @@ body {
 	.override-border-radius(@basePanelBorderRadius);
 }
 
-.whiteSmoke-base-panel {
-	.base-panel();
+.grey-base-panel {
+	.base-panel(@baseGrey);
 }
 
 
@@ -83,6 +87,7 @@ body {
 	.override-border-radius(10px);
 	color: @titleFontColor;
 	min-height: @selectorHeight - 5;
+	border: 1px solid #ccc;
 }
 
 .selector-column div{
@@ -142,6 +147,8 @@ body {
 	font-size: 18px;
 	font-weight: bold;
 	margin: 20px 10px 20px 10px;
+	background-color: @baseGrey;
+
 }
 
 .breadcrumb-text {
