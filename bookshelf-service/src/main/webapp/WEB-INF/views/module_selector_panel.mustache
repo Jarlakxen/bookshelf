@@ -1,18 +1,19 @@
 {{=|{ }|=}}
 
 <div class="row-fluid" style="background-color: whiteSmoke;">
-	<div ng-controller="ProjectListCtrl" class="span6 selector-column">
+	<div ng-controller="ProjectListCtrl" class="span12 selector-column" hide="selectedProject==null">
 	
-		<div>
-			<h3>Projects</h3>
-		</div>
-		
+
+		<ul class="bookshelf-breadcrumb">
+  			<li> <span class="breadcrumb-text"> Project: <span style="color: black">{{selectedProject.name}}</span></span> <span class="divider">/</span> </li>
+		</ul>
+
 		<div class="selector-column-scroll">
 			<table>
 				<tbody>
 					<tr ng-repeat="project in projects | orderBy:'name'">
 						<td ng-click="notifyAll('OnProjectSelect', project)">
-							<span ng-class="{selected: project.id==selectedProject.id}">{{project.name}}</span>
+							<span>{{project.name}}</span>
 							<i class="icon-remove-sign" style="float: right" ng-click="removeProject(project)" ></i>
 						</td>
 					</tr>
@@ -29,12 +30,19 @@
 		</form>
 
 	</div>
-	<div ng-controller="ModuleListCtrl" class="span6 selector-column">
+	
+	<div ng-controller="ModuleListCtrl" class="span12 selector-column" hide="project!=null">
 		
-		<div>
-			<h3>Modules</h3>
-		</div>
-		
+		<ul class="bookshelf-breadcrumb">
+  			<li> 
+  				<span class="breadcrumb-text"> Project: <a ng-click="notifyAll('OnProjectUnload')" style="color: black; text-decoration:underline">{{project.name}}</a></span> 
+  				<span class="divider">/</span>
+  			</li>
+  			<li>
+  				<span class="breadcrumb-text"> Module: <span style="color: black">{{selectedModule.name}}</span></span>
+  			</li>
+		</ul>
+
 		<div class="selector-column-scroll">
 			<table>
 				<tbody>
@@ -57,4 +65,5 @@
 		</form>
 
 	</div>
+
 </div>

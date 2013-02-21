@@ -69,7 +69,7 @@ body {
 
 // +++ Selector +++
 
-@selectorHeight: 350px;
+@selectorHeight: 300px;
 
 .selector-panel {
 	.base-panel;
@@ -78,10 +78,11 @@ body {
 }
 
 .selector-column {
+	margin: 0px !important;
 	background-color: white;
 	.override-border-radius(10px);
 	color: @titleFontColor;
-	height: @selectorHeight - 5;
+	min-height: @selectorHeight - 5;
 }
 
 .selector-column div{
@@ -89,7 +90,7 @@ body {
 }
 
 .selector-column-scroll {
-	.scrollable(@selectorHeight - 125);
+	.scrollable(@selectorHeight + 125);
 	text-align: right;
 }
 
@@ -121,7 +122,7 @@ body {
 }
 
 .scrollable(@height: 100%) {
-	height: @height;
+	max-height: @height;
 	overflow: auto;
 }
 
@@ -136,6 +137,17 @@ body {
 	margin-bottom: 0px;
 }
 
+.bookshelf-breadcrumb {
+	.breadcrumb;
+	font-size: 18px;
+	font-weight: bold;
+	margin: 20px 10px 20px 10px;
+}
+
+.breadcrumb-text {
+	font-weight: bold;
+	font-size: 16px;
+}
 
 // --------- AngularJS Style ---------
 

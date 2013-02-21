@@ -50,6 +50,18 @@ app.directive('editable', function($timeout) {
 app.directive('hide', [function () {
 	return function (scope, elm, attrs) {
 		scope.$watch(attrs.hide, function (newVal, oldVal) {
+			if (newVal) {
+				$( elm ).show();
+			} else {
+				$( elm ).hide();
+			}
+		});
+	};
+}]);
+
+app.directive('animated-hide', [function () {
+	return function (scope, elm, attrs) {
+		scope.$watch(attrs.hide, function (newVal, oldVal) {
 
 			// Initial case, animation without delay
 			if (newVal == oldVal) {
@@ -84,12 +96,15 @@ var ProjectListCtrl = app.controller('ProjectListCtrl', function ($scope, Projec
 	$scope.$on('OnProjectSelect', function(event, project) {
 		
 		if( $scope.selectedProject != null && $scope.selectedProject.id == project.id ){
-			$scope.selectedProject =  null;
 			$scope.notifyAll('OnProjectUnload');
 		} else {
         	$scope.selectedProject =  project;
         	$scope.notifyAll('OnProjectLoad', project);
     	}
+    });   
+
+    $scope.$on('OnProjectUnload', function(event, project) {
+		$scope.selectedProject =  null;
     });   
 
 	$scope.addProject = function (newProject){
