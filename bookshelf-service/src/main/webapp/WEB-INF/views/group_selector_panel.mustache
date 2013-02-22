@@ -1,13 +1,13 @@
 {{=|{ }|=}}
 
 <div class="row-fluid" style="background-color: whiteSmoke;" ng-controller="PropertiesGroupListCtrl">
-	<div class="span8 selector-column">
+	<div class="span8 selector-multi-column">
 	
 		<div>
 			<h3>Property Groups</h3>
 		</div>
 		
-		<div class="selector-column-scroll">
+		<div class="selector-multi-column-scroll">
 			<table>
 				<tbody ng-repeat="propertiesGroup in propertiesGroups | orderBy:'name'">
 					<tr>
@@ -16,7 +16,7 @@
 							<i class="icon-remove-sign" style="float: right" ng-click="removePropertiesGroup(propertiesGroup)" ></i>
 						</td>
 					</tr>
-					<tr animated-hide="propertiesGroup.id==selectedPropertiesGroup.id">
+					<tr fade="propertiesGroup.id==selectedPropertiesGroup.id">
 						<td>
 							<span style="color: black">{{propertiesGroup.description}}</span>
 						</td>
@@ -34,7 +34,7 @@
 		</form>
 		-->
 	</div>
-	<div class="span4 selector-column" style="padding-left: 10px; padding-right: 10px;">
+	<div class="span4 selector-multi-column" style="padding-left: 10px; padding-right: 10px;">
 	
 		<form name="newPropertiesGroupForm" class="form-horizontal">
 			<fieldset>

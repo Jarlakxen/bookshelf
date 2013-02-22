@@ -8,13 +8,13 @@
 		{{=|{ }|=}}
 
 		<div ng-controller="EnviromentListCtrl" class="row-fluid" style="background-color: whiteSmoke;">
-			<div class="span8 selector-column">
+			<div class="span8 selector-multi-column">
 			
 				<div>
 					<h3>Enviroments</h3>
 				</div>
 				
-				<div class="selector-column-scroll">
+				<div class="selector-multi-column-scroll">
 					<table>
 						<tbody ng-repeat="enviroment in enviroments | orderBy:'name'" ng-click="showHide=!showHide">
 							<tr>
@@ -24,7 +24,7 @@
 								</td>
 							</tr>
 							<tr>
-								<td animated-hide="showHide">
+								<td fade="showHide">
 									<span style="color: black">{{enviroment.description}}</span>
 								</td>
 							</tr>
@@ -33,7 +33,7 @@
 				</div>
 
 			</div>
-			<div class="span4 selector-column" style="padding-left: 10px; padding-right: 10px;">
+			<div class="span4 selector-multi-column" style="padding-left: 10px; padding-right: 10px;">
 				
 				<form name="newEnviromentForm" class="form-horizontal">
 					<fieldset>

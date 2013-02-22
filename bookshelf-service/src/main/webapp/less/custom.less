@@ -81,6 +81,42 @@ body {
 	height: @selectorHeight;
 }
 
+// +++ Selector Multi Column +++
+
+.selector-multi-column {
+	background-color: white;
+	.override-border-radius(10px);
+	color: @titleFontColor;
+	height: @selectorHeight - 5;
+	border: 1px solid #ccc;
+}
+
+.selector-multi-column div{
+	text-align: center;
+}
+
+.selector-multi-column-scroll {
+	.scrollable(@selectorHeight - 100);
+	text-align: right;
+}
+
+.selector-multi-column-scroll table {
+	.table;
+	.table-striped;
+	.table-hover;
+}
+
+.selector-multi-column-add {
+	.add-panel;
+}
+
+.selector-multi-column-add button{
+	.btn;
+	.btn-primary;
+}
+
+// +++ Selector Single Column +++
+
 .selector-column {
 	margin: 0px !important;
 	background-color: white;

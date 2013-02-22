@@ -59,9 +59,9 @@ app.directive('hide', [function () {
 	};
 }]);
 
-app.directive('animated-hide', [function () {
+app.directive('fade', [function () {
 	return function (scope, elm, attrs) {
-		scope.$watch(attrs.hide, function (newVal, oldVal) {
+		scope.$watch(attrs.fade, function (newVal, oldVal) {
 
 			// Initial case, animation without delay
 			if (newVal == oldVal) {
