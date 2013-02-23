@@ -36,7 +36,7 @@ class ProjectServlet extends RestService{
 	delete("/:id"){
 		val project = Project.findById( params("id") ).get
 		
-		for( module <- Module.findAllByParent( params("projectId") ).get ) module.delete
+		for( module <- Module.findAllByParent( project ).get ) module.delete
 		
 		project.delete
 	}

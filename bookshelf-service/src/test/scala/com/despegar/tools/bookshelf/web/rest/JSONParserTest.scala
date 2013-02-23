@@ -13,7 +13,6 @@ import org.json4s.{ DefaultFormats, Formats }
 import com.despegar.tools.bookshelf.api.dto.Enviroment
 import org.json4s.jackson.Serialization.{read, write => swrite}
 import com.despegar.tools.bookshelf.api.dto.Property
-import com.despegar.tools.bookshelf.api.dto.PropertyScope
 
 @RunWith( classOf[JUnitRunner] )
 class JSONParserTest extends Specification {
@@ -24,7 +23,7 @@ class JSONParserTest extends Specification {
 		
 		"deserializate Property" in {
 			
-			val property = Property("1", "Test", "", PropertyScope.PUBLIC, Map("Key1"->"Value1"));
+			val property = Property("1", "Test", "", Map("Key1"->"Value1"));
 			
 			val value = swrite(property);
 			

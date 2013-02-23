@@ -309,5 +309,6 @@ var PropertiesGroupListCtrl = app.controller('PropertiesGroupListCtrl', function
 		selectedPropertiesGroup.$delete();
 
 		$scope.notifyAll('OnPropertiesGroupRemove', selectedPropertiesGroup);
+		$scope.notifyAll('OnParentPropertyRemove', selectedPropertiesGroup);
 	};
 });
