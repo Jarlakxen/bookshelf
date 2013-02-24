@@ -5,6 +5,7 @@ import org.scalatra.scalate.ScalateSupport
 import scala.collection.JavaConversions._
 import scala.collection.JavaConverters._
 
+import com.despegar.tools.bookshelf.domain.dto._
 import com.despegar.tools.bookshelf.domain.dto.Module
 import com.despegar.tools.bookshelf.api.dto.{ Module => ApiModule }
 
@@ -31,7 +32,7 @@ class ModuleServlet extends RestService{
 	delete("/:id"){
 		val module = Module.findById( params("id") ).get
 				
-		for( property <- Property.findAllByParent(module).get ) property.delete
+		for( property <- module.properties ) property.delete
 			
 		module.delete
 	}
@@ -41,6 +42,6 @@ class ModuleServlet extends RestService{
 	// ++++++++++++++++++++++++++++++++++
 	
 	get("/:moduleId/properties"){
-		Property.findAllByParent(params("moduleId")).get.map(value => value.asApi )
+		Property.findAllByParentId(params("moduleId")).map(value => value.asApi )
 	}
 }

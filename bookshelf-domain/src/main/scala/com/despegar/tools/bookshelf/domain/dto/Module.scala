@@ -1,23 +1,29 @@
 package com.despegar.tools.bookshelf.domain.dto
 
-import com.google.code.morphia.annotations.{Entity, Serialized, Reference}
-import scala.collection.JavaConversions._
-import scala.collection.JavaConverters._
 import org.bson.types.ObjectId
-import annotation.target.field
-import com.despegar.tools.bookshelf.domain.mongo.{MongoModel, MongoObject, NamedDAO, ChildDAO}
-import java.util.ArrayList
+import com.despegar.tools.bookshelf.domain.mongo.{ MongoModel, MongoObject, NamedDAO, ChildDAO }
+import com.novus.salat.annotations.raw.Key
 
+case class Module(var name : String, var description : String, parentId : ObjectId, var id : ObjectId = null ) extends MongoModel[Module] {
 
-@Entity
-case class Module(var name: String, var description: String, @(Reference @field) var parent: Project) extends MongoModel[Module]{
+	private var _parent : Option[Project] = None
 
-	private def this() = this("", "", null)  // needed by morphia
-	
-	def properties = Property.findAllByParent(this).get
+	def parent = this.synchronized {
+		_parent match {
+			case Some( value ) => value
+			case None => {
+				_parent = Project findById ( parentId )
+				_parent.get
+			}
+		}
+	}
+
+	def properties = Property findAllByParent ( this )
 
 }
 
-object Module extends MongoObject[Module] with NamedDAO[Module] with ChildDAO[Module]  {
-	
+object Module extends MongoObject[Module] with NamedDAO[Module] with ChildDAO[Module] {
+
+	def apply( name : String, description : String, parent : Project ) : Module = new Module( name = name, description = description, parentId = parent.id )
+
 }

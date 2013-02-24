@@ -1,20 +1,13 @@
 package com.despegar.tools.bookshelf.domain.dto
 
-import com.google.code.morphia.annotations.{Entity, Serialized, Reference}
-import scala.collection.JavaConversions._
-import scala.collection.JavaConverters._
 import org.bson.types.ObjectId
-import annotation.target.field
 import com.despegar.tools.bookshelf.domain.mongo.{MongoModel, MongoObject, NamedDAO}
-import java.util.ArrayList
+import com.novus.salat.annotations.raw.Key
 
 
-@Entity
-case class Project(var name: String, var description: String) extends MongoModel[Project]{
+case class Project(var name: String,var description: String, var id : ObjectId = null) extends MongoModel[Project]{
 
-	private def this() = this("", "")  // needed by morphia
-	
-	def modules = Module.findAllByParent(this).get
+	def modules = Module findAllByParent(this)
 	
 }
 

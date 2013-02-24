@@ -7,30 +7,64 @@ import org.specs2.mutable.Specification
 import org.specs2.mutable.Before
 import org.specs2.runner.JUnitRunner
 import com.despegar.tools.bookshelf.domain.dto._
-import com.despegar.tools.bookshelf.domain.mongo.MongoStore
 
 @RunWith( classOf[JUnitRunner] )
 class ProjectMongoPersistanceTest extends Specification {
-	
-    val context = new Before { def before = MongoStore.init("mongodb://localhost", "test") }
-	
+
 	"Project" should {
 
-		"persist" in context {
-			var project = new Project("Cars", "")
-			
+		"persist and delete" in {
+			var project = new Project( "Cars", "" )
+
 			project save
-			
+
 			var aux = Project findByName "Cars"
-			
+
 			aux match {
-				case None => failure("Value not stored")
-				case Some(x) => x.name must be equalTo( "Cars" )
+				case None => failure( "Value not stored" )
+				case Some( x ) => x.name must be equalTo ( "Cars" )
 			}
-			
+
 			Project.count must be_==( 1 )
-			
+
 			project delete
+
+			Project.count must be_==( 0 )
+		}
+
+		"update" in {
+			var project = new Project( "Cars", "" )
+
+			project save
+
+			project name = "Cars2"
+
+			project update
+
+			var aux = Project findByName "Cars2"
+
+			aux match {
+				case None => failure( "Value not stored" )
+				case Some( x ) => x.name must be equalTo ( "Cars2" )
+			}
+
+			Project.count must be_==( 1 )
+
+			aux.get.delete
+
+			Project.count must be_==( 0 )
+		}
+
+		"deleteAll" in {
+			new Project( "Cars1", "" ) save
+
+			new Project( "Cars2", "" ) save
+
+			new Project( "Cars3", "" ) save
+
+			Project.count must be_==( 3 )
+
+			Project deleteAll
 
 			Project.count must be_==( 0 )
 		}

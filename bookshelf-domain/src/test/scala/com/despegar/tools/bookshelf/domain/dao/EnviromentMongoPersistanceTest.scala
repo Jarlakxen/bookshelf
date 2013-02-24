@@ -7,30 +7,27 @@ import org.specs2.mutable.Specification
 import org.specs2.mutable.Before
 import org.specs2.runner.JUnitRunner
 import com.despegar.tools.bookshelf.domain.dto._
-import com.despegar.tools.bookshelf.domain.mongo.MongoStore
 
 @RunWith( classOf[JUnitRunner] )
 class EnviromentMongoPersistanceTest extends Specification {
-	
-    val context = new Before { def before = MongoStore.init("mongodb://localhost", "test") }
-	
+
 	"Enviroment" should {
 
-		"persist" in context {
-			var enviroment = Enviroment("Local", "")
-			
+		"persist" in {
+			var enviroment = Enviroment( "Local", "" )
+
 			enviroment save
-			
+
 			var aux = Enviroment findByName "Local"
-			
+
 			aux match {
-				case None => failure("Value not stored")
-				case Some(x) => x.name must be equalTo( "Local" )
+				case None => failure( "Value not stored" )
+				case Some( x ) => x.name must be equalTo ( "Local" )
 			}
-			
+
 			Enviroment.count must be_==( 1 )
-			
-			enviroment delete
+
+			aux.get.delete
 
 			Enviroment.count must be_==( 0 )
 		}

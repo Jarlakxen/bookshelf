@@ -5,6 +5,7 @@ import org.scalatra.scalate.ScalateSupport
 import scala.collection.JavaConversions._
 import scala.collection.JavaConverters._
 
+import com.despegar.tools.bookshelf.domain.dto._
 import com.despegar.tools.bookshelf.domain.dto.Project
 import com.despegar.tools.bookshelf.api.dto.{ Project => ApiProject }
 
@@ -36,7 +37,7 @@ class ProjectServlet extends RestService{
 	delete("/:id"){
 		val project = Project.findById( params("id") ).get
 		
-		for( module <- Module.findAllByParent( project ).get ) module.delete
+		for( module <- project.modules ) module.delete
 		
 		project.delete
 	}
@@ -46,6 +47,6 @@ class ProjectServlet extends RestService{
 	// ++++++++++++++++++++++++++++++++++
 	
 	get("/:projectId/modules"){
-		Module.findAllByParent( params("projectId") ).get.map(value => value.asApi )
+		Module.findAllByParentId( params("projectId") ).map(value => value.asApi )
 	}
 }

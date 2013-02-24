@@ -15,6 +15,7 @@ import com.despegar.tools.bookshelf.api.dto.{ Property => ApiProperty }
 import com.despegar.tools.bookshelf.domain.dto.{ PropertiesGroup => DomainPropertiesGroup }
 import com.despegar.tools.bookshelf.api.dto.{ PropertiesGroup => ApiPropertiesGroup }
 
+
 package object dto {
 
 	implicit def ObjectIdToString( id : ObjectId ) : String = id.toString()
@@ -80,7 +81,7 @@ package object dto {
 	implicit def functionApiModuleTransformer( model : ApiModule ) = new ApiModuleTransformer(model)
 		
 	class DomainModuleTransformer( domainModel : DomainModule ) {
-		def asApi = ApiModule(domainModel.id, domainModel.name, domainModel.description, domainModel.parent.id)
+		def asApi = ApiModule(domainModel.id, domainModel.name, domainModel.description, domainModel.parentId)
 	}
 	
 	class ApiModuleTransformer( apiModel : ApiModule ) {
@@ -88,7 +89,7 @@ package object dto {
 	}
 	
 	implicit def ApiToDomainModule( model : ApiModule ) : DomainModule = {
-		val domainModel = new DomainModule( model.name, model.description, DomainProject.findById(model.parentId).get )
+		val domainModel = new DomainModule( model.name, model.description, model.parentId)
 		
 		if( model.id != null && model.id.nonEmpty){
 			domainModel.id = model.id
@@ -106,7 +107,7 @@ package object dto {
 	implicit def functionApiPropertyTransformer( model : ApiProperty ) = new ApiPropertyTransformer(model)
 		
 	class DomainPropertyTransformer( domainModel : DomainProperty ) {
-		def asApi = ApiProperty(domainModel.id, domainModel.name, domainModel.parent.id, domainModel.values.toMap)
+		def asApi = ApiProperty(domainModel.id, domainModel.name, domainModel.parentId, collection.immutable.Map() ++ domainModel.values)
 	}
 	
 	class ApiPropertyTransformer( apiModel : ApiProperty ) {
@@ -115,21 +116,7 @@ package object dto {
 	
 	implicit def ApiToDomainProperty( model : ApiProperty ) : DomainProperty = {
 		
-		var parent :  MongoModel[_] = null;
-		
-		parent = DomainModule.findById(model.parentId) match {
-			case Some(module : Module) => module
-			case _ => null
-		}
-		
-		if( parent == null ){
-			parent = DomainPropertiesGroup.findById(model.parentId) match {
-				case Some(propertiesGroup : PropertiesGroup) => propertiesGroup
-				case _ => null
-			}
-		}
-		
-		val domainModel = new DomainProperty( model.name, parent, model.values )
+		val domainModel = new DomainProperty( model.name, model.parentId, collection.mutable.Map() ++ model.values )
 		
 		if( model.id != null && model.id.nonEmpty){
 			domainModel.id = model.id
@@ -163,3 +150,4 @@ package object dto {
 		domainModel
 	}
 }
+

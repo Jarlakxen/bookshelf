@@ -1,14 +1,10 @@
 package com.despegar.tools.bookshelf.domain.dto
 
 import org.bson.types.ObjectId
-import com.google.code.morphia.annotations.Id
-import com.despegar.tools.bookshelf.domain.mongo.NamedDAO
-import com.despegar.tools.bookshelf.domain.mongo.MongoObject
-import com.despegar.tools.bookshelf.domain.mongo.MongoModel
+import com.despegar.tools.bookshelf.domain.mongo.{ MongoModel, MongoObject, NamedDAO }
+import com.novus.salat.annotations.raw.Key
 
-case class Enviroment(var name : String, var description : String ) extends MongoModel[Enviroment] {
-
-	private def this() = this( "", "" ) // needed by morphia
+case class Enviroment( var name : String, var description : String, var id : ObjectId = null ) extends MongoModel[Enviroment] {
 
 }
 

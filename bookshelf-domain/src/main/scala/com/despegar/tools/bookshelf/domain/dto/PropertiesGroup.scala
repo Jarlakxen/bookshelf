@@ -1,22 +1,15 @@
 package com.despegar.tools.bookshelf.domain.dto
 
-import scala.collection.JavaConversions._
-import com.despegar.tools.bookshelf.domain.mongo.MongoModel
-import com.despegar.tools.bookshelf.domain.mongo.MongoObject
-import com.despegar.tools.bookshelf.domain.mongo.NamedDAO
-import com.google.code.morphia.annotations.Entity
-import com.despegar.tools.bookshelf.domain.mongo.ChildDAO
+import com.despegar.tools.bookshelf.domain.mongo.{MongoModel, MongoObject, NamedDAO}
+import com.novus.salat.annotations.raw.Key
+import org.bson.types.ObjectId
 
-@Entity
-case class PropertiesGroup(var name: String, var description: String) extends MongoModel[PropertiesGroup]{
-
-	private def this() = this("", "")  // needed by morphia
+case class PropertiesGroup(var name: String, var description: String, var id : ObjectId = null) extends MongoModel[PropertiesGroup]{
 	
-	
-	def properties = PropertiesGroup.findAllByParent(this).get
+	def properties = Property.findAllByParent(this)
 	
 }
 
-object PropertiesGroup extends MongoObject[PropertiesGroup] with NamedDAO[PropertiesGroup] with ChildDAO[PropertiesGroup]{
+object PropertiesGroup extends MongoObject[PropertiesGroup] with NamedDAO[PropertiesGroup]{
 	
 }

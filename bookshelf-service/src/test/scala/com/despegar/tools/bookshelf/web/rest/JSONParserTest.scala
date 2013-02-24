@@ -1,6 +1,7 @@
 package com.despegar.tools.bookshelf.web.rest
 
 import org.junit.runner.RunWith
+import scala.collection.mutable.Map
 import scala.collection.JavaConversions._
 import scala.collection.JavaConverters._
 import org.specs2.mutable.Specification

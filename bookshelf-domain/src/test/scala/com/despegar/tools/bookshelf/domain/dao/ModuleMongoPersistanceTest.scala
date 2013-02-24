@@ -7,58 +7,58 @@ import org.specs2.mutable.Specification
 import org.specs2.mutable.Before
 import org.specs2.runner.JUnitRunner
 import com.despegar.tools.bookshelf.domain.dto._
-import com.despegar.tools.bookshelf.domain.mongo.MongoStore
 import scala.collection.immutable.Map
+import org.bson.types.ObjectId
 
 @RunWith( classOf[JUnitRunner] )
 class ModuleMongoPersistanceTest extends Specification {
-	
-    val context = new Before { 
-    	def before = {
-    		MongoStore.init("mongodb://localhost", "test", true)
-    	}
-    }
-	
+
 	"Module" should {
 
-		"persist" in context {
-			
-			var module = new Module("API", "", null);
-			
+		"persist" in {
+
+			var module = new Module( "API", "", new ObjectId );
+
 			module save
-			
+
 			var aux = Module findByName "API"
-			
+
 			aux match {
-				case None => failure("Value not stored")
-				case Some(x) => {
-					x.name must be equalTo( "API" )
+				case None => failure( "Value not stored" )
+				case Some( x ) => {
+					x.name must be equalTo ( "API" )
 				}
 			}
-			
+
 			Module.count must be_==( 1 )
-			
-			module delete
+
+			aux.get.delete
 
 			Module.count must be_==( 0 )
 		}
-		
-		"persist and add to existing project" in context {
-			
-			var project = new Project("Project1", "");
-			
+
+		"persist and add to existing project" in {
+
+			var project = new Project( "Project1", "" );
+
 			project save
-			
-			var module = new Module("Module1", "", project);
-			
+
+			var module = Module( "Module1", "", project );
+
 			module save
+
+			Module.count must be_==( 1 )
+
+			Project.count must be_==( 1 )
+			
+			project.modules.size must be_==( 1 )
 			
 			module delete
-			
+
 			project delete
 
 			Module.count must be_==( 0 )
-			
+
 			Project.count must be_==( 0 )
 		}
 	}

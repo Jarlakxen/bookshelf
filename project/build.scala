@@ -17,6 +17,7 @@ object Bookshelf extends Build {
 				javacOptions ++= Seq("-Xlint:unchecked")
 			) ++ Seq( classpathTypes ~= (_ + "orbit") ) ++ Seq(resolvers ++= Seq("OSS Sonatype" at "https://oss.sonatype.org/content/groups/scala-tools/",
 																				 "Sonatype Nexus Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots",
+																				 "Sonatype Nexus Releases" at "https://oss.sonatype.org/content/repositories/releases",
 																				 "Morphia Maven Repository" at "http://morphia.googlecode.com/svn/mavenrepo/") )
 
 	def BaseProject(id: String, base: String, settings: Seq[Project.Setting[_]] = Nil) = Project(id = "bookshelf" + id, base = file(base), settings = standardSettings ++ settings)
@@ -67,12 +68,10 @@ object ScalatraSettings {
 object MongoSettings {
 	
 	def apply() = {		
-		lazy val morphia = "com.google.code.morphia" % "morphia" % "0.99.1-SNAPSHOT" withSources()
-		lazy val morphia_logger = "com.google.code.morphia" % "morphia-logging-slf4j" % "0.99" withSources()
-		lazy val slf4j = "org.slf4j" % "slf4j-log4j12" % "1.7.1"
-		lazy val drivers = "org.mongodb" % "mongo-java-driver" % "2.8.0" withSources()
+
+		lazy val salat = "com.novus" %% "salat" % "1.9.2-SNAPSHOT"
 		
-		Seq(libraryDependencies ++= Seq(morphia, morphia_logger, slf4j, drivers))
+		Seq(libraryDependencies ++= Seq(salat))
 	}
 }
 

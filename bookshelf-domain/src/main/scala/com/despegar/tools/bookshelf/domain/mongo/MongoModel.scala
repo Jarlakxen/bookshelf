@@ -1,105 +1,85 @@
 package com.despegar.tools.bookshelf.domain.mongo
 
-import com.mongodb.Mongo
 import org.bson.types.ObjectId
-import com.google.code.morphia.{ Datastore, Morphia }
-import com.google.code.morphia.dao.BasicDAO
-import com.google.code.morphia.annotations.{Id, Transient, Reference, Embedded, Serialized}
-import com.google.code.morphia.mapping.Mapper
-import com.google.code.morphia.query.{ QueryResults, UpdateOperations, Query }
-import com.google.code.morphia.logging.MorphiaLoggerFactory
 import scala.Predef._
-import com.google.code.morphia.logging.slf4j.SLF4JLogrImplFactory
-import annotation.target.field
-import com.mongodb.MongoURI
-import scala.collection.JavaConversions._
-
-
-class DAO[T, K]( val _class : Class[T], val _datastore : Datastore ) extends BasicDAO[T, K]( _class, _datastore) {
-	def this(datastore : Datastore)( implicit m : Manifest[T] ) = {
-		this(m.erasure.asInstanceOf[Class[T]], datastore)
-		datastore.ensureIndexes( DAO.this.getEntityClass )
-	}
-}
+import scala.annotation.target.{ setter, getter }
+import com.novus.salat._
+import com.novus.salat.global._
+import com.novus.salat.dao.SalatDAO
+import com.novus.salat.annotations.raw.{ Ignore, Key, Persist, Salat }
+import com.mongodb.casbah.MongoConnection
+import com.mongodb.casbah.commons.MongoDBObject
+import com.mongodb.casbah.WriteConcern
 
 object DAO {
-	
-	def apply[T](_class : Class[T], _datastore : Datastore) = {
-		val dao = new BasicDAO[T, ObjectId]( _class, _datastore)
-		dao.ensureIndexes()
-		dao;
+
+	implicit val ctx = new Context {
+		val name = "Always-TypeHint-Context"
+
+		override val typeHintStrategy = StringTypeHintStrategy( when = TypeHintFrequency.Always, typeHint = "_class" )
 	}
-	
+
+	ctx.registerGlobalKeyOverride( remapThis = "id", toThisInstead = "_id" )
+
+	def apply[T <: AnyRef]( implicit m : Manifest[T] ) = {
+		val collection = MongoStore.Collection( m.erasure.getSimpleName() )
+		//MongoConnection()( "bookshelf" )( m.erasure.getSimpleName() )
+
+		new SalatDAO[T, ObjectId]( collection = collection ) {}
+	}
 }
 
-abstract class MongoModel[T]( implicit m : Manifest[T] ) {
-	type ReferenceField = Reference @field
-	type EmbeddedField = Embedded @field
-	type TransientField = Transient @field
-	type SerializedField = Serialized @field
-	
-	@Transient private val _clazz : Class[T] = m.erasure.asInstanceOf[Class[T]]
-	@Transient protected val _dao = DAO[T]( _clazz, MongoStore.datastore )
-	
-	@Id var id : ObjectId = _
-	
+@Salat
+abstract class MongoModel[T <: AnyRef]( implicit m : Manifest[T] ) {
+
+	import DAO._
+
+	private val _clazz : Class[T] = m.erasure.asInstanceOf[Class[T]]
+	private val _dao = DAO[T]
+
 	private def cast : T = this.asInstanceOf[T]
 
-	def getId = id
-	def setId(id : ObjectId) = this.id = id
-	
-	protected def createQueryToFindMe : Query[T] = {
-		if ( !isPersistent ) throw new IllegalStateException( "Can't perform query on myself until I have been saved!" )
-		_dao.createQuery.field( Mapper.ID_KEY ).equal( id )
-	}
-	
+	def dao = _dao
+
+	def id : ObjectId
+	def id_=( id : ObjectId )
+
 	def isPersistent = id != null
-	def save : T = { _dao.save( cast ); cast }
-	def update( ops : UpdateOperations[T] ) { _dao.updateFirst( createQueryToFindMe, ops ) }
-	def update( query : Query[T], ops : UpdateOperations[T] ) { _dao.update( query, ops ) }
-	def delete = { if ( isPersistent ) _dao.delete( cast ) }
+	def save : T = { id_=(_dao.insert( cast ).get); cast }
+	def update : T = { dao.update( MongoDBObject( "_id" -> id ), cast, false, false, WriteConcern.FsyncSafe ); cast }
+	def delete = { if ( isPersistent ) _dao.remove( cast, WriteConcern.FsyncSafe ) }
 }
 
-abstract class MongoObject[T]( implicit m : Manifest[T] ) {
-	private val _clz : Class[T] = m.erasure.asInstanceOf[Class[T]]
+abstract class MongoObject[T <: AnyRef]( implicit m : Manifest[T] ) {
 
-	protected val _dao : DAO[T, ObjectId] = new DAO[T, ObjectId]( _clz, MongoStore.datastore )
-	protected def createQuery = _dao.createQuery
-	protected def createUpdateOperations = _dao.createUpdateOperations
-	protected def update( query : Query[T], updateOperations : UpdateOperations[T] ) = _dao.update( query, updateOperations )
-	
+	import DAO._
 
-	protected def asList( q : QueryResults[T] ): Seq[T] = q.asList
+	private val _clazz : Class[T] = m.erasure.asInstanceOf[Class[T]]
+	protected val _dao = DAO[T]
 
-	def findById( id : ObjectId ) : Option[T] = Option( _dao.get( id ) )
-	def findById( id : String ) : Option[T] = findById( new ObjectId( id ) )
+	def findById( id : ObjectId ) = _dao.findOneById( id )
+	def findById( id : String ) = _dao.findOneById( new ObjectId( id ) )
 
-	def findAll = asList( _dao.find )
+	def findAll = _dao.find( MongoDBObject.empty ).toList
 
-	def count = _dao.count
+	def count = _dao.count( MongoDBObject.empty )
 
-	def deleteById( id : ObjectId ) { _dao.deleteById( id ) }
-	def deleteById( id : String ) { deleteById( new ObjectId( id ) ) }
-	def deleteAll = _dao.deleteByQuery( _dao.createQuery )
-	def drop = _dao.getCollection.drop
+	def deleteAll = _dao.remove( MongoDBObject.empty )
 }
 
-trait NamedDAO[T] {
-	
+trait NamedDAO[T <: AnyRef] {
+
 	this : MongoObject[T] =>
-	
-	def findByName(name: String) : Option[T] = Option(NamedDAO.this.createQuery.field("name").equal(name).get)
-	
+
+	def findByName( name : String ) : Option[T] = this._dao.findOne( MongoDBObject( "name" -> name ) )
+
 }
 
-trait ChildDAO[T] {
-	
+trait ChildDAO[T <: AnyRef] {
+
 	this : MongoObject[T] =>
-	
-	def findByParent(parent: MongoModel[_]) : Option[T] = findByParent(parent.id.toString())
-	def findAllByParent(parent: MongoModel[_]) : Option[Seq[T]] = findAllByParent(parent.id.toString())
-	
-	def findByParent(parentId: String) : Option[T] = Option(ChildDAO.this.createQuery.disableValidation().field("parent.$id").equal(new ObjectId(parentId)).get)
-	def findAllByParent(parentId: String) : Option[Seq[T]] = Option(ChildDAO.this.createQuery.disableValidation().field("parent.$id").equal(new ObjectId(parentId)).asList())
-	
+
+	def findAllByParent( parent : MongoModel[_] ) : List[T] = findAllByParentId( parent.id )
+	def findAllByParentId( parentId : ObjectId ) : List[T] = this._dao.find( MongoDBObject( "parentId" -> parentId ) ).toList
+
 }
