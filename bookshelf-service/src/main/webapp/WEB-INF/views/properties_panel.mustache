@@ -18,7 +18,7 @@
 					                <tr ng-repeat="property in properties | orderBy:'name'">
 					                	<td>{{property.name}}</td>
 					                	<td>
-					                		<a href="javascript:;" id="{{property.id}}-{{enviroment.name}}" data-name="{{property.id}}-{{enviroment.name}}" editable="true" data-type="text" style="border-bottom: 0px;" data-ng-model="property.values[enviroment.name]" data-ng-save-action="property.$update()" data-showbuttons="true" data-original-title="Enter Value">{{property.values[enviroment.name]}}</a>
+					                		<a href="javascript:;" id="{{property.id}}-{{enviroment.name}}" data-name="{{property.id}}-{{enviroment.name}}" editable="true" data-type="text" style="border-bottom: 0px;" data-ng-model="property.values[enviroment.name].value" data-ng-save-action="property.$update()" data-showbuttons="true" data-original-title="Enter Value">{{property.values[enviroment.name].value}}</a>
 
 					                		<i class="icon-remove-sign" style="float: right" ng-click="removeProperty(property)" ></i> 
 					                	</td>

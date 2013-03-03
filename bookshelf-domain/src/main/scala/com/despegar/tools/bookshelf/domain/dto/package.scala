@@ -12,14 +12,23 @@ import com.despegar.tools.bookshelf.domain.dto.{ Module => DomainModule }
 import com.despegar.tools.bookshelf.api.dto.{ Module => ApiModule }
 import com.despegar.tools.bookshelf.domain.dto.{ Property => DomainProperty }
 import com.despegar.tools.bookshelf.api.dto.{ Property => ApiProperty }
+import com.despegar.tools.bookshelf.domain.dto.{ PropertyValue => DomainPropertyValue }
+import com.despegar.tools.bookshelf.api.dto.{ PropertyValue => ApiPropertyValue }
 import com.despegar.tools.bookshelf.domain.dto.{ PropertiesGroup => DomainPropertiesGroup }
 import com.despegar.tools.bookshelf.api.dto.{ PropertiesGroup => ApiPropertiesGroup }
 
 
 package object dto {
 
-	implicit def ObjectIdToString( id : ObjectId ) : String = id.toString()
-	implicit def StringToObjectId( id : String ) : ObjectId = new ObjectId( id )
+	implicit def ObjectIdToString( id : ObjectId ) : String = id match {
+		case value if value != null => value.toString()
+		case _ => null
+	}
+	
+	implicit def StringToObjectId( id : String ) : ObjectId = id match {
+		case value if value != null && value.nonEmpty => new ObjectId( value )
+		case _ => null
+	}
 
 	// +++++++++++++++++++++++++++
 	// 	  Enviroment Implicits
@@ -37,7 +46,7 @@ package object dto {
 	}
 	
 	implicit def ApiToDomainEnviroment( model : ApiEnviroment ) : DomainEnviroment = {
-		val domainModel = new DomainEnviroment( model.name, model.description )
+		val domainModel = new DomainEnviroment( model.name, model.description, null )
 		
 		if( model.id != null && model.id.nonEmpty){
 			domainModel.id = model.id
@@ -107,7 +116,7 @@ package object dto {
 	implicit def functionApiPropertyTransformer( model : ApiProperty ) = new ApiPropertyTransformer(model)
 		
 	class DomainPropertyTransformer( domainModel : DomainProperty ) {
-		def asApi = ApiProperty(domainModel.id, domainModel.name, domainModel.parentId, collection.immutable.Map() ++ domainModel.values)
+		def asApi = ApiProperty(domainModel.id, domainModel.name, domainModel.parentId, collection.immutable.Map() ++ domainModel.values.map( kv => (Enviroment.findById(kv._1).get.name, DomainToApiPropertyValue(kv._2))))
 	}
 	
 	class ApiPropertyTransformer( apiModel : ApiProperty ) {
@@ -116,13 +125,39 @@ package object dto {
 	
 	implicit def ApiToDomainProperty( model : ApiProperty ) : DomainProperty = {
 		
-		val domainModel = new DomainProperty( model.name, model.parentId, collection.mutable.Map() ++ model.values )
+		val domainModel = new DomainProperty( model.name, model.parentId, collection.mutable.Map() ++ model.values.map( kv => (Enviroment.findByName(kv._1).get.id.toString(), ApiToDomainPropertyValue(kv._2))) )
 		
 		if( model.id != null && model.id.nonEmpty){
 			domainModel.id = model.id
 		}
 	
 		domainModel
+	} 
+	
+	// +++++++++++++++++++++++++++
+	// 	PropertyValue Implicits
+	// +++++++++++++++++++++++++++
+	
+	implicit def functionDomainPropertyValueTransformer( model : DomainPropertyValue ) = new DomainPropertyValueTransformer(model)
+	implicit def functionApiPropertyValueTransformer( model : ApiPropertyValue ) = new ApiPropertyValueTransformer(model)
+		
+	class DomainPropertyValueTransformer( domainModel : DomainPropertyValue ) {
+		def asApi = DomainToApiPropertyValue(domainModel)
+	}
+	
+	implicit def DomainToApiPropertyValue( domainModel : DomainPropertyValue ) = ApiPropertyValue(domainModel.linkEnviromentId, domainModel.linkId, domainModel.value)
+	
+	class ApiPropertyValueTransformer( apiModel : ApiPropertyValue ) {
+		def asDomain = ApiToDomainPropertyValue(apiModel)
+	}
+
+	implicit def ApiToDomainPropertyValue( model : ApiPropertyValue ) : DomainPropertyValue = {
+		val value = model.linkId match {
+			case v if v == null || v.isEmpty => model.value
+			case _ => null
+		}
+
+		new DomainPropertyValue( model.linkEnviromentId, model.linkId, value )
 	} 
 
 	// +++++++++++++++++++++++++++

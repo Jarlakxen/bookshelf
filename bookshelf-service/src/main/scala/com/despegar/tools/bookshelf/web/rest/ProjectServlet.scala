@@ -29,7 +29,7 @@ class ProjectServlet extends RestService{
 		
 		var newProject : Project = extract[ApiProject]
 		
-		newProject save
+		newProject saveOrUpdate
 		
 		newProject asApi
 	}

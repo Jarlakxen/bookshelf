@@ -5,7 +5,7 @@ import com.despegar.tools.bookshelf.domain.mongo.{ MongoModel, MongoObject, Name
 import scala.collection.mutable.Map
 import com.novus.salat.annotations.raw.Key
 
-case class Property(var name : String, var parentId : ObjectId, var values : Map[String, String] = Map(), var id : ObjectId = null ) extends MongoModel[Property] {
+case class Property(var name : String, var parentId : ObjectId, var values : Map[String, PropertyValue] = Map(), var id : ObjectId = null ) extends MongoModel[Property] {
 
 	private var _parent : Option[MongoModel[_ <: AnyRef]] = None
 
@@ -24,8 +24,8 @@ case class Property(var name : String, var parentId : ObjectId, var values : Map
 
 object Property extends MongoObject[Property] with NamedDAO[Property] with ChildDAO[Property] {
 
-	def apply( name : String, parent : MongoModel[_ <: AnyRef], values : Map[Enviroment, String] ) : Property = {
-		new Property( name = name, parentId = parent.id, values = values.map( entry => ( entry._1.name, entry._2 ) ) )
+	def apply( name : String, parent : MongoModel[_ <: AnyRef], values : Map[Enviroment, PropertyValue] ) : Property = {
+		new Property( name = name, parentId = parent.id, values = values.map( entry => ( entry._1.id.toString(), entry._2 ) ) )
 	}
 
 	def deleteEnvironmentFromAll( enviroment : Enviroment ) {

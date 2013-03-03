@@ -24,7 +24,7 @@ class PropertyMongoPersistanceTest extends Specification {
 			val localEnviroment = Enviroment( "Local", "" );
 			val prodEnviroment = Enviroment( "Prod", "" );
 
-			var property = Property( "test.key1", module, Map( localEnviroment -> "10", prodEnviroment -> "20" ) );
+			var property = Property( "test.key1", module, Map( localEnviroment -> PropertyValue("10"), prodEnviroment -> PropertyValue("20") ) );
 
 			property save
 
@@ -35,8 +35,8 @@ class PropertyMongoPersistanceTest extends Specification {
 				case Some( x ) => {
 					x.name must be equalTo ( "test.key1" )
 
-					x.value( localEnviroment ) must be equalTo ( "10" )
-					x.value( prodEnviroment ) must be equalTo ( "20" )
+					x.value( localEnviroment ) must be equalTo ( PropertyValue("10") )
+					x.value( prodEnviroment ) must be equalTo ( PropertyValue("20") )
 				}
 			}
 
@@ -56,8 +56,8 @@ class PropertyMongoPersistanceTest extends Specification {
 			val localEnviroment = Enviroment( "Local", "" );
 			val prodEnviroment = Enviroment( "Prod", "" );
 
-			var property1 = Property( "test.key1", module, Map( localEnviroment -> "10", prodEnviroment -> "20" ) ).save
-			var property2 = Property( "test.key2", module, Map( localEnviroment -> "15", prodEnviroment -> "25" ) ).save
+			var property1 = Property( "test.key1", module, Map( localEnviroment -> PropertyValue("10"), prodEnviroment -> PropertyValue("20") ) ).save
+			var property2 = Property( "test.key2", module, Map( localEnviroment -> PropertyValue("15"), prodEnviroment -> PropertyValue("25") ) ).save
 
 			Property deleteEnvironmentFromAll ( prodEnviroment )
 

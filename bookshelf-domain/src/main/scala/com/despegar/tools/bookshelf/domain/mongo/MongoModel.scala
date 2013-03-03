@@ -47,6 +47,10 @@ abstract class MongoModel[T <: AnyRef]( implicit m : Manifest[T] ) {
 	def isPersistent = id != null
 	def save : T = { id_=(_dao.insert( cast ).get); cast }
 	def update : T = { dao.update( MongoDBObject( "_id" -> id ), cast, false, false, WriteConcern.FsyncSafe ); cast }
+	def saveOrUpdate : T = id match {
+		case null => save
+		case _ => update
+	}
 	def delete = { if ( isPersistent ) _dao.remove( cast, WriteConcern.FsyncSafe ) }
 }
 

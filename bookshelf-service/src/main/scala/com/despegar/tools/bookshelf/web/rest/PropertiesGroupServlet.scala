@@ -27,7 +27,7 @@ class PropertiesGroupServlet extends RestService{
 		
 		var newPropertiesGroup : PropertiesGroup = extract[ApiPropertiesGroup]
 		
-		newPropertiesGroup save
+		newPropertiesGroup saveOrUpdate
 		
 		newPropertiesGroup asApi
 	}

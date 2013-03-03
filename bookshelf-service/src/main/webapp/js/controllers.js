@@ -216,9 +216,10 @@ var PropertyListCtrl = app.controller('PropertyListCtrl', function ($scope, Prop
 
     $scope.addProperty = function (newProperty, enviroment){
 		var newPropertyValues = {};
-		newPropertyValues[enviroment.name] = newProperty.value;
+		//newPropertyValues[enviroment.name] = newProperty.value;
+		newPropertyValues[enviroment.name] = {linkEnviromentId: "", linkId: "", value: newProperty.value};
 
-		var property = new Property({id: '', name: newProperty.name, parentId: $scope.parent.id, scope: {name:"PUBLIC"} ,values: newPropertyValues});
+		var property = new Property({id: '', name: newProperty.name, parentId: $scope.parent.id, values: newPropertyValues});
 		property.$save();
 
 		$scope.properties.push(property);
