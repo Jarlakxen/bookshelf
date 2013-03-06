@@ -1,6 +1,13 @@
 'use strict';
 
-var app = angular.module('BookshelfApp', [ 'ngResource', 'enviromentService', 'projectService', 'moduleService', 'propertyService', 'propertiesGroupService', 'ui', 'ui.bootstrap' ]);
+var app = angular.module('BookshelfApp', [ 'ngResource', 
+											'enviromentService', 
+											'projectService', 
+											'moduleService', 
+											'propertyService', 
+											'propertiesGroupService', 
+											'ui', 
+											'ui.bootstrap' ]);
 
 // ----------------------------------
 //			Shared Service
@@ -193,10 +200,10 @@ var ModuleListCtrl = app.controller('ModuleListCtrl', function ($scope, Module, 
 //			Property Controllers 
 // ----------------------------------
 
-var PropertyListCtrl = app.controller('PropertyListCtrl', function ($scope, Property, Enviroment) {
-	var enviroments = Enviroment.query();
+var PropertyListCtrl = app.controller('PropertyListCtrl', function ($scope, Property, Enviroment, PropertiesGroup) {
 
-	$scope.enviroments = enviroments;
+	$scope.enviroments = Enviroment.query();
+	$scope.propertiesGroups = PropertiesGroup.query();
 
 	$scope.$on('OnParentPropertyLoad', function(event, parent) {
         $scope.parent = parent;
@@ -216,7 +223,7 @@ var PropertyListCtrl = app.controller('PropertyListCtrl', function ($scope, Prop
 
     $scope.addProperty = function (newProperty, enviroment){
 		var newPropertyValues = {};
-		//newPropertyValues[enviroment.name] = newProperty.value;
+		
 		newPropertyValues[enviroment.name] = {linkEnviromentId: "", linkId: "", value: newProperty.value};
 
 		var property = new Property({id: '', name: newProperty.name, parentId: $scope.parent.id, values: newPropertyValues});

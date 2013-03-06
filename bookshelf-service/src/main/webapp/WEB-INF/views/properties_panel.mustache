@@ -29,6 +29,8 @@
 					                	</td>
 					                	<td>
 					                		<div class="add-panel" style="margin-top: 0px;">
+					                			<i class="icon-resize-small" tooltip="Link Property" ng-click="" ></i>
+					                			<i class="icon-resize-full" ui-if="newProperty.valueLinkId" tooltip="Unlink Property" ng-click="" ></i>
 									  			<input name="newPropertyValueInput" class="input-xxlarge" type="text" ng-disabled="!parent" ng-model="newProperty.value" ng-maxlength="50"/>
 									  			<button ng-click="addProperty(newProperty, enviroment)" ng-disabled="!newProperty.name || !newProperty.value">Add</button>
 											</div>
