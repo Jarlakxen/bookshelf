@@ -14,14 +14,14 @@ To simplify this you can create a common property and from your module link your
 
 Just start Bookshelf server, set your projects, modules and properties and you can access all of this data through the Restful services:
 
-"http://[ip:port]/bookshelf/rest/enviroment"
-"http://[ip:port]/bookshelf/rest/project"
-"http://[ip:port]/bookshelf/rest/project/{id}/modules"
-"http://[ip:port]/bookshelf/rest/module/{id}/properties"
+* http://[ip:port]/bookshelf/rest/enviroment
+* http://[ip:port]/bookshelf/rest/project
+* http://[ip:port]/bookshelf/rest/project/{id}/modules
+* http://[ip:port]/bookshelf/rest/module/{id}/properties
 
 or you can simply get the value of the properties of a module from a specific enviroment:
 
-"http://[ip:port]/bookshelf/query/{project-name}/{module-name}/{enviroment-name}"
+* http://[ip:port]/bookshelf/query/{project-name}/{module-name}/{enviroment-name}
 
 If you are working with **Java** and **Spring** you can try [Bookshelf Client](https://github.com/Jarlakxen/bookshelf-client). This client can put the properties in the server into the spring loading context.
 
