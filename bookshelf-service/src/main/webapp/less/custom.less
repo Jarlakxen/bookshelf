@@ -11,6 +11,10 @@
 
 @baseGrey: #eeeeee;
 
+@iconSize: 30px;
+
+@smallIconSize: @iconSize - 5px;
+
 // --------- General Tags ---------
 
 body {
@@ -19,7 +23,7 @@ body {
 
 // --------- General Components ---------
 
-.base-panel(@color: whiteSmoke) {
+.base-panel(@color: baseGrey) {
 	.well;
 
 	border: 1px solid #ccc;
@@ -178,6 +182,28 @@ body {
 	margin-bottom: 0px;
 }
 
+.li-hover {
+    li:hover {
+		font-weight: bold;
+    }
+}
+
+.row-grey {
+	border: 1px solid #ccc;
+
+	background-color: @baseGrey;
+
+	line-height: 30px;
+
+	div {
+		padding-left: 10px;
+	}
+
+	&:hover {
+		background: #999;
+	}
+}
+
 .bookshelf-breadcrumb {
 	.breadcrumb;
 	font-size: 18px;
@@ -190,6 +216,44 @@ body {
 .breadcrumb-text {
 	font-weight: bold;
 	font-size: 16px;
+}
+
+.modal-body-ext {
+	min-height: 300px;
+	max-height: 600px;
+	overflow-y: overlay;
+	font-size: 14px;
+}
+
+
+.base-icon (@size){
+	width: @size;
+	height: @size;
+	margin-right: 5px;
+	vertical-align: bottom;
+	background-position: 0px 2px;
+	background-size: (@size - 5px) (@size - 5px);
+}
+
+.icon-link {
+	.base-icon(@iconSize);
+	margin-right: 10px;
+	background-image: url("../img/link.png");
+}
+
+.icon-link-small {
+	.base-icon(@smallIconSize);
+	background-image: url("../img/link.png");
+}
+
+.icon-unlink {
+	.base-icon(@iconSize);
+	background-image: url("../img/link_break.png");
+}
+
+.icon-unlink-small {
+	.base-icon(@smallIconSize);
+	background-image: url("../img/link_break.png");
 }
 
 // --------- AngularJS Style ---------

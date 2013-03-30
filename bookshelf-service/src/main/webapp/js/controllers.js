@@ -35,12 +35,17 @@ app.directive('editable', function($timeout) {
 
  			var loadXeditable = function() {
 	        	$( element ).editable({
-	        			unsavedclass: null
+	        			unsavedclass: null/*,
+	        			display: function(value, srcData) {
+                        	scope.$apply();
+                    	}*/
 	                });
 
 	        	$( element ).on('save', function(e, params) {
-	            	ngModel.$setViewValue(params.newValue);
-	            	scope.$apply();
+
+	            	scope.$apply(function () {
+						ngModel.$setViewValue(params.newValue);
+					});
 
 	            	if(attrs.ngSaveAction){
 						scope.$eval(attrs.ngSaveAction);
@@ -140,6 +145,7 @@ var ProjectListCtrl = app.controller('ProjectListCtrl', function ($scope, Projec
 
 var ModuleListCtrl = app.controller('ModuleListCtrl', function ($scope, Module, Project) {
 
+	$scope.project =  null;
 	$scope.modules = [];
 	$scope.project = null;
 	$scope.selectedModule = null;
@@ -170,6 +176,7 @@ var ModuleListCtrl = app.controller('ModuleListCtrl', function ($scope, Module, 
 			$scope.notifyAll('OnParentPropertyUnload');
 		} else {
         	$scope.selectedModule =  module;
+        	$scope.selectedModule.linkedProperties = true;
         	$scope.notifyAll('OnModuleLoad', module);
         	$scope.notifyAll('OnParentPropertyLoad', module);
     	}
@@ -202,12 +209,20 @@ var ModuleListCtrl = app.controller('ModuleListCtrl', function ($scope, Module, 
 
 var PropertyListCtrl = app.controller('PropertyListCtrl', function ($scope, Property, Enviroment, PropertiesGroup) {
 
+	$scope.parent =  null;
 	$scope.enviroments = Enviroment.query();
 	$scope.propertiesGroups = PropertiesGroup.query();
+	$scope.newProperty = {};
 
 	$scope.$on('OnParentPropertyLoad', function(event, parent) {
         $scope.parent = parent;
-        $scope.properties = parent.properties();
+        $scope.properties = parent.properties(function(property) {
+        	angular.forEach($scope.enviroments, function(enviroment){
+        		if( property.values[enviroment.name] == undefined) {
+                	property.values[enviroment.name] = {linkEnviromentId: null, linkId: null, value:null};
+            	}
+            });
+        });
     });
 
     $scope.$on('OnParentPropertyUnload', function(event) {
@@ -221,10 +236,19 @@ var PropertyListCtrl = app.controller('PropertyListCtrl', function ($scope, Prop
     	}
     });
 
+	$scope.$on('OnPropertiesGroupModalClose', function(event, property) {
+        if( property.id ){
+    		property.$save();
+    	}
+    });
+
     $scope.addProperty = function (newProperty, enviroment){
 		var newPropertyValues = {};
 		
-		newPropertyValues[enviroment.name] = {linkEnviromentId: "", linkId: "", value: newProperty.value};
+		var linkEnviromentId = newProperty.linkEnviromentId == undefined ? null : newProperty.linkEnviromentId;
+		var linkId = newProperty.linkId == undefined ? null : newProperty.linkId;
+
+		newPropertyValues[enviroment.name] = {linkEnviromentId: linkEnviromentId, linkId: linkId, value: newProperty.value};
 
 		var property = new Property({id: '', name: newProperty.name, parentId: $scope.parent.id, values: newPropertyValues});
 		property.$save();
@@ -233,6 +257,24 @@ var PropertyListCtrl = app.controller('PropertyListCtrl', function ($scope, Prop
 
 		newProperty.name = '';
 		newProperty.value = '';
+	};
+
+	$scope.linkProperty = function (model, modelToSaveOnSelect){
+		var obj = { model : model};
+
+		if( modelToSaveOnSelect != undefined ){
+			obj.onSelect = function(){
+				modelToSaveOnSelect.$update();
+			};
+		}
+
+		$scope.notifyAll('OnPropertiesGroupModalShow', obj);
+	};
+
+	$scope.unlinkProperty = function (selectedProperty, enviroment){
+		selectedProperty.values[enviroment.name].linkId=null;
+		selectedProperty.values[enviroment.name].linkEnviromentId=null;
+		selectedProperty.$update();
 	};
 
 	$scope.saveProperty = function (selectedProperty){
@@ -284,9 +326,9 @@ var EnviromentListCtrl = app.controller('EnviromentListCtrl', function ($scope, 
 // ----------------------------------
 
 var PropertiesGroupListCtrl = app.controller('PropertiesGroupListCtrl', function ($scope, PropertiesGroup) {
-	var propertiesGroups = PropertiesGroup.query();
-	
-	$scope.propertiesGroups = propertiesGroups;
+
+	$scope.propertiesGroups = PropertiesGroup.query();
+	$scope.selectedPropertiesGroup =  null;
 
 
     $scope.$on('OnPropertiesGroupSelect', function(event, propertiesGroup) {
@@ -295,6 +337,7 @@ var PropertiesGroupListCtrl = app.controller('PropertiesGroupListCtrl', function
 			$scope.notifyAll('OnParentPropertyUnload');
 		} else {
         	$scope.selectedPropertiesGroup =  propertiesGroup;
+        	$scope.selectedPropertiesGroup.linkedProperties = false;
         	$scope.notifyAll('OnParentPropertyLoad', propertiesGroup);
     	}
     });  
@@ -304,19 +347,73 @@ var PropertiesGroupListCtrl = app.controller('PropertiesGroupListCtrl', function
 
 		var propertiesGroup = new PropertiesGroup({id: '', name: newPropertiesGroup.name, description: newPropertiesGroup.description});
 		propertiesGroup.$save();
-		
-		propertiesGroups.push(propertiesGroup);
+
+		$scope.propertiesGroups.push(propertiesGroup);
 
 		newPropertiesGroup.name = '';
 		newPropertiesGroup.description = '';
 	};
 
 	$scope.removePropertiesGroup = function (selectedPropertiesGroup){
-		propertiesGroups.pop(selectedPropertiesGroup);
+		$scope.propertiesGroups.remove(selectedPropertiesGroup);
 
 		selectedPropertiesGroup.$delete();
 
 		$scope.notifyAll('OnPropertiesGroupRemove', selectedPropertiesGroup);
 		$scope.notifyAll('OnParentPropertyRemove', selectedPropertiesGroup);
 	};
+});
+
+// ----------------------------------
+// Properties Group Modal Controllers 
+// ----------------------------------
+
+var PropertiesGroupModalCtrl = app.controller('PropertiesGroupModalCtrl', function ($scope, PropertiesGroup, Enviroment) {
+
+    $scope.$on('OnPropertiesGroupModalShow', function(event, obj) {
+	
+		$scope.enviroments = [];
+    	$scope.enviroments = Enviroment.query(function(){
+			$scope.selectedEnviroment = $scope.enviroments[0];
+    	});
+
+		$scope.propertiesGroups = {};
+		var propertiesGroups = PropertiesGroup.query(function(){
+			angular.forEach(propertiesGroups, function(propertiesGroup){
+                $scope.propertiesGroups[propertiesGroup.name] = propertiesGroup.properties();
+            });
+    	});
+		$scope.currentModel = obj.model;
+		$scope.onSelect = obj.onSelect;
+		$scope.shouldBeOpen = true;
+    });
+
+
+	$scope.selectProperty = function (selectedProperty) {
+		$scope.currentModel.linkEnviromentId = $scope.selectedEnviroment.id;
+		$scope.currentModel.linkId = selectedProperty.id;
+		$scope.currentModel.value = selectedProperty.values[$scope.selectedEnviroment.name].value;
+		if( $scope.onSelect != undefined ) {
+			$scope.onSelect();
+		}
+		$scope.close(true);
+	}
+
+	$scope.selectEnviroment = function (selectedEnviroment){
+		$scope.selectedEnviroment = selectedEnviroment;
+	}
+
+    $scope.close = function (notify){
+    	if(notify == true){
+			$scope.notifyAll('OnPropertiesGroupModalClose', $scope.currentModel);
+		}
+
+    	$scope.enviroments = [];
+    	$scope.propertiesGroups = [];
+    	$scope.currentModel = {};
+		$scope.shouldBeOpen = false;
+		$scope.selectedEnviroment = null;
+	};
+
+	$scope.close();
 });

@@ -6,7 +6,23 @@ var BASE_URL = '/bookshelf/rest'
 function $service($resource, $http, $name){
     var service = $resource(BASE_URL + '/' + $name + '/:id', {id:'@id'}, {});
 
-     service.prototype.$update = function() {
+    var fnquery = service.query;
+
+    service.query = function(success, error) {
+
+        switch(arguments.length) {
+            case 2:
+                return $ext_array(fnquery(success, error));
+            case 1:
+                return $ext_array(fnquery(success));
+            case 0: 
+                return $ext_array(fnquery());
+            default:
+                throw "Expected between 0-2 arguments [success, error], got " + arguments.length + " arguments.";
+        }
+    }
+
+    service.prototype.$update = function() {
         $http.post(BASE_URL + '/' + $name + '/', this);
     }
 
@@ -42,11 +58,16 @@ angular.module('moduleService', ['ngResource']).factory('Module', function(Prope
 
     var Module = $service($resource, $http, 'module')
 
-    Module.prototype.properties = function() {
-        var properties = [];
+    Module.prototype.properties = function(callback) {
+        var properties = $ext_array();
+
         $http.get(BASE_URL + '/module/' + this.id + '/properties').then(function(response) {
             angular.forEach(response.data, function(value){
-                properties.push( new Property({id: value.id, name: value.name, parentId: value.parentId, values: value.values}) );
+                var property = new Property({id: value.id, name: value.name, parentId: value.parentId, values: value.values});
+                if( callback != undefined){
+                    callback(property);
+                }
+                properties.push( property );
             });
         });
         return properties;
@@ -65,11 +86,16 @@ angular.module('projectService', ['ngResource']).factory('Project', function(Mod
 
 	var Project = $service($resource, $http, 'project');
 
- 	Project.prototype.modules = function() {
- 		var modules = [];
+ 	Project.prototype.modules = function(callback) {
+ 		var modules = $ext_array();
+
     	$http.get(BASE_URL + '/project/' + this.id + '/modules').then(function(response) {
     		angular.forEach(response.data, function(value){
-				modules.push( new Module({id: value.id, name: value.name, description: value.description}) );
+                var module = new Module({id: value.id, name: value.name, description: value.description});
+                if( callback != undefined){
+                    callback(module);
+                }
+				modules.push( module );
 			});
     	});
     	return modules;
@@ -86,11 +112,16 @@ angular.module('propertiesGroupService', ['ngResource']).factory('PropertiesGrou
 
     var PropertiesGroup = $service($resource, $http, 'propertiesGroup');
 
-    PropertiesGroup.prototype.properties = function() {
-        var properties = [];
+    PropertiesGroup.prototype.properties = function(callback) {
+        var properties = $ext_array();
+
         $http.get(BASE_URL + '/propertiesGroup/' + this.id + '/properties').then(function(response) {
             angular.forEach(response.data, function(value){
-                properties.push( new Property({id: value.id, name: value.name, parentId: value.parentId, values: value.values}) );
+                var property = new Property({id: value.id, name: value.name, parentId: value.parentId, values: value.values});
+                if( callback != undefined){
+                    callback(property);
+                }
+                properties.push( property );
             });
         });
         return properties;

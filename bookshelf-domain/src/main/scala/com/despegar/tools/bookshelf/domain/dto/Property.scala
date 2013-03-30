@@ -18,7 +18,7 @@ case class Property(var name : String, var parentId : ObjectId, var values : Map
 		}
 	}
 
-	def value( enviroment : Enviroment ) = this.values( enviroment.name )
+	def value( enviroment : Enviroment ) = this.values( enviroment.id )
 
 }
 

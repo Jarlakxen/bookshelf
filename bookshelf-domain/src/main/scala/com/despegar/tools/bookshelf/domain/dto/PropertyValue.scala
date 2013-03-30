@@ -3,7 +3,7 @@ package com.despegar.tools.bookshelf.domain.dto
 import com.novus.salat.annotations.raw.Salat
 import org.bson.types.ObjectId
 
-case class PropertyValue(var linkEnviromentId : ObjectId = null, var linkId : ObjectId = null, var fixValue : String ) {
+case class PropertyValue(var linkEnviromentId : ObjectId = null, var linkId : ObjectId = null, var fixValue : String = null) {
 
 	private def linkEnviroment = Enviroment.findById( linkEnviromentId ).get
 
@@ -21,7 +21,7 @@ case class PropertyValue(var linkEnviromentId : ObjectId = null, var linkId : Ob
 
 object PropertyValue {
 
-	def apply( value : String ) = new PropertyValue( "", "", value );
+	def apply( value : String ) = new PropertyValue( null, null, value );
 
 	def apply( linkEnviroment : ObjectId, linkId : ObjectId ) = new PropertyValue( linkEnviroment, linkId, null );
 

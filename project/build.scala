@@ -3,6 +3,10 @@ import Keys._
 import scala.xml._
 import com.github.siasia._
 import com.typesafe.sbteclipse.plugin.EclipsePlugin._
+import org.scalatra.sbt._
+import org.scalatra.sbt.PluginKeys._
+import com.mojolly.scalate.ScalatePlugin._
+import ScalateKeys._
 
 object Bookshelf extends Build {
 
@@ -13,12 +17,12 @@ object Bookshelf extends Build {
 				organization := "com.bookshelf.server",
 				version := "0.1.0",
 				scalaVersion := "2.9.2",
-				scalacOptions ++= Seq("-encoding", "UTF-8", "-deprecation", "-unchecked"),
-				javacOptions ++= Seq("-Xlint:unchecked")
-			) ++ Seq( classpathTypes ~= (_ + "orbit") ) ++ Seq(resolvers ++= Seq("OSS Sonatype" at "https://oss.sonatype.org/content/groups/scala-tools/",
+				scalacOptions ++= Seq("-encoding", "UTF-8")//, "-deprecation", "-unchecked"),
+				//javacOptions ++= Seq("-Xlint:unchecked")
+			) ++ Seq( classpathTypes ~= (_ + "orbit") )  ++ Seq(resolvers ++= Seq("OSS Sonatype" at "https://oss.sonatype.org/content/groups/scala-tools",
 																				 "Sonatype Nexus Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots",
 																				 "Sonatype Nexus Releases" at "https://oss.sonatype.org/content/repositories/releases",
-																				 "Morphia Maven Repository" at "http://morphia.googlecode.com/svn/mavenrepo/") )
+																				 "TypeSafe Akka Releases" at "http://repo.typesafe.com/typesafe/simple/akka-releases-cache"))
 
 	def BaseProject(id: String, base: String, settings: Seq[Project.Setting[_]] = Nil) = Project(id = "bookshelf" + id, base = file(base), settings = standardSettings ++ settings)
 	def RootProject() = BaseProject(id = "", base = ".")
@@ -49,7 +53,7 @@ object JettySettings {
 object ScalatraSettings {
 	
 	def apply() = {
-		val scalatraVersion = "2.2.0-RC3"//"2.1.1"
+		val scalatraVersion = "2.2.0"//"2.1.1"
 		lazy val scalatra = "org.scalatra" % "scalatra" % scalatraVersion withSources() withJavadoc()
 		lazy val scalate = "org.scalatra" % "scalatra-scalate" % scalatraVersion withSources() withJavadoc()
 		lazy val scalatra_json = "org.scalatra" % "scalatra-json" % scalatraVersion withSources()
@@ -60,7 +64,7 @@ object ScalatraSettings {
 
 		lazy val logback = "ch.qos.logback" % "logback-classic" % "1.0.9" % "runtime"
 		
-		Seq(libraryDependencies ++= Seq(scalatra, scalate, scalatra_json, json4sJackson, json4sExt, logback))
+		Seq(libraryDependencies ++= Seq(scalatra, scalate, scalatra_json, json4sJackson, json4sExt, logback)) ++ ScalatraPlugin.scalatraWithJRebel ++ scalateSettings
 	}
 }
 
@@ -69,7 +73,7 @@ object MongoSettings {
 	
 	def apply() = {		
 
-		lazy val salat = "com.novus" %% "salat" % "1.9.2-SNAPSHOT"
+		lazy val salat = "com.novus" %% "salat" % "1.9.1"
 		
 		Seq(libraryDependencies ++= Seq(salat))
 	}

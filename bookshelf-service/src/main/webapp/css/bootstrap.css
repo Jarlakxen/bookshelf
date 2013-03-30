@@ -5108,10 +5108,10 @@ input[type="submit"].btn.btn-mini {
 
 .modal {
   position: fixed;
-  top: 10%;
-  left: 50%;
+  top: 5%;
+  left: 47%;
   z-index: 1050;
-  width: 560px;
+  width: 700px;
   margin-left: -280px;
   background-color: #ffffff;
   border: 1px solid #999;
@@ -6339,6 +6339,7 @@ body {
   margin-top: 15px;
   margin-bottom: 20px;
   background-color: #ffffff;
+  background-color: baseGrey;
   background-color: whiteSmoke;
   border: 1px solid #ededed;
   border: 1px solid #ccc;
@@ -6964,6 +6965,24 @@ body {
   border-bottom: 1px solid #DDD;
 }
 
+.li-hover li:hover {
+  font-weight: bold;
+}
+
+.row-grey {
+  line-height: 30px;
+  background-color: #eeeeee;
+  border: 1px solid #ccc;
+}
+
+.row-grey div {
+  padding-left: 10px;
+}
+
+.row-grey:hover {
+  background: #999;
+}
+
 .bookshelf-breadcrumb {
   padding: 8px 15px;
   margin: 0 0 20px;
@@ -6997,6 +7016,54 @@ body {
 .breadcrumb-text {
   font-size: 16px;
   font-weight: bold;
+}
+
+.modal-body-ext {
+  max-height: 600px;
+  min-height: 300px;
+  overflow-y: overlay;
+  font-size: 14px;
+}
+
+.icon-link {
+  width: 30px;
+  height: 30px;
+  margin-right: 5px;
+  margin-right: 10px;
+  vertical-align: bottom;
+  background-image: url("../img/link.png");
+  background-position: 0 2px;
+  background-size: 25px 25px;
+}
+
+.icon-link-small {
+  width: 25px;
+  height: 25px;
+  margin-right: 5px;
+  vertical-align: bottom;
+  background-image: url("../img/link.png");
+  background-position: 0 2px;
+  background-size: 20px 20px;
+}
+
+.icon-unlink {
+  width: 30px;
+  height: 30px;
+  margin-right: 5px;
+  vertical-align: bottom;
+  background-image: url("../img/link_break.png");
+  background-position: 0 2px;
+  background-size: 25px 25px;
+}
+
+.icon-unlink-small {
+  width: 25px;
+  height: 25px;
+  margin-right: 5px;
+  vertical-align: bottom;
+  background-image: url("../img/link_break.png");
+  background-position: 0 2px;
+  background-size: 20px 20px;
 }
 
 input.ng-invalid-maxlength {
