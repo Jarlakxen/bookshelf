@@ -11,12 +11,12 @@ import org.json4s.jackson.JsonMethods
 import org.json4s.Extraction
 import org.json4s.{ DefaultFormats, Formats }
 import scala.collection.immutable.Map
-import com.despegar.tools.bookshelf.api.dto.Enviroment
+import com.jarlakxen.tools.bookshelf.api.dto.Enviroment
 import org.json4s.jackson.Serialization.{read, write => swrite}
-import com.despegar.tools.bookshelf.domain.dto._
-import com.despegar.tools.bookshelf.api.dto.Property
-import com.despegar.tools.bookshelf.domain.dto.{Property => DomainProperty}
-import com.despegar.tools.bookshelf.api.dto.PropertyValue
+import com.jarlakxen.tools.bookshelf.domain.dto._
+import com.jarlakxen.tools.bookshelf.api.dto.Property
+import com.jarlakxen.tools.bookshelf.domain.dto.{Property => DomainProperty}
+import com.jarlakxen.tools.bookshelf.api.dto.PropertyValue
 import org.bson.types.ObjectId
 
 @RunWith( classOf[JUnitRunner] )

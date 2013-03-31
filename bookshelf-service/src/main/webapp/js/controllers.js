@@ -130,7 +130,7 @@ var ProjectListCtrl = app.controller('ProjectListCtrl', function ($scope, Projec
 	};
 
 	$scope.removeProject = function (selectedProject){
-		projects.pop(selectedProject);
+		projects.remove(selectedProject);
 
 		selectedProject.$delete();
 
@@ -193,7 +193,7 @@ var ModuleListCtrl = app.controller('ModuleListCtrl', function ($scope, Module, 
 	}; 
 
 	$scope.removeModule = function (selectedModule){
-		$scope.modules.pop(selectedModule);
+		$scope.modules.remove(selectedModule);
 
 		selectedModule.$delete();
 
@@ -283,7 +283,7 @@ var PropertyListCtrl = app.controller('PropertyListCtrl', function ($scope, Prop
 
 
 	$scope.removeProperty = function (selectedProperty){
-		$scope.properties.pop(selectedProperty);
+		$scope.properties.remove(selectedProperty);
 
 		selectedProperty.$delete();
 	};
@@ -312,7 +312,7 @@ var EnviromentListCtrl = app.controller('EnviromentListCtrl', function ($scope, 
 	};
 
 	$scope.removeEnviroment = function (selectedEnviroment){
-		enviroments.pop(selectedEnviroment);
+		enviroments.remove(selectedEnviroment);
 
 		selectedEnviroment.$delete();
 

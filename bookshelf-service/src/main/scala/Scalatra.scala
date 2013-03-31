@@ -1,8 +1,8 @@
 import org.scalatra._
 import javax.servlet.ServletContext
-import com.despegar.tools.bookshelf.web.view.ViewsServlet
-import com.despegar.tools.bookshelf.web.rest._
-import com.despegar.tools.bookshelf.domain.mongo.MongoStore
+import com.jarlakxen.tools.bookshelf.web.view.ViewsServlet
+import com.jarlakxen.tools.bookshelf.web.rest._
+import com.jarlakxen.tools.bookshelf.domain.mongo.MongoStore
 
 class Scalatra extends LifeCycle {
 	
