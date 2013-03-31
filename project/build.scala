@@ -13,19 +13,20 @@ import ScalateKeys._
 
 object Bookshelf extends Build {
 
-	EclipseKeys.withSource := true
-	EclipseKeys.executionEnvironment := Some(EclipseExecutionEnvironment.JavaSE16)
-
 	lazy val standardSettings = Project.defaultSettings ++ Seq(
 				organization := "com.bookshelf.server",
 				version := "0.1.0",
 				scalaVersion := "2.9.2",
 				scalacOptions ++= Seq("-encoding", "UTF-8")//, "-deprecation", "-unchecked"),
 				//javacOptions ++= Seq("-Xlint:unchecked")
-			) ++ Seq( classpathTypes ~= (_ + "orbit") )  ++ Seq(resolvers ++= Seq("OSS Sonatype" at "https://oss.sonatype.org/content/groups/scala-tools",
-																				 "Sonatype Nexus Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots",
-																				 "Sonatype Nexus Releases" at "https://oss.sonatype.org/content/repositories/releases",
-																				 "TypeSafe Akka Releases" at "http://repo.typesafe.com/typesafe/simple/akka-releases-cache"))
+			) ++ Seq( EclipseKeys.projectFlavor := EclipseProjectFlavor.Scala,
+					  EclipseKeys.createSrc := EclipseCreateSrc.Default + EclipseCreateSrc.Resource, 
+					  EclipseKeys.withSource := true, 
+					  EclipseKeys.executionEnvironment := Some(EclipseExecutionEnvironment.JavaSE16) ) ++
+				 Seq( classpathTypes ~= (_ + "orbit") )  ++ Seq(resolvers ++= Seq("OSS Sonatype" at "https://oss.sonatype.org/content/groups/scala-tools",
+																				  "Sonatype Nexus Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots",
+																				  "Sonatype Nexus Releases" at "https://oss.sonatype.org/content/repositories/releases",
+																				  "TypeSafe Akka Releases" at "http://repo.typesafe.com/typesafe/simple/akka-releases-cache"))
 
 	def BaseProject(id: String, base: String, settings: Seq[Project.Setting[_]] = Nil) = Project(id = "bookshelf" + id, base = file(base), settings = standardSettings ++ settings)
 	def RootProject() = BaseProject(id = "", base = ".")
@@ -35,7 +36,7 @@ object Bookshelf extends Build {
 
 	lazy val api = SubProject("api", "bookshelf-api")
 
-	lazy val domain = SubProject("domain", "bookshelf-domain", MongoSettings() ++ UtilsSettings() ++ TestSettings()) dependsOn ( api )
+	lazy val domain = SubProject("domain", "bookshelf-domain", MongoSettings() ++ ConfigLoaderSettings() ++ UtilsSettings() ++ TestSettings()) dependsOn ( api )
 
 	lazy val service = SubProject("service", "bookshelf-service", WebPlugin.webSettings ++ StartScriptPlugin.startScriptForClassesSettings ++ ScalatraSettings() ++ JettySettings() ++ TestSettings()) dependsOn ( domain )
 	
@@ -72,6 +73,15 @@ object ScalatraSettings {
 	}
 }
 
+object ConfigLoaderSettings {
+	
+	def apply() = {		
+
+		lazy val config = "com.typesafe" % "config" % "1.0.0" withSources()
+		
+		Seq(libraryDependencies ++= Seq(config))
+	}
+}
 
 object MongoSettings {
 	

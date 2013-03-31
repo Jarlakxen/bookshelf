@@ -11,7 +11,10 @@ case class PropertyValue(var linkEnviromentId : ObjectId = null, var linkId : Ob
 
 		if ( linkId != null && linkEnviromentId != null ) {
 
-			return Property.findById( linkId ).get.value( linkEnviroment ).value
+			Property.findById( linkId ).get.value( linkEnviroment ) match {
+				case Some(v) => v.value
+				case None => null
+			}
 		}
 
 		return fixValue

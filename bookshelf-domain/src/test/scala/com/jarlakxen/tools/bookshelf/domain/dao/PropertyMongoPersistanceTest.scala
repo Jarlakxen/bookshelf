@@ -35,8 +35,8 @@ class PropertyMongoPersistanceTest extends Specification {
 				case Some( x ) => {
 					x.name must be equalTo ( "test.key1" )
 
-					x.value( localEnviroment ) must be equalTo ( PropertyValue("10") )
-					x.value( prodEnviroment ) must be equalTo ( PropertyValue("20") )
+					x.value( localEnviroment ) must be equalTo ( Some(PropertyValue("10")) )
+					x.value( prodEnviroment ) must be equalTo ( Some(PropertyValue("20")) )
 				}
 			}
 
