@@ -1,5 +1,5 @@
 
-addSbtPlugin("com.typesafe.startscript" % "xsbt-start-script-plugin" % "0.5.3")
+addSbtPlugin("com.typesafe.sbt" % "sbt-start-script" % "0.7.0")
 
 addSbtPlugin("com.mojolly.scalate" % "xsbt-scalate-generator" % "0.4.2")
 
