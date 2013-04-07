@@ -2,7 +2,7 @@
 
 This is a web tool that provides a simple way to centralize the properties configuration of diferent applications in the same place.
 
-![Alt text](https://lh3.googleusercontent.com/dKVIjWtwn7xKDTu0OUhUrBStgIae86SUJo526oEDWofVU1aH4P6T16I552Kl-CJEl-W5LnOndbc)
+[Live Demo](https://bookshelf-scala.herokuapp.com/bookshelf/home)
 
 ### Why? ###
 
