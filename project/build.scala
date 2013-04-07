@@ -4,7 +4,8 @@ import scala.xml._
 import com.github.siasia._
 
 import com.typesafe.sbteclipse.plugin.EclipsePlugin._
-import com.typesafe.sbt.SbtStartScript
+import com.typesafe.sbt.SbtStartScript._
+import StartScriptKeys._
 
 import org.scalatra.sbt._
 import org.scalatra.sbt.PluginKeys._
@@ -27,7 +28,8 @@ object Bookshelf extends Build {
 				Seq(resolvers ++= Seq("OSS Sonatype" at "https://oss.sonatype.org/content/groups/scala-tools",
 									  "Sonatype Nexus Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots",
 									  "Sonatype Nexus Releases" at "https://oss.sonatype.org/content/repositories/releases",
-									  "TypeSafe Akka Releases" at "http://repo.typesafe.com/typesafe/simple/akka-releases-cache"))
+									  "TypeSafe Akka Releases" at "http://repo.typesafe.com/typesafe/simple/akka-releases-cache",
+									  "wasted.io/repo" at "http://repo.wasted.io/mvn"))
 
 	def BaseProject(id: String, base: String, settings: Seq[Project.Setting[_]] = Nil) = Project(id = "bookshelf" + id, base = file(base), settings = standardSettings ++ settings)
 	def RootProject() = BaseProject(id = "", base = ".")
@@ -37,9 +39,9 @@ object Bookshelf extends Build {
 
 	lazy val api = SubProject("api", "bookshelf-api")
 
-	lazy val domain = SubProject("domain", "bookshelf-domain", MongoSettings() ++ ConfigLoaderSettings() ++ UtilsSettings() ++ TestSettings()) dependsOn ( api )
+	lazy val domain = SubProject("domain", "bookshelf-domain", MongoSettings() ++ UtilsSettings() ++ TestSettings()) dependsOn ( api )
 
-	lazy val service = SubProject("service", "bookshelf-service", WebPlugin.webSettings ++ SbtStartScript.startScriptForWarSettings ++ ScalatraSettings() ++ JettySettings() ++ TestSettings()) dependsOn ( domain )
+	lazy val service = SubProject("service", "bookshelf-service", WebPlugin.webSettings ++ DeploySettings() ++ ScalatraSettings() ++ JettySettings() ++ TestSettings()) dependsOn ( domain )
 	
 	override def projects = Seq(root, api, domain, service)
 
@@ -74,16 +76,6 @@ object ScalatraSettings {
 	}
 }
 
-object ConfigLoaderSettings {
-	
-	def apply() = {		
-
-		lazy val config = "com.typesafe" % "config" % "1.0.0" withSources()
-		
-		Seq(libraryDependencies ++= Seq(config))
-	}
-}
-
 object MongoSettings {
 	
 	def apply() = {		
@@ -97,9 +89,10 @@ object MongoSettings {
 object UtilsSettings {
 	
 	def apply() = {
+		lazy val config = "com.typesafe" % "config" % "1.0.0" withSources()
 		lazy val reflection = "org.reflections" % "reflections" % "0.9.8" withJavadoc()
 
-		Seq(libraryDependencies ++= Seq(reflection))
+		Seq(libraryDependencies ++= Seq(config, reflection))
 	}
 }
 
@@ -110,5 +103,12 @@ object TestSettings {
 		lazy val junit = "junit" % "junit" % "4.8.1" % "test"
 		
 		Seq(libraryDependencies ++= Seq(specs2, junit))
+	}
+}
+
+object DeploySettings {
+	
+	def apply() = {
+		startScriptForWarSettings ++ Seq( startScriptJettyVersion in Compile := "8.1.7.v20120910", startScriptJettyChecksum in Compile := "459ecdbfa47a4b2d18b10592cff7ab4e44cf4ef2")
 	}
 }

@@ -11,6 +11,11 @@ object Config {
 		case _ => false
 	}
 	
+	def onKey( key : String)(f:AnyRef => Unit ) = ExceptionOption( conf.getAnyRef(key) )  match {
+		case Some( v ) => f(v)
+		case _ => Unit
+	}
+	
 	def getOptionString( key : String ) = ExceptionOption( conf.getString( key ) )
 	def getString( key : String, default : String ) = getOptionString( key ) getOrElse default
 	def getString( key : String ) = conf.getString( key )
