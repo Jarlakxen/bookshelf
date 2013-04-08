@@ -28,7 +28,27 @@ If you are working with **Java** and **Spring** you can try [Bookshelf Client](h
 
 ### Installation ###
 
-....
+First you need al least 2.9.2 and SBT 12.2:
+
+#### Generate WAR ####
+
+git clone git://github.com/Jarlakxen/bookshelf.git
+
+cd bookshelf
+
+sbt package-war
+
+#### DB Configuration ####
+
+You can run the applicacion with the following parameters:
+
+* -Ddb.name=
+* -Ddb.host=
+* -Ddb.port=
+* -Ddb.user= 
+* -Ddb.password=
+
+or you can edit the configuration file placed in bookshelf-domain/src/main/resources/application.properties
 
 ### Features ###
 
