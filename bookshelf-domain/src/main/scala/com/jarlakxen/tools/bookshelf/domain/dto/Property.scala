@@ -19,12 +19,11 @@ case class Property(var name : String, var parentId : ObjectId, var values : Map
 	}
 
 	def value( enviroment : Enviroment ) : Option[PropertyValue] = {
-		if( this.values.contains(enviroment.id) ){
-			Some(this.values( enviroment.id ))
+		this.values.contains(enviroment.id) match {
+			case true => Some(this.values( enviroment.id ))
+			case false => None
 		}
-		None
 	}
-
 }
 
 object Property extends MongoObject[Property] with NamedDAO[Property] with ChildDAO[Property] {

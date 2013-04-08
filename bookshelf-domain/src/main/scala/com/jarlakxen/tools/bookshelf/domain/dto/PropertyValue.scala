@@ -11,7 +11,7 @@ case class PropertyValue(var linkEnviromentId : ObjectId = null, var linkId : Ob
 
 		if ( linkId != null && linkEnviromentId != null ) {
 
-			Property.findById( linkId ).get.value( linkEnviroment ) match {
+			return Property.findById( linkId ).get.value( linkEnviroment ) match {
 				case Some(v) => v.value
 				case None => null
 			}

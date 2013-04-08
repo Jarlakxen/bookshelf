@@ -1,7 +1,8 @@
 import sbt._
 import Keys._
-import scala.xml._
+
 import com.github.siasia._
+import com.github.siasia.PluginKeys._
 
 import com.typesafe.sbteclipse.plugin.EclipsePlugin._
 import com.typesafe.sbt.SbtStartScript._
@@ -41,7 +42,7 @@ object Bookshelf extends Build {
 
 	lazy val domain = SubProject("domain", "bookshelf-domain", MongoSettings() ++ UtilsSettings() ++ TestSettings()) dependsOn ( api )
 
-	lazy val service = SubProject("service", "bookshelf-service", WebPlugin.webSettings ++ DeploySettings() ++ ScalatraSettings() ++ JettySettings() ++ TestSettings()) dependsOn ( domain )
+	lazy val service = SubProject("service", "bookshelf-service", DeploySettings() ++ ScalatraSettings() ++ JettySettings() ++ TestSettings()) dependsOn ( domain )
 	
 	override def projects = Seq(root, api, domain, service)
 
@@ -109,6 +110,9 @@ object TestSettings {
 object DeploySettings {
 	
 	def apply() = {
-		startScriptForWarSettings ++ Seq( startScriptJettyVersion in Compile := "8.1.7.v20120910", startScriptJettyChecksum in Compile := "459ecdbfa47a4b2d18b10592cff7ab4e44cf4ef2")
+
+		val jettyCustomSettings = Seq( startScriptJettyVersion in Compile := "8.1.7.v20120910", startScriptJettyChecksum in Compile := "459ecdbfa47a4b2d18b10592cff7ab4e44cf4ef2") 
+
+		WebPlugin.webSettings ++ startScriptForWarSettings ++ jettyCustomSettings
 	}
 }
