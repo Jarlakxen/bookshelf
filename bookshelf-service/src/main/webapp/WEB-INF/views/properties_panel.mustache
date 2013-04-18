@@ -32,7 +32,7 @@
 					                </tr>
 					                <tr style="background-color: whiteSmoke;">
 					                	<td>
-					                		<input name="newPropertyNameInput" class="input-xlarge" type="text" ng-disabled="!parent" ng-model="newProperty.name" ng-maxlength="50"/>
+					                		<input name="newPropertyNameInput" class="input-xlarge" type="text" ng-disabled="!parent" ng-model="newProperty.name" ng-maxlength="60"/>
 					                	</td>
 					                	<td>
 					                		<div class="add-panel" style="margin-top: 0px;">
@@ -40,7 +40,7 @@
 					                			<i class="icon-link" ui-if="parent.linkedProperties == true" ng-click="linkProperty(newProperty)" ></i>
 					                			<i class="icon-unlink" ui-if="newProperty.linkId != null" ng-click="newProperty.linkId=null; newProperty.linkEnviromentId=null;" ></i>
 
-									  			<input name="newPropertyValueInput" class="input-xxlarge" type="text" ng-disabled="!parent || newProperty.linkId!=null" ng-model="newProperty.value" ng-maxlength="50"/>
+									  			<input name="newPropertyValueInput" class="input-xxlarge" type="text" ng-disabled="!parent || newProperty.linkId!=null" ng-model="newProperty.value"/>
 									  			<button ng-click="addProperty(newProperty, enviroment)" ng-disabled="!newProperty.name || !newProperty.value">Add</button>
 											</div>
 					                	</td>
