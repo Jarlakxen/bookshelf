@@ -7019,7 +7019,7 @@ body {
 }
 
 .modal-body-ext {
-  max-height: 600px;
+  max-height: 450px;
   min-height: 300px;
   overflow-y: overlay;
   font-size: 14px;

@@ -257,6 +257,7 @@ var PropertyListCtrl = app.controller('PropertyListCtrl', function ($scope, Prop
 
 		newProperty.name = '';
 		newProperty.value = '';
+		newProperty.linkId = null;
 	};
 
 	$scope.linkProperty = function (model, modelToSaveOnSelect){
