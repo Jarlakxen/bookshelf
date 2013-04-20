@@ -10,7 +10,7 @@
 		<div class="selector-multi-column-scroll">
 			<table>
 				<tbody ng-repeat="propertiesGroup in propertiesGroups | orderBy:'name'">
-					<tr>
+					<tr style="cursor:pointer;">
 						<td ng-click="notifyAll('OnPropertiesGroupSelect', propertiesGroup)">
 							<span ng-class="{selected: propertiesGroup.id==selectedPropertiesGroup.id}">{{propertiesGroup.name}}</span>
 							<i class="icon-trash" style="float: right" ng-click="removePropertiesGroup(propertiesGroup)" ></i>

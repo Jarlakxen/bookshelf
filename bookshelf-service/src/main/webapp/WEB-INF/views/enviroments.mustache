@@ -17,7 +17,7 @@
 				<div class="selector-multi-column-scroll">
 					<table>
 						<tbody ng-repeat="enviroment in enviroments | orderBy:'name'" ng-click="showHide=!showHide">
-							<tr>
+							<tr style="cursor:pointer;">
 								<td>
 									<a>{{enviroment.name}}</a>
 									<i class="icon-trash" style="float: right" ng-click="removeEnviroment(enviroment)" ></i>
