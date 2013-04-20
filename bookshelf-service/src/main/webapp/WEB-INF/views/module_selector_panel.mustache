@@ -14,7 +14,7 @@
 					<tr ng-repeat="project in projects | orderBy:'name'">
 						<td ng-click="notifyAll('OnProjectSelect', project)">
 							<span>{{project.name}}</span>
-							<i class="icon-remove-sign" style="float: right" ng-click="removeProject(project)" ></i>
+							<i class="icon-trash" style="float: right" ng-click="removeProject(project)" ></i>
 						</td>
 					</tr>
 				</tbody>

@@ -13,7 +13,7 @@
 					<tr>
 						<td ng-click="notifyAll('OnPropertiesGroupSelect', propertiesGroup)">
 							<span ng-class="{selected: propertiesGroup.id==selectedPropertiesGroup.id}">{{propertiesGroup.name}}</span>
-							<i class="icon-remove-sign" style="float: right" ng-click="removePropertiesGroup(propertiesGroup)" ></i>
+							<i class="icon-trash" style="float: right" ng-click="removePropertiesGroup(propertiesGroup)" ></i>
 						</td>
 					</tr>
 					<tr fade="propertiesGroup.id==selectedPropertiesGroup.id">
