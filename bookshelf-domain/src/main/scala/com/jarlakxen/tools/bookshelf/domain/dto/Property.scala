@@ -5,18 +5,7 @@ import com.jarlakxen.tools.bookshelf.domain.mongo.{ MongoModel, MongoObject, Nam
 import scala.collection.mutable.Map
 import com.novus.salat.annotations.raw.Key
 
-case class Property(var name : String, var parentId : ObjectId, var values : Map[String, PropertyValue] = Map(), var id : ObjectId = null ) extends MongoModel[Property] {
-
-	private var _parent : Option[MongoModel[_ <: AnyRef]] = None
-
-	def parent = this.synchronized {
-		_parent match {
-			case Some( value ) => value
-			case None => {
-				null
-			}
-		}
-	}
+case class Property(name : String, parentId : ObjectId, values : Map[String, PropertyValue] = Map(), id : ObjectId = null ) extends MongoModel[Property] {
 
 	def value( enviroment : Enviroment ) : Option[PropertyValue] = {
 		this.values.contains(enviroment.id) match {
@@ -24,6 +13,8 @@ case class Property(var name : String, var parentId : ObjectId, var values : Map
 			case false => None
 		}
 	}
+	
+	def cloneWithId(id : ObjectId) = this.copy( id = id)
 }
 
 object Property extends MongoObject[Property] with NamedDAO[Property] with ChildDAO[Property] {

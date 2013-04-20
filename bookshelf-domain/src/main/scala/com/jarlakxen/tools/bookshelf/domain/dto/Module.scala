@@ -4,21 +4,13 @@ import org.bson.types.ObjectId
 import com.jarlakxen.tools.bookshelf.domain.mongo.{ MongoModel, MongoObject, NamedDAO, ChildDAO }
 import com.novus.salat.annotations.raw.Key
 
-case class Module(var name : String, var description : String, parentId : ObjectId, var id : ObjectId = null ) extends MongoModel[Module] {
+case class Module( name : String, description : String, parentId : ObjectId, id : ObjectId = null ) extends MongoModel[Module] {
 
-	private var _parent : Option[Project] = None
-
-	def parent = this.synchronized {
-		_parent match {
-			case Some( value ) => value
-			case None => {
-				_parent = Project findById ( parentId )
-				_parent.get
-			}
-		}
-	}
+	lazy val parent : Project = Project.findById( parentId ).get
 
 	def properties = Property findAllByParent ( this )
+
+	def cloneWithId(id : ObjectId) = this.copy( id = id)
 
 }
 

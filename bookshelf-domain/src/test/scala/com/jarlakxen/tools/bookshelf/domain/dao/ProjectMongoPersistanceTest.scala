@@ -7,16 +7,24 @@ import org.specs2.mutable.Specification
 import org.specs2.mutable.Before
 import org.specs2.runner.JUnitRunner
 import com.jarlakxen.tools.bookshelf.domain.dto._
+import com.jarlakxen.tools.bookshelf.domain.mongo.MongoStore
 
 @RunWith( classOf[JUnitRunner] )
 class ProjectMongoPersistanceTest extends Specification {
 
+	implicit def context = new Before {
+		def before = {
+			System.setProperty( "db.name", "test-bookshelf" )
+			MongoStore dropDatabase
+		}
+	}
+	
 	"Project" should {
 
 		"persist and delete" in {
 			var project = new Project( "Cars", "" )
 
-			project save
+			project = project save
 
 			var aux = Project findByName "Cars"
 
@@ -35,9 +43,9 @@ class ProjectMongoPersistanceTest extends Specification {
 		"update" in {
 			var project = new Project( "Cars", "" )
 
-			project save
+			project = project save
 
-			project name = "Cars2"
+			project = project copy( name = "Cars2" )
 
 			project update
 

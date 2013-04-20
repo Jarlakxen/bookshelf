@@ -9,9 +9,17 @@ import org.specs2.runner.JUnitRunner
 import com.jarlakxen.tools.bookshelf.domain.dto._
 import scala.collection.immutable.Map
 import org.bson.types.ObjectId
+import com.jarlakxen.tools.bookshelf.domain.mongo.MongoStore
 
 @RunWith( classOf[JUnitRunner] )
 class ModuleMongoPersistanceTest extends Specification {
+
+	implicit def context = new Before {
+		def before = {
+			System.setProperty( "db.name", "test-bookshelf" )
+			MongoStore dropDatabase
+		}
+	}
 
 	"Module" should {
 

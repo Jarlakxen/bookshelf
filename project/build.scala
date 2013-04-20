@@ -5,6 +5,7 @@ import com.github.siasia._
 import com.github.siasia.PluginKeys._
 
 import com.typesafe.sbteclipse.plugin.EclipsePlugin._
+
 import com.typesafe.sbt.SbtStartScript._
 import StartScriptKeys._
 

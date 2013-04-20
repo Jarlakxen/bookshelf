@@ -46,13 +46,14 @@ package object dto {
 	}
 	
 	implicit def ApiToDomainEnviroment( model : ApiEnviroment ) : DomainEnviroment = {
-		val domainModel = new DomainEnviroment( model.name, model.description, null )
+		
+		var id : String = null
 		
 		if( model.id != null && model.id.nonEmpty){
-			domainModel.id = model.id
+			id = model.id
 		}
-	
-		domainModel
+		
+		new DomainEnviroment( model.name, model.description, id )
 	} 
 	
 	
@@ -72,13 +73,14 @@ package object dto {
 	}
 	
 	implicit def ApiToDomainProject( model : ApiProject ) : DomainProject  = {
-		val domainModel = new DomainProject( model.name, model.description )
+		
+		var id : String = null
 		
 		if( model.id != null && model.id.nonEmpty){
-			domainModel.id = model.id
+			id = model.id
 		}
-	
-		domainModel
+		
+		new DomainProject( model.name, model.description, id )
 	}
 	
 	
@@ -98,13 +100,14 @@ package object dto {
 	}
 	
 	implicit def ApiToDomainModule( model : ApiModule ) : DomainModule = {
-		val domainModel = new DomainModule( model.name, model.description, model.parentId)
+		
+		var id : String = null
 		
 		if( model.id != null && model.id.nonEmpty){
-			domainModel.id = model.id
+			id = model.id
 		}
-	
-		domainModel
+		
+		new DomainModule( model.name, model.description, model.parentId, id)
 	} 
 	
 	
@@ -125,13 +128,13 @@ package object dto {
 	
 	implicit def ApiToDomainProperty( model : ApiProperty ) : DomainProperty = {
 		
-		val domainModel = new DomainProperty( model.name, model.parentId, collection.mutable.Map() ++ model.values.map( kv => (Enviroment.findByName(kv._1).get.id.toString(), ApiToDomainPropertyValue(kv._2))) )
+		var id : String = null
 		
 		if( model.id != null && model.id.nonEmpty){
-			domainModel.id = model.id
+			id = model.id
 		}
-	
-		domainModel
+		
+		new DomainProperty( model.name, model.parentId, collection.mutable.Map() ++ model.values.map( kv => (Enviroment.findByName(kv._1).get.id.toString(), ApiToDomainPropertyValue(kv._2))), id )
 	} 
 	
 	// +++++++++++++++++++++++++++
@@ -176,13 +179,14 @@ package object dto {
 	}
 	
 	implicit def ApiToDomainPropertiesGroup( model : ApiPropertiesGroup ) : DomainPropertiesGroup = {
-		val domainModel = new DomainPropertiesGroup( model.name, model.description)
+		
+		var id : String = null
 		
 		if( model.id != null && model.id.nonEmpty){
-			domainModel.id = model.id
+			id = model.id
 		}
-	
-		domainModel
+		
+		new DomainPropertiesGroup( model.name, model.description, id)
 	}
 }
 

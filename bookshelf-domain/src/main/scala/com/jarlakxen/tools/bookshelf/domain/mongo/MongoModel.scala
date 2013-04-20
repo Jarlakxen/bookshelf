@@ -23,7 +23,6 @@ object DAO {
 
 	def apply[T <: AnyRef]( implicit m : Manifest[T] ) = {
 		val collection = MongoStore.Collection( m.erasure.getSimpleName() )
-		//MongoConnection()( "bookshelf" )( m.erasure.getSimpleName() )
 
 		new SalatDAO[T, ObjectId]( collection = collection ) {}
 	}
@@ -42,16 +41,18 @@ abstract class MongoModel[T <: AnyRef]( implicit m : Manifest[T] ) {
 	def dao = _dao
 
 	def id : ObjectId
-	def id_=( id : ObjectId )
+	
+	def cloneWithId(id : ObjectId) : T;
 
-	def isPersistent = id != null
-	def save : T = { id_=(_dao.insert( cast ).get); cast }
+	def isPersisted = id != null
+	
+	def save : T = cloneWithId(_dao.insert( cast ).get)
 	def update : T = { dao.update( MongoDBObject( "_id" -> id ), cast, false, false, WriteConcern.FsyncSafe ); cast }
 	def saveOrUpdate : T = id match {
 		case null => save
 		case _ => update
 	}
-	def delete = { if ( isPersistent ) _dao.remove( cast, WriteConcern.FsyncSafe ) }
+	def delete = { if ( isPersisted ) _dao.remove( cast, WriteConcern.FsyncSafe ) }
 }
 
 abstract class MongoObject[T <: AnyRef]( implicit m : Manifest[T] ) {

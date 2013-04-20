@@ -3,7 +3,7 @@ package com.jarlakxen.tools.bookshelf.domain.dto
 import com.novus.salat.annotations.raw.Salat
 import org.bson.types.ObjectId
 
-case class PropertyValue(var linkEnviromentId : ObjectId = null, var linkId : ObjectId = null, var fixValue : String = null) {
+case class PropertyValue(linkEnviromentId : ObjectId = null, linkId : ObjectId = null, fixValue : String = null) {
 
 	private def linkEnviroment = Enviroment.findById( linkEnviromentId ).get
 

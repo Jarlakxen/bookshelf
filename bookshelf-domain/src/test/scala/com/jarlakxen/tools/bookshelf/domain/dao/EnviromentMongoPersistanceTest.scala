@@ -7,9 +7,17 @@ import org.specs2.mutable.Specification
 import org.specs2.mutable.Before
 import org.specs2.runner.JUnitRunner
 import com.jarlakxen.tools.bookshelf.domain.dto._
+import com.jarlakxen.tools.bookshelf.domain.mongo.MongoStore
 
 @RunWith( classOf[JUnitRunner] )
 class EnviromentMongoPersistanceTest extends Specification {
+
+	implicit def context = new Before {
+		def before = {
+			System.setProperty( "db.name", "test-bookshelf" )
+			MongoStore dropDatabase
+		}
+	}
 
 	"Enviroment" should {
 

@@ -26,6 +26,8 @@ object MongoStore {
 		
 		connection
 	}
+	
+	def dropDatabase = MongoDBCollections dropDatabase
 
 	def Collection( name : String ) = this.synchronized {
 
