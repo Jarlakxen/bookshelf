@@ -8,7 +8,7 @@
 			<hr />
 
 			<div class="row-fluid">
- 				<div class="span12" style="padding-left: 10px;">
+ 				<div class="span12" style="padding-left: 10px;" data-step="4" data-intro="In each tab you have the properties and there value, depending of the enviroment">
  					<form name="newPropertyForm">
  						<tabs>
 							<pane ng-repeat="enviroment in enviroments" heading="{{enviroment.name}}" style="padding-top: 10px;">
@@ -30,7 +30,7 @@
 					                		<i class="icon-trash" style="float: right" ng-click="removeProperty(property)" ></i> 
 					                	</td>
 					                </tr>
-					                <tr style="background-color: whiteSmoke;">
+					                <tr style="background-color: whiteSmoke;" data-step="5" data-intro="When you create a property you can linked to the value of a common property, you can later edit this">
 					                	<td>
 					                		<input name="newPropertyNameInput" class="input-xlarge" type="text" ng-disabled="!parent" ng-model="newProperty.name" ng-maxlength="60"/>
 					                	</td>

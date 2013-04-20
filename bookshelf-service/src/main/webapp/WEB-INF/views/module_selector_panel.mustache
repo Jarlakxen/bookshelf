@@ -1,6 +1,6 @@
 {{=|{ }|=}}
 
-<div class="row-fluid" style="background-color: whiteSmoke;">
+<div class="row-fluid" style="background-color: whiteSmoke;" data-step="1" data-intro="Hi! This Property page, here you can add new Project and Modules and set there properties in the diferent enviroments">
 	<div ng-controller="ProjectListCtrl" class="span12 selector-column" hide="selectedProject==null">
 	
 
@@ -9,7 +9,7 @@
 		</ul>
 
 		<div class="selector-column-scroll">
-			<table>
+			<table data-step="3" data-intro="You can select or unselect a Project/Module by clicking on the row">
 				<tbody>
 					<tr ng-repeat="project in projects | orderBy:'name'">
 						<td ng-click="notifyAll('OnProjectSelect', project)">
@@ -22,7 +22,7 @@
 		</div>
 		
 		<form name="newProjectForm">
-			<div class="selector-column-add">
+			<div class="selector-column-add" data-step="2" data-intro="Start adding a new project.">
   				<input name="newProjectNameInput" class="input-xlarge" type="text" ng-model="newProject.name" ng-maxlength="20"/>
   				<button ng-click="addProject(newProject)" ng-disabled="!newProject.name">Add</button>
 			</div>
@@ -49,7 +49,7 @@
 					<tr ng-repeat="module in modules | orderBy:'name'">
 						<td ng-click="notifyAll('OnModuleSelect', module)">
 							<span ng-class="{selected: module.id==selectedModule.id}">{{module.name}}</span>
-							<i class="icon-remove-sign" style="float: right" ng-click="removeModule(module)" ></i>
+							<i class="icon-trash" style="float: right" ng-click="removeModule(module)" ></i>
 						</td>
 					</tr>
 				</tbody>
