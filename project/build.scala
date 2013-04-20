@@ -18,7 +18,7 @@ object Bookshelf extends Build {
 
 	lazy val standardSettings = Project.defaultSettings ++ Seq(
 				organization := "com.bookshelf.server",
-				version := "0.1.0",
+				version := "0.2.0",
 				scalaVersion := "2.9.2",
 				scalacOptions ++= Seq("-encoding", "UTF-8")//, "-deprecation", "-unchecked"),
 				//javacOptions ++= Seq("-Xlint:unchecked")
