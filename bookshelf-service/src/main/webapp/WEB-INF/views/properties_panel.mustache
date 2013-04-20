@@ -18,8 +18,8 @@
 					                <tr ng-repeat="property in properties | orderBy:'name'">
 					                	<td>{{property.name}}</td>
 					                	<td>
-					                		<i class="icon-link-small" ui-if="parent.linkedProperties == true" ng-click="linkProperty(property.values[enviroment.name], property)" ></i>
-					                		<i class="icon-unlink-small" ui-if="property.values[enviroment.name].linkId != null" ng-click="unlinkProperty(property, enviroment)" ></i>
+					                		<i class="icon-link-small" style="cursor:pointer;" ui-if="parent.linkedProperties == true" ng-click="linkProperty(property.values[enviroment.name], property)" ></i>
+					                		<i class="icon-unlink-small" style="cursor:pointer;" ui-if="property.values[enviroment.name].linkId != null" ng-click="unlinkProperty(property, enviroment)" ></i>
 
 					                		<!-- If property is linked -->
 					                		<span ui-if="property.values[enviroment.name].linkId != null" > {{property.values[enviroment.name].value}} </span>
@@ -37,8 +37,8 @@
 					                	<td>
 					                		<div class="add-panel" style="margin-top: 0px;">
 					                			
-					                			<i class="icon-link" ui-if="parent.linkedProperties == true" ng-click="linkProperty(newProperty)" ></i>
-					                			<i class="icon-unlink" ui-if="newProperty.linkId != null" ng-click="newProperty.linkId=null; newProperty.linkEnviromentId=null;" ></i>
+					                			<i class="icon-link" style="cursor:pointer;" ui-if="parent.linkedProperties == true" ng-click="linkProperty(newProperty)" ></i>
+					                			<i class="icon-unlink" style="cursor:pointer;" ui-if="newProperty.linkId != null" ng-click="newProperty.linkId=null; newProperty.linkEnviromentId=null;" ></i>
 
 									  			<input name="newPropertyValueInput" class="input-xxlarge" type="text" ng-disabled="!parent || newProperty.linkId!=null" ng-model="newProperty.value"/>
 									  			<button ng-click="addProperty(newProperty, enviroment)" ng-disabled="!newProperty.name || !newProperty.value">Add</button>
@@ -66,7 +66,7 @@
 <!-- Properties Group Modal Selector -->
 
 <div ng-controller="PropertiesGroupModalCtrl">
-    <div modal="shouldBeOpen" close="close()" style="width: 600px;">
+    <div modal="shouldBeOpen" close="close()" >
         <div class="modal-header">
             <h4>Property Link Selector</h4>
         </div>
