@@ -16,9 +16,7 @@ class PropertyServlet extends RestService {
 	post("/"){
 		var property : Property = extract[ApiProperty]
 		
-		property saveOrUpdate
-		
-		property asApi
+		property.saveOrUpdate.asApi
 	}
 	
 	delete("/:id"){

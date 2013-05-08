@@ -29,9 +29,7 @@ class ProjectServlet extends RestService{
 		
 		var newProject : Project = extract[ApiProject]
 		
-		newProject saveOrUpdate
-		
-		newProject asApi
+		newProject.saveOrUpdate.asApi
 	}
 	
 	delete("/:id"){

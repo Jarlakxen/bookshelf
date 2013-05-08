@@ -27,9 +27,7 @@ class PropertiesGroupServlet extends RestService{
 		
 		var newPropertiesGroup : PropertiesGroup = extract[ApiPropertiesGroup]
 		
-		newPropertiesGroup saveOrUpdate
-		
-		newPropertiesGroup asApi
+		newPropertiesGroup.saveOrUpdate.asApi
 	}
 	
 	delete("/:id"){

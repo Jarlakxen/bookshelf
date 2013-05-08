@@ -20,9 +20,7 @@ class EnviromentServlet extends RestService {
 	post( "/" ) {
 		var newEnviroment : Enviroment = extract[ApiEnviroment]
 
-		newEnviroment saveOrUpdate
-
-		newEnviroment asApi
+		newEnviroment.saveOrUpdate.asApi
 	}
 
 	delete( "/:id" ) {

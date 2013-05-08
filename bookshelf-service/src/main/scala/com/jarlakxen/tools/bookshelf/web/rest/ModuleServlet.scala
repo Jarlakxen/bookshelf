@@ -24,9 +24,7 @@ class ModuleServlet extends RestService{
 	post("/"){
 		var module : Module = extract[ApiModule]
 		
-		module saveOrUpdate	
-		
-		module asApi	
+		module.saveOrUpdate.asApi
 	}
 	
 	delete("/:id"){
