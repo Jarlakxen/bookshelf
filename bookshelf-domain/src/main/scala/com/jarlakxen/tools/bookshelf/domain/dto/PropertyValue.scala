@@ -12,12 +12,15 @@ case class PropertyValue(linkEnviromentId : ObjectId = null, linkId : ObjectId =
 		if ( linkId != null && linkEnviromentId != null ) {
 
 			return Property.findById( linkId ).get.value( linkEnviroment ) match {
-				case Some(v) => v.value
-				case None => null
+				case Some(v) if v.value != null && v.value.nonEmpty => v.value
+				case _ => null
 			}
 		}
 
-		return fixValue
+		return fixValue match {
+			case v if v != null && v.nonEmpty => v;
+			case _ => null;
+		}
 	}
 
 }
