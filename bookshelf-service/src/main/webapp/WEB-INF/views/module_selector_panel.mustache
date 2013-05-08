@@ -11,7 +11,7 @@
 		<div class="selector-column-scroll">
 			<table data-step="3" data-intro="You can select or unselect a Project/Module by clicking on the row">
 				<tbody>
-					<tr ng-repeat="project in projects | orderBy:'name'">
+					<tr ng-repeat="project in projects | orderBy:'name'" style="border-bottom: 1px solid #ccc; border-top: 1px solid #ccc;">
 						<td ng-click="notifyAll('OnProjectSelect', project)" style="cursor:pointer;">
 							<span>{{project.name}}</span>
 							<i class="icon-trash" style="float: right" ng-click="removeProject(project)" ></i>
@@ -46,7 +46,7 @@
 		<div class="selector-column-scroll">
 			<table>
 				<tbody>
-					<tr ng-repeat="module in modules | orderBy:'name'">
+					<tr ng-repeat="module in modules | orderBy:'name'" style="border-bottom: 1px solid #ccc; border-top: 1px solid #ccc;">
 						<td ng-click="notifyAll('OnModuleSelect', module)" style="cursor:pointer;">
 							<span ng-class="{selected: module.id==selectedModule.id}">{{module.name}}</span>
 							<i class="icon-trash" style="float: right" ng-click="removeModule(module)" ></i>
