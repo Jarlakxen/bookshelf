@@ -99,7 +99,7 @@ app.directive('fade', [function () {
 //			Project Controllers 
 // ----------------------------------
 
-var ProjectListCtrl = app.controller('ProjectListCtrl', function ($scope, Project) {
+var ProjectListCtrl = app.controller('ProjectListCtrl', function ($scope, Project, $dialog) {
 	var projects = Project.query();
 	
 	$scope.projects = projects;
@@ -130,11 +130,18 @@ var ProjectListCtrl = app.controller('ProjectListCtrl', function ($scope, Projec
 	};
 
 	$scope.removeProject = function (selectedProject){
-		projects.remove(selectedProject);
 
-		selectedProject.$delete();
+		var title = 'Delete Project';
+		var msg = 'Do you really want to delete ' + selectedProject.name + '?';
+		var btns = [{result:'cancel', label: 'Cancel'}, {result:'ok', label: 'OK', cssClass: 'btn-primary'}];
 
-		$scope.notifyAll('OnProjectRemove', selectedProject);
+		$dialog.messageBox(title, msg, btns)
+			.open()
+			.then(function(result){
+				projects.remove(selectedProject);
+				selectedProject.$delete();
+				$scope.notifyAll('OnProjectRemove', selectedProject);
+			});
 	};
 
 });
@@ -143,7 +150,7 @@ var ProjectListCtrl = app.controller('ProjectListCtrl', function ($scope, Projec
 //			Module Controllers 
 // ----------------------------------
 
-var ModuleListCtrl = app.controller('ModuleListCtrl', function ($scope, Module, Project) {
+var ModuleListCtrl = app.controller('ModuleListCtrl', function ($scope, Module, Project, $dialog) {
 
 	$scope.project =  null;
 	$scope.modules = [];
@@ -193,12 +200,21 @@ var ModuleListCtrl = app.controller('ModuleListCtrl', function ($scope, Module, 
 	}; 
 
 	$scope.removeModule = function (selectedModule){
-		$scope.modules.remove(selectedModule);
 
-		selectedModule.$delete();
+		var title = 'Delete Module';
+		var msg = 'Do you really want to delete ' + selectedModule.name + '?';
+		var btns = [{result:'cancel', label: 'Cancel'}, {result:'ok', label: 'OK', cssClass: 'btn-primary'}];
 
-		$scope.notifyAll('OnModuleRemove', selectedModule);
-		$scope.notifyAll('OnParentPropertyRemove', selectedModule);
+		$dialog.messageBox(title, msg, btns)
+			.open()
+			.then(function(result){
+				$scope.modules.remove(selectedModule);
+				
+				selectedModule.$delete();
+				
+				$scope.notifyAll('OnModuleRemove', selectedModule);
+				$scope.notifyAll('OnParentPropertyRemove', selectedModule);
+			});
 	};
 
 });
