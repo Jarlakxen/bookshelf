@@ -138,9 +138,11 @@ var ProjectListCtrl = app.controller('ProjectListCtrl', function ($scope, Projec
 		$dialog.messageBox(title, msg, btns)
 			.open()
 			.then(function(result){
-				projects.remove(selectedProject);
-				selectedProject.$delete();
-				$scope.notifyAll('OnProjectRemove', selectedProject);
+				if( result == 'ok' ){
+					projects.remove(selectedProject);
+					selectedProject.$delete();
+					$scope.notifyAll('OnProjectRemove', selectedProject);
+				}
 			});
 	};
 
@@ -208,12 +210,14 @@ var ModuleListCtrl = app.controller('ModuleListCtrl', function ($scope, Module, 
 		$dialog.messageBox(title, msg, btns)
 			.open()
 			.then(function(result){
-				$scope.modules.remove(selectedModule);
+				if( result == 'ok' ){
+					$scope.modules.remove(selectedModule);
 				
-				selectedModule.$delete();
+					selectedModule.$delete();
 				
-				$scope.notifyAll('OnModuleRemove', selectedModule);
-				$scope.notifyAll('OnParentPropertyRemove', selectedModule);
+					$scope.notifyAll('OnModuleRemove', selectedModule);
+					$scope.notifyAll('OnParentPropertyRemove', selectedModule);
+				}
 			});
 	};
 
@@ -311,7 +315,7 @@ var PropertyListCtrl = app.controller('PropertyListCtrl', function ($scope, Prop
 //			Enviroment Controllers 
 // ----------------------------------
 
-var EnviromentListCtrl = app.controller('EnviromentListCtrl', function ($scope, Enviroment) {
+var EnviromentListCtrl = app.controller('EnviromentListCtrl', function ($scope, $dialog, Enviroment) {
 	var enviroments = Enviroment.query();
 	
 	$scope.enviroments = enviroments;
@@ -329,11 +333,22 @@ var EnviromentListCtrl = app.controller('EnviromentListCtrl', function ($scope, 
 	};
 
 	$scope.removeEnviroment = function (selectedEnviroment){
-		enviroments.remove(selectedEnviroment);
 
-		selectedEnviroment.$delete();
+		var title = 'Delete Enviroment';
+		var msg = 'Do you really want to delete ' + selectedEnviroment.name + '?';
+		var btns = [{result:'cancel', label: 'Cancel'}, {result:'ok', label: 'OK', cssClass: 'btn-primary'}];
 
-		$scope.notifyAll('OnEnviromentRemove', selectedEnviroment);
+		$dialog.messageBox(title, msg, btns)
+			.open()
+			.then(function(result){
+				if( result == 'ok' ){
+					enviroments.remove(selectedEnviroment);
+
+					selectedEnviroment.$delete();
+
+					$scope.notifyAll('OnEnviromentRemove', selectedEnviroment);
+				}
+			});
 	};
 
 });
@@ -342,7 +357,7 @@ var EnviromentListCtrl = app.controller('EnviromentListCtrl', function ($scope, 
 //     Properties Group Controllers 
 // ----------------------------------
 
-var PropertiesGroupListCtrl = app.controller('PropertiesGroupListCtrl', function ($scope, PropertiesGroup) {
+var PropertiesGroupListCtrl = app.controller('PropertiesGroupListCtrl', function ($scope, $dialog, PropertiesGroup) {
 
 	$scope.propertiesGroups = PropertiesGroup.query();
 	$scope.selectedPropertiesGroup =  null;
@@ -372,12 +387,24 @@ var PropertiesGroupListCtrl = app.controller('PropertiesGroupListCtrl', function
 	};
 
 	$scope.removePropertiesGroup = function (selectedPropertiesGroup){
-		$scope.propertiesGroups.remove(selectedPropertiesGroup);
 
-		selectedPropertiesGroup.$delete();
 
-		$scope.notifyAll('OnPropertiesGroupRemove', selectedPropertiesGroup);
-		$scope.notifyAll('OnParentPropertyRemove', selectedPropertiesGroup);
+		var title = 'Delete Properties Group';
+		var msg = 'Do you really want to delete ' + selectedPropertiesGroup.name + '?';
+		var btns = [{result:'cancel', label: 'Cancel'}, {result:'ok', label: 'OK', cssClass: 'btn-primary'}];
+
+		$dialog.messageBox(title, msg, btns)
+			.open()
+			.then(function(result){
+				if( result == 'ok' ){
+					$scope.propertiesGroups.remove(selectedPropertiesGroup);
+
+					selectedPropertiesGroup.$delete();
+
+					$scope.notifyAll('OnPropertiesGroupRemove', selectedPropertiesGroup);
+					$scope.notifyAll('OnParentPropertyRemove', selectedPropertiesGroup);
+				}
+			});
 	};
 });
 

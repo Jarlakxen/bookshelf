@@ -1,6 +1,6 @@
 {{=|{ }|=}}
 
-<div class="row-fluid" style="background-color: whiteSmoke;" ng-controller="PropertiesGroupListCtrl">
+<div class="row-fluid" ng-controller="PropertiesGroupListCtrl">
 	<div class="span8 selector-multi-column">
 	
 		<div>
@@ -10,10 +10,12 @@
 		<div class="selector-multi-column-scroll">
 			<table>
 				<tbody ng-repeat="propertiesGroup in propertiesGroups | orderBy:'name'">
-					<tr style="cursor:pointer;">
-						<td ng-click="notifyAll('OnPropertiesGroupSelect', propertiesGroup)">
-							<span ng-class="{selected: propertiesGroup.id==selectedPropertiesGroup.id}">{{propertiesGroup.name}}</span>
-							<i class="icon-trash" style="float: right" ng-click="removePropertiesGroup(propertiesGroup)" ></i>
+					<tr>
+						<td>
+							<a href="#" ng-class="{selected: propertiesGroup.id==selectedPropertiesGroup.id}" style="text-decoration: underline;" ng-click="notifyAll('OnPropertiesGroupSelect', propertiesGroup)">
+								{{propertiesGroup.name}}
+							</a>
+							<i class="icon-trash" style="float: right; cursor:pointer;" ng-click="removePropertiesGroup(propertiesGroup)" ></i>
 						</td>
 					</tr>
 					<tr fade="propertiesGroup.id==selectedPropertiesGroup.id">

@@ -1,7 +1,7 @@
 {{=|{ }|=}}
 
-<div class="row-fluid" style="background-color: whiteSmoke;" data-step="1" data-intro="Hi! This Property page, here you can add new Project and Modules and set there properties in the diferent enviroments">
-	<div ng-controller="ProjectListCtrl" class="span12 selector-column" hide="selectedProject==null">
+<div class="row-fluid" data-step="1" data-intro="Hi! This Property page, here you can add new Project and Modules and set there properties in the diferent enviroments">
+	<div ng-controller="ProjectListCtrl" class="span12 white-base-panel selector-column" hide="selectedProject==null">
 	
 
 		<ul class="bookshelf-breadcrumb">
@@ -12,9 +12,11 @@
 			<table data-step="3" data-intro="You can select or unselect a Project/Module by clicking on the row">
 				<tbody>
 					<tr ng-repeat="project in projects | orderBy:'name'" style="border-bottom: 1px solid #ccc; border-top: 1px solid #ccc;">
-						<td ng-click="notifyAll('OnProjectSelect', project)" style="cursor:pointer;">
-							<span>{{project.name}}</span>
-							<i class="icon-trash" style="float: right" ng-click="removeProject(project)" ></i>
+						<td>
+							<a href="#" ng-click="notifyAll('OnProjectSelect', project)" style="text-decoration: underline;">
+								{{project.name}}
+							</a>
+							<i class="icon-trash" style="float: right; cursor: pointer;" ng-click="removeProject(project)" ></i>
 						</td>
 					</tr>
 				</tbody>
@@ -31,7 +33,7 @@
 
 	</div>
 	
-	<div ng-controller="ModuleListCtrl" class="span12 selector-column" hide="project!=null">
+	<div ng-controller="ModuleListCtrl" class="span12 white-base-panel selector-column" hide="project!=null">
 		
 		<ul class="bookshelf-breadcrumb">
   			<li> 
@@ -47,9 +49,11 @@
 			<table>
 				<tbody>
 					<tr ng-repeat="module in modules | orderBy:'name'" style="border-bottom: 1px solid #ccc; border-top: 1px solid #ccc;">
-						<td ng-click="notifyAll('OnModuleSelect', module)" style="cursor:pointer;">
-							<span ng-class="{selected: module.id==selectedModule.id}">{{module.name}}</span>
-							<i class="icon-trash" style="float: right" ng-click="removeModule(module)" ></i>
+						<td>
+							<a href="#" ng-click="notifyAll('OnModuleSelect', module)" ng-class="{selected: module.id==selectedModule.id}" style="text-decoration: underline;">
+								{{module.name}}
+							</a>
+							<i class="icon-trash" style="float: right; cursor: pointer;" ng-click="removeModule(module)" ></i>
 						</td>
 					</tr>
 				</tbody>
