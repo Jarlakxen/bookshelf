@@ -21,7 +21,9 @@ class PropertyServlet extends RestService {
 	
 	delete("/:id"){
 		val property = Property.findById( params("id") ).get
-			
+		
+		Property.deleteAllReferenceOf(property)
+		
 		property.delete
 	}
 }

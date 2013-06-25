@@ -23,12 +23,23 @@ object Property extends MongoObject[Property] with NamedDAO[Property] with Child
 		new Property( name = name, parentId = parent.id, values = values.map( entry => ( entry._1.id.toString(), entry._2 ) ) )
 	}
 
-	def deleteEnvironmentFromAll( enviroment : Enviroment ) {
-		this.synchronized {
-			Property.findAll.foreach { propery =>
-				propery.values -= enviroment.id
-				propery.update
+	def deleteAllReferenceOf( parentProperty : Property ) = this.synchronized {
+		Property.findAll.foreach { property =>
+			for( envKey <- property.values.keys ){
+			  val currentValue = property.values(envKey)
+			  if(currentValue.linkId == property.id){
+				  property.values(envKey) = PropertyValue(linkEnviromentId = currentValue.linkEnviromentId, fixValue = parentProperty.values(envKey).fixValue )
+				  property.update
+			  }
 			}
+		}
+	}
+	
+	
+	def deleteAllFromEnvironment( enviroment : Enviroment ) = this.synchronized {
+		Property.findAll.foreach { propery =>
+			propery.values -= enviroment.id
+			propery.update
 		}
 	}
 }

@@ -26,7 +26,7 @@ class EnviromentServlet extends RestService {
 	delete( "/:id" ) {
 		val enviroment = Enviroment.findById( params( "id" ) ).get
 
-		Property.deleteEnvironmentFromAll( enviroment )
+		Property.deleteAllFromEnvironment( enviroment )
 
 		enviroment.delete
 	}

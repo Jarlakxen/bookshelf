@@ -67,7 +67,7 @@ class PropertyMongoPersistanceTest extends Specification {
 			var property1 = Property( "test.key1", module, Map( localEnviroment -> PropertyValue("10"), prodEnviroment -> PropertyValue("20") ) ).save
 			var property2 = Property( "test.key2", module, Map( localEnviroment -> PropertyValue("15"), prodEnviroment -> PropertyValue("25") ) ).save
 
-			Property deleteEnvironmentFromAll ( prodEnviroment )
+			Property deleteAllFromEnvironment ( prodEnviroment )
 
 			val properties = Property findAll
 
