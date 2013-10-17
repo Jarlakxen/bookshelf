@@ -72,6 +72,8 @@ or you can edit the configuration file placed in bookshelf-domain/src/main/resou
 
 ---
 
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/Jarlakxen/bookshelf/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
 ### Copyright and License
 
 Copyright (C) 2013 Facundo Viale
