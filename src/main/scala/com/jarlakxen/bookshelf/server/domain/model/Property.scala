@@ -7,6 +7,8 @@ case class Property(name: String, parentId: ObjectId, values: Map[String, Proper
 
   def value(enviroment: Enviroment) = this.values.get(enviroment.id)
 
+  def cloneWithFinalValue = this.copy(values = this.values.mapValues(_.cloneWithFinalValue))
+  
 }
 
 object Property extends ServiceDAO[Property] with NamedDAO[Property] with ChildDAO[Property] {

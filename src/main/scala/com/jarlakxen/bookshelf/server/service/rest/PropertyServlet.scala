@@ -10,7 +10,7 @@ class PropertyServlet extends RestService {
   // ++++++++++++++++++++++++++++++++++
 
   get("/:id") {
-    Property.findById(params("id"))
+    Property.findById(params("id")).map(_.cloneWithFinalValue)
   }
 
   post("/") {

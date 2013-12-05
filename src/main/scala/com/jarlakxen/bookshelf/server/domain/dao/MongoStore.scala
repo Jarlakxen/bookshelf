@@ -8,7 +8,7 @@ import com.jarlakxen.bookshelf.server.utils.Config
 
 object MongoStore {
 
-  private lazy val MongoDBCollections = connect(Config.getString("mongodb.default.db", "cars-marx"))
+  private lazy val MongoDBCollections = connect(Config.getString("mongodb.default.db", "bookshelf"))
 
   private val collections: Map[String, MongoCollection] = Map()
 
