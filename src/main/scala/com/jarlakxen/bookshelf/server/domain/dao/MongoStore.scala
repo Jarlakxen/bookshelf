@@ -8,7 +8,7 @@ import com.jarlakxen.bookshelf.server.utils.Config
 
 object MongoStore {
 
-  private lazy val MongoDBCollections = connect(Config.getString("mongodb.default.db", "bookshelf"))
+  private lazy val MongoDBCollections = connect(Config.getString("mongodb.default.db", "localhost"))
 
   private val collections: Map[String, MongoCollection] = Map()
 
@@ -17,7 +17,7 @@ object MongoStore {
     val opts = MongoOptions(autoConnectRetry = true,
       connectionsPerHost = Config.getInt("mongodb.default.options.connectionsPerHost", 50))
 
-    val servers = Config.getString("mongodb.default.servers", "localhost:27017").split(";").map({ server =>
+    val servers = Config.getString("mongodb.default.servers", "10.254.170.32").split(";").map({ server =>
       server.trim.split(":").toList match {
         case host :: port :: Nil => new ServerAddress(host, port.toInt)
         case host :: Nil => new ServerAddress(host)

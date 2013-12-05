@@ -18,7 +18,7 @@ object Property extends ServiceDAO[Property] with NamedDAO[Property] with ChildD
   def indexes = { i =>
     import i._
     Index("parentId")
-    Unique("name")
+    Index("name")
   }
 
   def apply(name: String, parent: BaseDAO[_ <: AnyRef], values: Map[Enviroment, PropertyValue]): Property = {
