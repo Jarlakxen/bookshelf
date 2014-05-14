@@ -29,7 +29,7 @@ If you are working with **Java** and **Spring** you can try [Bookshelf Client](h
 
 ## Installation
 
-First you need al least 2.9.2 and SBT 12.2:
+First you need al least 2.10.0 and SBT 13.0:
 
 #### Generate WAR
 
