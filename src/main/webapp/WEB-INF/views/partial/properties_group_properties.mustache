@@ -1,0 +1,51 @@
+{{={[ ]}=}}
+
+<div class="row">
+	<div class="col-lg-12">
+		<h2> Properties Group - <b>{{propertiesGroup.name}}</a> </b>: Properties</h2>
+		<hr/>
+	</div>
+</div>
+
+<tabset>
+	<tab ng-repeat="enviroment in enviroments" heading="{{enviroment.name}}" >
+		<table class="table table-striped">
+			<thead>
+				<tr class="warning">
+					<th>Key</th>
+					<th>Value</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="property in properties | orderBy:'name'">
+					<td>{{property.name}}</td>
+					<td class="value">
+						<a href="#" editable-text="property.values[enviroment.id].fixValue" onaftersave="update(property)">{{ property.values[enviroment.id].fixValue || "empty" }}</a>
+						<a href="javascript:void(0)" title="Delete" class="pull-right" ng-click="delete(property)"> <i class="fa fa-times-circle"></i> </a>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<div class="row">
+							<div class="col-md-8">
+								<input type="text" class="form-control" ng-model="newProperty.name" placeholder="Enter name">
+							</div>
+						</div>
+					</td>
+					<td>
+						<div class="row">
+							<div class="col-md-8">
+								<input type="text" class="form-control" ng-model="newProperty.values[enviroment.id].fixValue" placeholder="Enter value for {{enviroment.name}}">
+							</div>
+							<div class="col-md-4">
+								<button class="btn btn-sm btn-primary btn-block" type="button" ng-disabled="!newProperty.name" ng-click="add(newProperty, enviroment)">Add</button>
+							</div>
+						</div>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</tab>
+</tabset>
+
+

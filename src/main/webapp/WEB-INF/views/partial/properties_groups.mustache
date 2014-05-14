@@ -1,0 +1,46 @@
+{{={[ ]}=}}
+
+<div class="row">
+	<div class="col-lg-12">
+		<h2>Common Properties</h2>
+		<hr/>
+		<div class="alert alert-success alert-dismissable">
+			<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+			The <b>Common Properties</b> are properties that can be linked with any other property contained inside proyect modules
+		</div>
+	</div>
+</div>
+
+
+<table class="table table-striped">
+	<thead>
+		<tr>
+			<th>Name</th>
+			<th>Description</th>
+			<th>Properties</th>
+			<th class="text-center">Actions</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr ng-repeat="propertiesGroup in propertiesGroups | orderBy:'name'">
+			<td><a href="#/properties-group/{{propertiesGroup.id}}/properties">{{propertiesGroup.name}}</a></td>
+			<td>{{propertiesGroup.description}}</td>
+			<td><span class="badge">{{propertiesGroup.propertiesAmount}}</span></td>
+			<td class="text-center actions">
+				<a href="#/properties-group/{{propertiesGroup.id}}" title="Edit"> <i class="fa fa-pencil-square-o"></i> </a>
+				<a href="javascript:void(0)" title="Delete" ng-click="delete(propertiesGroup)"> <i class="fa fa-times-circle"></i> </a>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="3"></td>
+			<td>
+				<div class="row">
+					<div class="col-md-offset-4 col-md-4">
+						<button class="btn btn-sm btn-primary btn-block" type="button" ng-click="add()">Add</button>
+					</div>
+				</div>
+			</td>
+		</tr>
+	</tbody>
+</table>
+

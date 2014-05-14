@@ -1,0 +1,46 @@
+{{={[ ]}=}}
+
+<div class="row">
+	<div class="col-lg-12">
+		<h2>Project Properties</h2>
+		<hr/>
+		<div class="alert alert-success alert-dismissable">
+			<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+			<b>Project</b> are groups of applications that conform a system. Each project can have any number of applications.
+		</div>
+	</div>
+</div>
+
+
+<table class="table table-striped">
+	<thead>
+		<tr>
+			<th>Name</th>
+			<th>Description</th>
+			<th>Modules</th>
+			<th class="text-center">Actions</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr ng-repeat="project in projects | orderBy:'name'">
+			<td><a href="#/project/{{project.id}}/modules">{{project.name}}</a></td>
+			<td>{{project.description}}</td>
+			<td><span class="badge">{{project.modulesAmount}}</span></td>
+			<td class="text-center actions">
+				<a href="#/project/{{project.id}}" title="Edit"> <i class="fa fa-pencil-square-o"></i> </a>
+				<a href="javascript:void(0)" title="Delete" ng-click="delete(project)"> <i class="fa fa-times-circle"></i> </a>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="3"></td>
+			<td>
+				<div class="row">
+					<div class="col-md-offset-4 col-md-4">
+						<button class="btn btn-sm btn-primary btn-block" type="button" ng-click="add()">Add</button>
+					</div>
+				</div>
+			</td>
+		</tr>
+	</tbody>
+</table>
+

@@ -1,0 +1,46 @@
+{{=[{ }]=}}
+
+<div class="modal-dialog">
+	<div class="modal-content">
+		<div class="modal-header">
+			<h4 class="modal-title">Select a Common Property:</h4>
+		</div>
+		<div class="modal-body">
+			<tabset>
+				<tab ng-repeat="enviroment in enviroments" heading="{{enviroment.name}}" >
+					<br/>
+					<div style="max-height: 400px; overflow-y: scroll;">
+						<div class="panel panel-info" ng-repeat="propertiesGroup in propertiesGroups" ng-init="propertiesGroup.isopen=true">
+							<div class="panel-heading">
+								<h3 class="panel-title">
+									<a href="javascript:void(0)" class="mouse-pointer" ng-click="propertiesGroup.isopen=!propertiesGroup.isopen">{{propertiesGroup.name}}</a>
+									<i class="pull-right mouse-pointer glyphicon" ng-class="{'glyphicon-chevron-down': propertiesGroup.isopen, 'glyphicon-chevron-right': !propertiesGroup.isopen}" ng-click="propertiesGroup.isopen=!propertiesGroup.isopen"></i>
+								</h3>
+							</div>
+							<div class="panel-body" ng-if="propertiesGroup.isopen">
+								<table class="table table-hover">
+									<thead>
+										<tr class="warning">
+											<th>Key</th>
+											<th>Value</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr ng-repeat="property in propertiesGroup.properties">
+											<td> <a href="javascript:void(0)" class="mouse-pointer" ng-click="select(property, enviroment)"> {{property.name}} </a> </td>
+											<td>{{property.values[enviroment.id].fixValue}}</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+
+				</tab>
+			</tabset>
+		</div>
+		<div class="modal-footer">
+			<button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+		</div>
+	</div>
+</div>

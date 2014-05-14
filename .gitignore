@@ -17,3 +17,9 @@ project/plugins/project/
 .cache
 .classpath
 .project
+
+# Others
+src/main/grunt/node_modules/
+src/main/webapp/external/
+src/main/webapp/js/
+src/main/webapp/css/

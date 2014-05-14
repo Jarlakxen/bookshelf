@@ -1,0 +1,100 @@
+{{=[{ }]=}}
+<!DOCTYPE html>
+<html lang="en" ng-app="BookshelfApp">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="">
+	<meta name="author" content="">
+
+	<title>Bookshelf - Dashboard</title>
+
+	<link rel="shortcut icon" href="../img/favicon.png">
+
+	<!-- Externals CSS -->
+	<link rel="stylesheet" href="../external/font-awesome/css/font-awesome.min.css">
+	<link rel="stylesheet" href="../external/angular-xeditable/dist/css/xeditable.css">
+
+	<!-- Page Specific CSS -->
+	<link rel="stylesheet" href="../css/bookshelf.css">
+
+	<script type="text/ng-template" id="ModalConfirmDelete.html">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title">Warning!</h4>
+				</div>
+				<div class="modal-body">
+					<p>Do you want to delete {{element}} ?</p>
+				</div>
+				<div class="modal-footer">
+					<button class="btn btn-primary" ng-click="ok()">Ok</button>
+					<button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+				</div>
+			</div>
+		</div>
+	</script>
+
+	<script type="text/ng-template" id="ModalSelectCommonProperty.html">
+		[{> modal/select_common_property }]
+	</script>
+
+</head>
+
+<body ng-controller="MainCtrl">
+
+	<div id="wrapper">
+
+		<!-- Sidebar -->
+		<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+			<!-- Brand and toggle get grouped for better mobile display -->
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="#/summary">Bookshelft</a>
+			</div>
+
+			<!-- Collect the nav links, forms, and other content for toggling -->
+			<div class="collapse navbar-collapse navbar-ex1-collapse">
+				<ul class="nav navbar-nav side-nav">
+					<li class="active"><a href="#/projects"> <i class="fa fa-book"></i> Properties</a></li>
+					<li class="active"><a href="#/properties-groups"> <i class="fa fa-users"></i> Commons</a></li>
+					<li class="active"><a href="#/enviroments"> <i class="fa fa-tasks"></i> Enviroments</a></li>
+				</ul>
+
+				<ul class="nav navbar-nav navbar-right navbar-user">
+					<img src="../img/bookshelf.jpg" style="width: 200px; height: 48px; border-radius: 15px; opacity: 0.9; padding-top: 2px; margin-right: 20px;">
+				</ul>
+			</div><!-- /.navbar-collapse -->
+		</nav>
+
+		<div id="page-wrapper">
+			<div ng-view></div>
+		</div><!-- /#page-wrapper -->
+
+	</div><!-- /#wrapper -->
+
+	<script src="../js/common.js"></script>
+
+	<script src="../external/angular/angular.min.js"></script>
+	<script src="../external/angular-resource/angular-resource.min.js"></script>
+	<script src="../external/angular-route/angular-route.min.js"></script>
+	<script src="../external/angular-route/angular-route.min.js"></script>
+	<script src="../external/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+	<script src="../external/angular-xeditable/dist/js/xeditable.min.js"></script>
+
+	<script src="../js/app.js"></script>
+	<script src="../js/controllers/projects.js"></script>
+	<script src="../js/controllers/modules.js"></script>
+	<script src="../js/controllers/properties.js"></script>
+	<script src="../js/controllers/properties_groups.js"></script>
+	<script src="../js/controllers/enviroments.js"></script>
+
+	<script src="../js/services/crud.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,65 @@
+{{={[ ]}=}}
+
+<div class="row">
+	<div class="col-lg-12">
+		<h2> <b><a href="#/project/{{project.id}}/modules">{{project.name}}</a> - {{module.name}} </b>: Properties</h2>
+		<hr/>
+	</div>
+</div>
+
+<tabset>
+	<tab ng-repeat="enviroment in enviroments" heading="{{enviroment.name}}" >
+		<table class="table table-striped">
+			<thead>
+				<tr class="warning">
+					<th>Key</th>
+					<th>Value</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="property in properties | orderBy:'name'">
+					<td>{{property.name}}</td>
+					<td class="value">
+						<a href="javascript:void(0)" title="Link to a common property" ng-click="linkAndUpdate(property, enviroment)"><i class="fa fa-chain"></i></a>
+						<a href="javascript:void(0)" title="Unlink" ng-if="property.isEnviromentLinked(enviroment)" ng-click="unlinkAndUpdate(property, enviroment)"><i class="fa fa-chain-broken"></i></a>
+
+						<a href="#" editable-text="property.values[enviroment.id].fixValue" onaftersave="update(property)" ng-if="!property.isEnviromentLinked(enviroment)">{{ property.values[enviroment.id].fixValue || "empty" }}</a>
+
+						<span ng-if="property.isEnviromentLinked(enviroment)"> {{ property.values[enviroment.id].fixValue || "empty" }} </span>
+
+						<a href="javascript:void(0)" title="Delete" class="pull-right" ng-click="delete(property)"> <i class="fa fa-times-circle"></i> </a>
+					</td>
+				</tr>
+				<tr>
+					<td style="min-width: 300px;">
+						<div class="row">
+							<div class="col-md-8">
+								<input type="text" class="form-control" ng-model="newProperty.name" placeholder="Enter name">
+							</div>
+						</div>
+					</td>
+					<td>
+						<div class="row">
+							<div class="col-md-8">
+								<div class="input-group">
+									<span class="input-group-addon">
+										<a href="javascript:void(0)" title="Link to a common property" ng-click="link(newProperty, enviroment)"><i class="fa fa-chain"></i></a>
+									</span>
+									<span class="input-group-addon" ng-if="newProperty.isEnviromentLinked(enviroment)">
+										<a href="javascript:void(0)" title="Unlink" ng-click="unlink(newProperty, enviroment)"><i class="fa fa-chain-broken"></i></a>
+									</span>
+									<input type="text" class="form-control" ng-model="newProperty.values[enviroment.id].fixValue" ng-disabled="newProperty.isEnviromentLinked(enviroment)" placeholder="Enter value for {{enviroment.name}}">
+								</div>
+							</div>
+							<div class="col-md-4">
+								<button class="btn btn-sm btn-primary btn-block" type="button" ng-disabled="!newProperty.name" ng-click="add(newProperty, enviroment)">Add</button>
+							</div>
+						</div>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</tab>
+</tabset>
+
+
