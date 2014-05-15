@@ -10,7 +10,7 @@ object Bookshelf extends Build {
 
     val Organization = "com.jarlakxen.bookshelf.server"
     val Name = "Bookshelf"
-    val Version = "2.1-SNAPSHOT"
+    val Version = "2.1"
     val ScalaVersion = "2.10.4"
     val ScalatraVersion = "2.2.1"
 
