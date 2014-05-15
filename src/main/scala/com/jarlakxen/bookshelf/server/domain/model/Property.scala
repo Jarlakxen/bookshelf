@@ -8,7 +8,7 @@ case class Property(name: String, parentId: ObjectId, values: Map[String, Proper
   def value(enviroment: Enviroment) = this.values.get(enviroment.id)
 
   def cloneWithFinalValue = this.copy(values = this.values.mapValues(_.cloneWithFinalValue))
-  
+
 }
 
 object Property extends ServiceDAO[Property] with NamedDAO[Property] with ChildDAO[Property] {
@@ -27,9 +27,17 @@ object Property extends ServiceDAO[Property] with NamedDAO[Property] with ChildD
 
   def findLinkedWith(property: Property) = Property.query().filter(_.values.exists(_._2.linkId == property.id))
 
+  def addEnvironment(newEnviroment: Enviroment) {
+    this.synchronized {
+      Property.query().par.foreach { propery =>
+        propery.copy(values = propery.values ++ Map(newEnviroment.id.toString -> PropertyValue())).update
+      }
+    }
+  }
+
   def deleteEnvironment(enviroment: Enviroment) {
     this.synchronized {
-      Property.query().foreach { propery =>
+      Property.query().par.foreach { propery =>
         propery.copy(values = (propery.values - enviroment.id)).update
       }
     }

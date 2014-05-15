@@ -17,6 +17,10 @@ class EnviromentServlet extends RestService {
     val newEnviroment = extract[Enviroment]
 
     newEnviroment.save
+    
+    Try(Property.addEnvironment(newEnviroment))
+    
+    newEnviroment
   }
 
   put("/") {

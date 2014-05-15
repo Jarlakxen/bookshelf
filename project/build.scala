@@ -10,8 +10,8 @@ object Bookshelf extends Build {
 
     val Organization = "com.jarlakxen.bookshelf.server"
     val Name = "Bookshelf"
-    val Version = "2.0-SNAPSHOT"
-    val ScalaVersion = "2.10.2"
+    val Version = "2.1-SNAPSHOT"
+    val ScalaVersion = "2.10.4"
     val ScalatraVersion = "2.2.1"
 
 	lazy val project = Project (
@@ -33,30 +33,32 @@ object Bookshelf extends Build {
                     Seq(
                         libraryDependencies ++= Seq(
 
-                            "org.scala-lang" % "scala-reflect" % ScalaVersion,
+                            "org.scala-lang" % "scala-reflect"      % ScalaVersion,
 
                             // Scalatra
-                            "org.scalatra" %% "scalatra" % ScalatraVersion,
-                            "org.scalatra" %% "scalatra-auth" % ScalatraVersion,
-                            "org.scalatra" %% "scalatra-scalate" % ScalatraVersion,
-                            "org.scalatra" %% "scalatra-json" % ScalatraVersion,
-                            "org.json4s" %% "json4s-jackson" % "3.2.6",
-                            "org.json4s" %% "json4s-ext" % "3.2.6",
-                            "ch.qos.logback" % "logback-classic" % "1.0.13" % "runtime",
+                            "org.scalatra"  %% "scalatra"           % ScalatraVersion,
+                            "org.scalatra"  %% "scalatra-auth"      % ScalatraVersion,
+                            "org.scalatra"  %% "scalatra-scalate"   % ScalatraVersion,
+                            "org.scalatra"  %% "scalatra-json"      % ScalatraVersion,
+                            "org.json4s"    %% "json4s-jackson"     % "3.2.9",
+                            "org.json4s"    %% "json4s-ext"         % "3.2.9",
+
+                            // Log
+                            "ch.qos.logback" % "logback-classic"    % "1.1.2",
 
                             // Salat
-                            "com.novus" %% "salat-core" % "1.9.3",
-                            "com.novus" %% "salat-util" % "1.9.3",
+                            "com.novus"     %% "salat-core" % "1.9.3",
+                            "com.novus"     %% "salat-util" % "1.9.3",
 
                             // Utils
-                            "com.github.nscala-time" %% "nscala-time" % "0.6.0",
+                            "com.github.nscala-time" %% "nscala-time" % "0.8.0",
 
                             // Jetty
                             "org.eclipse.jetty" % "jetty-webapp" % "9.1.0.v20131115" % "container" artifacts (Artifact("jetty-webapp", "jar", "jar")),
                             "org.eclipse.jetty.orbit" % "javax.servlet" % "3.0.0.v201112011016" % "container;provided;test" artifacts (Artifact("javax.servlet", "jar", "jar")),
 
                             // Testing
-                            "org.specs2" %% "specs2" % "2.3.4" % "test",
+                            "org.specs2" %% "specs2" % "2.3.11" % "test",
                             "junit" % "junit" % "4.11" % "test"
                         )
                     )
